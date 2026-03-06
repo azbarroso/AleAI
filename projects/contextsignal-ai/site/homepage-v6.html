@@ -1,0 +1,667 @@
+<style>
+/* ── Homepage Styles ────────────────────────────────── */
+/* Uses CSS variables from the child theme */
+
+.cs-home * { box-sizing: border-box; margin: 0; padding: 0; }
+
+.cs-home {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    color: #0F0F1A;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* ── Hero ─────────────────────────────────────────── */
+.cs-hero {
+    text-align: center;
+    padding: 80px 0 64px;
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+.cs-hero__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, rgba(55,48,163,0.08), rgba(124,58,237,0.08));
+    border: 1px solid rgba(124,58,237,0.15);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #7C3AED;
+    letter-spacing: 0.02em;
+    margin-bottom: 28px;
+}
+
+.cs-hero__badge span {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: #06B6D4;
+    border-radius: 50%;
+    animation: cs-pulse 2s ease-in-out infinite;
+}
+
+@keyframes cs-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.4); }
+}
+
+.cs-hero h1 {
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: #0F0F1A;
+    margin-bottom: 20px;
+}
+
+.cs-hero h1 em {
+    font-style: normal;
+    background: linear-gradient(135deg, #3730A3, #7C3AED, #06B6D4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.cs-hero__sub {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #6B7280;
+    max-width: 580px;
+    margin: 0 auto 36px;
+}
+
+.cs-hero__ctas {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.cs-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    border-radius: 10px;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    cursor: pointer;
+    border: none;
+}
+
+.cs-btn--primary {
+    background: linear-gradient(135deg, #3730A3, #7C3AED);
+    color: #FFFFFF;
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.2);
+}
+
+.cs-btn--primary:hover {
+    box-shadow: 0 6px 24px rgba(124, 58, 237, 0.3);
+    transform: translateY(-1px);
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.cs-btn--ghost {
+    background: #FFFFFF;
+    color: #0F0F1A;
+    border: 1px solid #E5E7EB;
+}
+
+.cs-btn--ghost:hover {
+    border-color: rgba(124, 58, 237, 0.3);
+    box-shadow: 0 4px 16px rgba(55, 48, 163, 0.06);
+    transform: translateY(-1px);
+    color: #0F0F1A;
+    text-decoration: none;
+}
+
+.cs-btn .cs-arrow { transition: transform 0.2s ease; display: inline-block; }
+.cs-btn:hover .cs-arrow { transform: translateX(3px); }
+
+/* ── Vertical Cards ──────────────────────────────── */
+.cs-verticals {
+    padding: 0 0 72px;
+}
+
+.cs-verticals__label {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #9CA3AF;
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.cs-verticals__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.cs-vcard {
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 16px;
+    padding: 36px 32px;
+    text-decoration: none;
+    color: #0F0F1A;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+    display: block;
+}
+
+.cs-vcard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.cs-vcard--pm::before { background: linear-gradient(135deg, #3730A3, #7C3AED); }
+.cs-vcard--product::before { background: linear-gradient(135deg, #7C3AED, #06B6D4); }
+
+.cs-vcard:hover {
+    border-color: rgba(124,58,237,0.3);
+    box-shadow: 0 8px 30px rgba(55,48,163,0.08);
+    transform: translateY(-2px);
+    text-decoration: none;
+    color: #0F0F1A;
+}
+
+.cs-vcard:hover::before { opacity: 1; }
+
+.cs-vcard__icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin-bottom: 16px;
+}
+
+.cs-vcard--pm .cs-vcard__icon { background: rgba(55,48,163,0.08); }
+.cs-vcard--product .cs-vcard__icon { background: rgba(6,182,212,0.08); }
+
+.cs-vcard h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+}
+
+.cs-vcard__tagline {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #6B7280;
+    margin-bottom: 20px;
+}
+
+.cs-tool-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.cs-tool-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 100px;
+    background: #F3F4F6;
+    border: 1px solid #E5E7EB;
+    color: #6B7280;
+    letter-spacing: 0.02em;
+}
+
+.cs-vcard__link {
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: gap 0.2s ease;
+}
+
+.cs-vcard--pm .cs-vcard__link { color: #7C3AED; }
+.cs-vcard--product .cs-vcard__link { color: #06B6D4; }
+
+.cs-vcard:hover .cs-vcard__link { gap: 10px; }
+
+/* ── Differentiators ─────────────────────────────── */
+.cs-diff {
+    padding: 72px 0;
+    border-top: 1px solid #E5E7EB;
+}
+
+.cs-diff__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+}
+
+.cs-diff__num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: #9CA3AF;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.cs-diff h4 {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: #0F0F1A;
+    margin-bottom: 8px;
+}
+
+.cs-diff p {
+    font-size: 14px;
+    color: #6B7280;
+    line-height: 1.65;
+}
+
+.cs-diff a {
+    color: #7C3AED;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(124,58,237,0.3);
+}
+
+.cs-diff a:hover { border-bottom-color: #7C3AED; }
+
+/* ── Lead Magnet (single, full-width) ────────────── */
+.cs-magnets {
+    padding: 72px 0;
+    border-top: 1px solid #E5E7EB;
+}
+
+.cs-magnets__header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.cs-magnets__label {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #9CA3AF;
+    margin-bottom: 10px;
+}
+
+.cs-magnets__heading {
+    font-size: clamp(24px, 3vw, 32px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #0F0F1A;
+    margin-bottom: 8px;
+}
+
+.cs-magnets__sub {
+    font-size: 16px;
+    color: #6B7280;
+}
+
+.cs-magnets__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+.cs-mcard {
+    background: #F9FAFB;
+    border: 1px solid #E5E7EB;
+    border-radius: 16px;
+    padding: 36px 32px;
+    display: flex;
+    flex-direction: column;
+}
+
+.cs-mcard__badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 4px 12px;
+    border-radius: 100px;
+    display: inline-flex;
+    align-self: flex-start;
+    margin-bottom: 16px;
+}
+
+.cs-mcard--pm .cs-mcard__badge {
+    background: rgba(55,48,163,0.08);
+    color: #3730A3;
+    border: 1px solid rgba(55,48,163,0.15);
+}
+
+.cs-mcard h3 {
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: #0F0F1A;
+    margin-bottom: 8px;
+}
+
+.cs-mcard > p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #6B7280;
+    margin-bottom: 20px;
+    flex: 1;
+}
+
+.cs-mcard__features {
+    list-style: none;
+    margin: 0 0 24px 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px 24px;
+}
+
+.cs-mcard__features li {
+    font-size: 13px;
+    color: #6B7280;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.5;
+}
+
+.cs-mcard__features li::before {
+    content: '→';
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.cs-mcard--pm .cs-mcard__features li::before { color: #7C3AED; }
+
+.cs-mcard__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+    padding: 14px 24px;
+    border-radius: 10px;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    cursor: pointer;
+    border: none;
+}
+
+.cs-mcard--pm .cs-mcard__btn {
+    background: linear-gradient(135deg, #3730A3, #7C3AED);
+    color: #FFFFFF;
+}
+
+.cs-mcard--pm .cs-mcard__btn:hover {
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.2);
+    transform: translateY(-1px);
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+/* ── Newsletter ──────────────────────────────────── */
+.cs-newsletter {
+    margin: 0 0 80px;
+    background: #0F0F1A;
+    border-radius: 20px;
+    padding: 56px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.cs-newsletter::before {
+    content: '';
+    position: absolute;
+    top: -60%;
+    left: -20%;
+    width: 140%;
+    height: 140%;
+    background: radial-gradient(ellipse at 30% 50%, rgba(55,48,163,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 50%, rgba(6,182,212,0.1) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+.cs-newsletter > * {
+    position: relative;
+    z-index: 1;
+}
+
+.cs-newsletter__label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #06B6D4;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.cs-newsletter h2 {
+    font-size: clamp(22px, 3vw, 28px);
+    font-weight: 800;
+    color: #FFFFFF;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+}
+
+.cs-newsletter > p {
+    font-size: 16px;
+    color: #9CA3AF;
+    margin-bottom: 32px;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cs-newsletter__form {
+    display: flex;
+    gap: 12px;
+    max-width: 440px;
+    margin: 0 auto;
+}
+
+.cs-newsletter__input {
+    flex: 1;
+    padding: 14px 18px;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    background: rgba(255,255,255,0.06);
+    color: #FFFFFF;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.cs-newsletter__input::placeholder { color: #6B7280; }
+.cs-newsletter__input:focus { border-color: rgba(124,58,237,0.5); }
+
+.cs-newsletter__btn {
+    padding: 14px 28px;
+    background: linear-gradient(135deg, #3730A3, #7C3AED);
+    border: none;
+    border-radius: 10px;
+    color: #FFFFFF;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.cs-newsletter__btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.cs-newsletter__note {
+    font-size: 12px;
+    color: #6B7280;
+    margin-top: 16px;
+}
+
+/* ── Responsive ──────────────────────────────────── */
+@media (max-width: 768px) {
+    .cs-hero { padding: 48px 0 40px; }
+    .cs-hero__ctas { flex-direction: column; align-items: center; }
+    .cs-verticals__grid { grid-template-columns: 1fr; }
+    .cs-diff__grid { grid-template-columns: 1fr; gap: 28px; }
+    .cs-magnets__grid { grid-template-columns: 1fr; }
+    .cs-mcard__features { grid-template-columns: 1fr; }
+    .cs-newsletter { padding: 40px 24px; }
+    .cs-newsletter__form { flex-direction: column; }
+    .cs-vcard { padding: 28px 24px; }
+    .cs-mcard { padding: 28px 24px; }
+}
+</style>
+
+<div class="cs-home">
+
+    <!-- ── Hero ────────────────────────────────── -->
+    <section class="cs-hero">
+        <div class="cs-hero__badge"><span></span> AI prompt templates for PMs</div>
+        <h1>Stop writing PM docs<br><em>from scratch.</em></h1>
+        <p class="cs-hero__sub">Ready-to-use AI prompt templates for sprint planning, status reports, retrospectives, and stakeholder updates. Copy, paste, ship.</p>
+        <div class="cs-hero__ctas">
+            <a href="/newsletter/?ref=pm" class="cs-btn cs-btn--primary">Get 50 free PM prompts <span class="cs-arrow">→</span></a>
+            <a href="/ai-for-project-managers/" class="cs-btn cs-btn--ghost">Browse PM workflows <span class="cs-arrow">→</span></a>
+        </div>
+    </section>
+
+    <!-- ── Two Cards: Workflows + Product ──────── -->
+    <section class="cs-verticals">
+        <p class="cs-verticals__label">What You Get</p>
+        <div class="cs-verticals__grid">
+
+            <a href="/ai-for-project-managers/" class="cs-vcard cs-vcard--pm">
+                <div class="cs-vcard__icon">📋</div>
+                <h3>AI Workflow Guides</h3>
+                <p class="cs-vcard__tagline">Step-by-step guides showing how to use AI for every part of the PM cycle — from sprint planning to stakeholder updates.</p>
+                <div class="cs-tool-tags">
+                    <span class="cs-tool-tag">Notion</span>
+                    <span class="cs-tool-tag">Monday.com</span>
+                    <span class="cs-tool-tag">ClickUp</span>
+                    <span class="cs-tool-tag">Slack</span>
+                    <span class="cs-tool-tag">Zapier</span>
+                </div>
+                <span class="cs-vcard__link">Explore PM workflows <span>→</span></span>
+            </a>
+
+            <a href="/newsletter/?ref=pm" class="cs-vcard cs-vcard--product">
+                <div class="cs-vcard__icon">⚡</div>
+                <h3>PM Prompt Template Pack</h3>
+                <p class="cs-vcard__tagline">50 ready-to-use prompts organised by workflow: sprint planning, retros, risk tracking, status reports, and more. Free to download.</p>
+                <div class="cs-tool-tags">
+                    <span class="cs-tool-tag">50 prompts</span>
+                    <span class="cs-tool-tag">7 categories</span>
+                    <span class="cs-tool-tag">Copy &amp; paste</span>
+                    <span class="cs-tool-tag">PDF</span>
+                </div>
+                <span class="cs-vcard__link">Download free prompt pack <span>→</span></span>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- ── Differentiators ─────────────────────── -->
+    <section class="cs-diff">
+        <div class="cs-diff__grid">
+            <div>
+                <p class="cs-diff__num">01</p>
+                <h4>Prompts that actually work</h4>
+                <p>Every template is built for a specific PM task — not generic "write me an email" prompts. Sprint retros, risk assessments, stakeholder updates: each one structured for real output.</p>
+            </div>
+            <div>
+                <p class="cs-diff__num">02</p>
+                <h4>Workflow-first, not tool-first</h4>
+                <p>We start with the job you need to do, then show you how to wire AI into it — step by step, with prompts you can copy and use today in your existing stack.</p>
+            </div>
+            <div>
+                <p class="cs-diff__num">03</p>
+                <h4>Built for your PM tools</h4>
+                <p>Prompts and workflows designed around <a href="/tools/">Notion, Monday.com, ClickUp, and Slack</a> — the tools PMs actually use, not hypothetical setups.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Lead Magnet ─────────────────────────── -->
+    <section class="cs-magnets">
+        <div class="cs-magnets__header">
+            <p class="cs-magnets__label">Free Download</p>
+            <h2 class="cs-magnets__heading">50 AI Prompt Templates for Project Managers</h2>
+            <p class="cs-magnets__sub">The prompts that handle the busywork so you can focus on the work that matters.</p>
+        </div>
+
+        <div class="cs-magnets__grid">
+
+            <div class="cs-mcard cs-mcard--pm">
+                <span class="cs-mcard__badge">Free — 50 prompts</span>
+                <h3>Everything you need to start using AI in your PM workflow today.</h3>
+                <p>Ready-to-paste prompts organised by the workflows that eat your week. Works with any AI assistant and any PM tool stack.</p>
+                <ul class="cs-mcard__features">
+                    <li>Sprint planning prompts</li>
+                    <li>Retrospective facilitation</li>
+                    <li>Status report drafts</li>
+                    <li>Stakeholder update frameworks</li>
+                    <li>Risk assessment templates</li>
+                    <li>Meeting summary extraction</li>
+                    <li>Project documentation</li>
+                    <li>Decision log generation</li>
+                </ul>
+                <a href="/newsletter/?ref=pm" class="cs-mcard__btn">Get the free prompt pack →</a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ── Newsletter ──────────────────────────── -->
+    <section class="cs-newsletter">
+        <span class="cs-newsletter__label">The Context Signal</span>
+        <h2>One AI workflow for PMs, every two weeks.</h2>
+        <p>Each issue: one actionable AI workflow you can use immediately, plus a prompt template you can copy straight into your tools.</p>
+
+        <!-- ▼ Replace this form with your Beehiiv embed code ▼ -->
+        <div class="cs-newsletter__form">
+            <input type="email" class="cs-newsletter__input" placeholder="you@company.com">
+            <button class="cs-newsletter__btn">Subscribe</button>
+        </div>
+        <!-- ▲ Replace this form with your Beehiiv embed code ▲ -->
+
+        <p class="cs-newsletter__note">Free, biweekly, unsubscribe anytime. No spam, no fluff.</p>
+    </section>
+
+</div>

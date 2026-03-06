@@ -1,0 +1,84 @@
+function contextsignal_render_footer() {
+    $year = date( 'Y' );
+    ?>
+    <footer class="cs-footer" role="contentinfo">
+
+        <div class="cs-footer-columns">
+            <div class="cs-footer-inner">
+
+                <div class="cs-footer-col">
+                    <?php if ( is_active_sidebar( 'cs-footer-1' ) ) :
+                        dynamic_sidebar( 'cs-footer-1' );
+                    else : ?>
+                        <div class="cs-footer-widget">
+                            <?php echo contextsignal_logo_markup( 'dark' ); ?>
+                            <p class="cs-footer-about">AI prompt templates and workflow guides for project managers. Copy-paste prompts for sprint planning, status reports, retros, and more.</p>
+                        </div>
+                    <?php endif; ?>
+                </div>
+
+                <div class="cs-footer-col">
+                    <?php if ( is_active_sidebar( 'cs-footer-2' ) ) :
+                        dynamic_sidebar( 'cs-footer-2' );
+                    else : ?>
+                        <div class="cs-footer-widget">
+                            <h4 class="cs-footer-heading">Quick Links</h4>
+                            <ul class="cs-footer-links">
+                                <li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a></li>
+                                <li><a href="<?php echo esc_url( home_url( '/ai-for-project-managers' ) ); ?>">AI for PMs</a></li>
+                                <li><a href="<?php echo esc_url( home_url( '/newsletter' ) ); ?>">Newsletter</a></li>
+                                <li><a href="<?php echo esc_url( home_url( '/about' ) ); ?>">About</a></li>
+                            </ul>
+                        </div>
+                    <?php endif; ?>
+                </div>
+
+                <div class="cs-footer-col">
+                    <?php if ( is_active_sidebar( 'cs-footer-3' ) ) :
+                        dynamic_sidebar( 'cs-footer-3' );
+                    else : ?>
+                        <div class="cs-footer-widget">
+                            <h4 class="cs-footer-heading">Resources</h4>
+                            <ul class="cs-footer-links">
+                                <li><a href="<?php echo esc_url( home_url( '/newsletter/?ref=pm' ) ); ?>">Free PM Prompt Pack</a></li>
+                                <li><a href="<?php echo esc_url( home_url( '/tools' ) ); ?>">Recommended Tools</a></li>
+                                <li><a href="<?php echo esc_url( home_url( '/contact' ) ); ?>">Contact</a></li>
+                            </ul>
+                        </div>
+                    <?php endif; ?>
+                </div>
+
+                <div class="cs-footer-col">
+                    <?php if ( is_active_sidebar( 'cs-footer-4' ) ) :
+                        dynamic_sidebar( 'cs-footer-4' );
+                    else : ?>
+                        <div class="cs-footer-widget">
+                            <h4 class="cs-footer-heading">Legal</h4>
+                            <ul class="cs-footer-links">
+                                <li><a href="<?php echo esc_url( home_url( '/privacy-policy' ) ); ?>">Privacy Policy</a></li>
+                                <li><a href="<?php echo esc_url( home_url( '/affiliate-disclosure' ) ); ?>">Affiliate Disclosure</a></li>
+                                <li><a href="<?php echo esc_url( home_url( '/terms' ) ); ?>">Terms of Use</a></li>
+                            </ul>
+                        </div>
+                    <?php endif; ?>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="cs-footer-disclosure">
+            <div class="cs-footer-inner">
+                <p>ContextSignal.ai is an independent editorial site. Some links on this site are affiliate links &mdash; if you click and make a purchase, we may earn a commission at no extra cost to you. All content is educational and informational. We do not provide professional, financial, or legal advice. See our <a href="<?php echo esc_url( home_url( '/affiliate-disclosure' ) ); ?>">Affiliate Disclosure</a> for details.</p>
+            </div>
+        </div>
+
+        <div class="cs-footer-bottom">
+            <div class="cs-footer-inner">
+                <p class="cs-copyright">&copy; <?php echo esc_html( $year ); ?> ContextSignal.ai &mdash; All rights reserved.</p>
+                <p class="cs-footer-note">Part of the Signal Media Portfolio</p>
+            </div>
+        </div>
+
+    </footer>
+    <?php
+}

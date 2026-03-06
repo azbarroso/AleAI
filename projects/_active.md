@@ -4,7 +4,7 @@ Last updated: 2026-03-05
 
 ## Active
 
-**contextsignal-ai** — Pre-launch; strategy finalized (v2.5.2), Week 1 fundamentals next
+**contextsignal-ai** — Pre-launch; strategy revised to product-first (1 vertical, 2–3 hrs/week). Week 1: build PM prompt pack + Beehiiv setup.
 
 ## Parked
 
