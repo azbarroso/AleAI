@@ -13,7 +13,11 @@ _Actions for Claude to take. Be specific about what you want done._
 ## Open Items
 
 **Week 1 — Launch Foundation (~6 hrs, one focused weekend):**
-- Deploy homepage (`homepage-v6.html`) to WordPress — product-first layout, PM-only, prompt pack as primary CTA
+- ~~Deploy homepage (`homepage-v6.html`) to WordPress~~ — Done, 2026-03-06. Live on contextsignal.ai.
+- Update nav: remove "AI for Sales" and "Tools" links until those pages exist
+- Update footer: deploy revised version from `site/footer.txt`
+- Deploy About page: revised copy in `site/about.md`
+- Set up contact form (WPForms Lite plugin) and deploy `/contact/` page
 - Build 1 PM hub page with clean URL structure
 - Create the PM prompt pack lead magnet — "50 AI Prompt Templates for Project Managers" (Claude generates, Ale reviews)
 - Set up Beehiiv: custom sending domain + DKIM/SPF/DMARC

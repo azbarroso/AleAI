@@ -22,3 +22,12 @@
 - Original strategy doc preserved as reference; project files now reflect revised plan
 - Created `ContextSignal-Strategy-v6.md` — full strategy document reflecting the product-first pivot, replacing v5.2.2 as the active plan
 - Created `homepage-v6.html` — revised homepage reflecting product-first positioning. Key changes: hero leads with prompt pack CTA (not vertical selection), cards section shows "workflows + product" instead of "PM + Sales", differentiators rewritten for prompt utility, single lead magnet card (PM only), newsletter updated to biweekly "The Context Signal". Same CSS design system, minimal style additions.
+
+### 2026-03-06
+
+- Homepage v6 confirmed live on contextsignal.ai
+- Reviewed live site — identified cleanup needed: nav and footer still reference Sales vertical and Tool Directory (pages that don't exist yet)
+- Created revised footer (`site/footer.txt`) — removed Sales/Tool Directory links, renamed "Verticals" to "Resources", added "Free PM Prompt Pack" link, updated about text to PM-specific
+- Created revised About page (`site/about.md`) — narrowed scope to PM only, removed ContextSignal Score and signature frameworks references, highlighted prompt pack and newsletter, reordered revenue model (products first)
+- Organised implementation files into `site/` subfolder
+- Next priority: Beehiiv setup — the entire homepage funnel points to `/newsletter/?ref=pm` which needs a working email capture form
