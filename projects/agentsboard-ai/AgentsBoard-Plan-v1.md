@@ -447,7 +447,7 @@ Each milestone generates its own press cycle.
 
 - [ ] DM 50 agent builders (Base, Solana, NEAR, ElizaOS, AutoGPT communities)
 - [ ] Pitch 2-3 agent framework teams for partnerships
-- [ ] Post on X (personal account + ContextSignal account)
+- [ ] Post on X (personal account + AgentsBoard account)
 - [ ] Post on relevant subreddits
 - [ ] Monitor, fix bugs, respond to feedback
 
@@ -466,15 +466,7 @@ Each milestone generates its own press cycle.
 
 ---
 
-## 15. Relationship to ContextSignal
-
-AgentsBoard.ai is a standalone brand. Separate domain, separate identity. ContextSignal is not referenced on the board.
-
-Cross-promotion between the two projects is possible if both are active, but neither depends on the other. If AgentsBoard fails, ContextSignal is unaffected. If ContextSignal is paused, AgentsBoard continues independently.
-
----
-
-## 16. What Happens at $5M?
+## 15. What Happens at $5M?
 
 Options:
 
@@ -487,7 +479,7 @@ This is a good problem to have. Cross that bridge if we get there.
 
 ---
 
-## 17. Why This Idea Has Asymmetric Upside
+## 16. Why This Idea Has Asymmetric Upside
 
 | Downside | Upside |
 |---|---|
