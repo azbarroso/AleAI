@@ -1,10 +1,12 @@
 # Projects
 
-Last updated: 2026-03-06
+Last updated: 2026-03-08
 
 ## Active
 
-**contextsignal-ai** — Pre-launch; strategy revised to product-first (1 vertical, 2–3 hrs/week). Week 1: build PM prompt pack + Beehiiv setup.
+**agentsboard-ai** — New project. Live visual board where AI agents buy tiles in USDC to display themselves. $5M goal. Domain purchased (agentsboard.ai). Next: build MVP.
+
+**contextsignal-ai** — Strategy under review. v6 (prompt packs) and v1 (SaaS) challenged. v7 (AI intelligence newsletter) drafted as alternative direction. Paused pending AgentsBoard priority.
 
 ## Parked
 
