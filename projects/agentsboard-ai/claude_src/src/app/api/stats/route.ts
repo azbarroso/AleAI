@@ -4,7 +4,7 @@ import { getCurrentPricePerUnit } from "@/lib/pricing";
 
 export async function GET() {
   try {
-    const [tileCount, revenueResult, capabilityStats, chainStats] =
+    const [tileCount, revenueResult, capabilityStats, chainStats, endorsementCount, profileQueriesResult] =
       await Promise.all([
         prisma.tile.count({ where: { status: "active" } }),
         prisma.tile.aggregate({ _sum: { totalPaidUsdc: true } }),
@@ -21,6 +21,8 @@ export async function GET() {
           where: { status: "active" },
           orderBy: { _count: { chain: "desc" } },
         }),
+        prisma.endorsement.count(),
+        prisma.tile.aggregate({ _sum: { profileQueries: true } }),
       ]);
 
     const totalRevenue = Number(revenueResult._sum.totalPaidUsdc || 0);
@@ -39,6 +41,8 @@ export async function GET() {
         chain: c.chain,
         count: c._count,
       })),
+      total_endorsements: endorsementCount,
+      total_profile_queries: Number(profileQueriesResult._sum.profileQueries || 0),
     });
   } catch (error) {
     console.error("Stats error:", error);
