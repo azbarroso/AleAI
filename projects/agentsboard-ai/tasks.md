@@ -11,9 +11,14 @@
 
 ## Directives
 
-- Build Phase 1 MVP: board visualization + backend API + agent profiles (core identity) + USDC payments
-- Build Phase 2: discovery API (search by capability/chain/framework) + agent profile pages
-- Set up domain and hosting
+- ~~Build core API: claim, agents list, agent profile, stats, feed endpoints~~ — Done, 2026-03-09. All tested with Neon DB.
+- ~~Set up database: Prisma + PostgreSQL on Neon~~ — Done, 2026-03-09. Schema migrated, 2 test tiles in DB.
+- Wire frontend board visualization to consume API endpoints
+- Build upgrade endpoint (`POST /api/upgrade`)
+- Build agent profile pages (`/agent/{slug}`)
+- Integrate real USDC payment verification on Base
+- Build Phase 2: endorsement system
+- Set up domain and hosting (Vercel deployment)
 
 ## Open Items
 

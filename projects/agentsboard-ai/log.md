@@ -1,5 +1,24 @@
 # Log
 
+### 2026-03-09
+
+**Phase 1 API — built and tested**
+
+Set up the project skeleton and core API:
+- Created Next.js + TypeScript project under `claude_src/`
+- Prisma 7 with PostgreSQL (Neon free tier, serverless)
+- Database schema: tiles, transactions, endorsements — migrated to Neon
+- 5 API endpoints built and tested end-to-end:
+  - `POST /api/claim` — register an agent tile (validates fields, calculates size from spend, assigns grid position, records transaction)
+  - `GET /api/agents` — discovery endpoint with filters (capability, chain, framework), paginated, ranked by spend
+  - `GET /api/agents/{id}` — full agent profile by UUID or slug, includes tx history and endorsements, increments profile query counter
+  - `GET /api/stats` — board stats (total revenue, tile count, current price per unit, breakdowns by capability and chain)
+  - `GET /api/feed` — latest transactions feed
+- Supporting modules: pricing logic (dynamic tiers + tile size calc), slug generation
+- Tested with 2 sample tiles ($50 ResearchBot-7 on Base, $200 TradeExecutor on Solana) — all endpoints returning correct data
+- Payment verification is stubbed (trusts tx_hash) — real on-chain verification comes later
+- Next: wire the frontend board visualization to consume these APIs
+
 ### 2026-03-08
 
 **Value proposition pivot — from vanity tiles to agent directory infrastructure**

@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Tile {
+  id             String   @id @default(uuid())
+  agentName      String   @map("agent_name") @db.VarChar(100)
+  slug           String   @unique @db.VarChar(120)
+  description    String   @db.VarChar(280)
+  url            String   @db.VarChar(500)
+  avatarUrl      String?  @map("avatar_url") @db.VarChar(500)
+  walletAddress  String   @map("wallet_address") @db.VarChar(42)
+  chain          String   @db.VarChar(20)
+  framework      String?  @db.VarChar(50)
+  capabilities   String[] @default([])
+  apiEndpoint    String?  @map("api_endpoint") @db.VarChar(500)
+  protocols      String[] @default([])
+  inputTypes     String[] @default([]) @map("input_types")
+  outputTypes    String[] @default([]) @map("output_types")
+  totalPaidUsdc  Decimal  @default(0) @map("total_paid_usdc") @db.Decimal(12, 2)
+  tileSize       String   @default("1x1") @map("tile_size") @db.VarChar(10)
+  positionX      Int      @map("position_x")
+  positionY      Int      @map("position_y")
+  verified       Boolean  @default(false)
+  profileQueries Int      @default(0) @map("profile_queries")
+  status         String   @default("active") @db.VarChar(20)
+  createdAt      DateTime @default(now()) @map("created_at")
+  lastActiveAt   DateTime @default(now()) @map("last_active_at")
+
+  transactions         Transaction[]
+  endorsementsGiven    Endorsement[] @relation("endorser")
+  endorsementsReceived Endorsement[] @relation("target")
+
+  @@map("tiles")
+}
+
+model Transaction {
+  id         String   @id @default(uuid())
+  tileId     String   @map("tile_id")
+  amountUsdc Decimal  @map("amount_usdc") @db.Decimal(12, 2)
+  txHash     String   @map("tx_hash") @db.VarChar(66)
+  type       String   @db.VarChar(20) // "claim", "upgrade", "endorse", "verify"
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  tile Tile @relation(fields: [tileId], references: [id])
+
+  @@map("transactions")
+}
+
+model Endorsement {
+  id         String   @id @default(uuid())
+  endorserId String   @map("endorser_id")
+  targetId   String   @map("target_id")
+  amountUsdc Decimal  @map("amount_usdc") @db.Decimal(12, 2)
+  message    String   @db.VarChar(280)
+  txHash     String   @map("tx_hash") @db.VarChar(66)
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  endorser Tile @relation("endorser", fields: [endorserId], references: [id])
+  target   Tile @relation("target", fields: [targetId], references: [id])
+
+  @@map("endorsements")
+}
