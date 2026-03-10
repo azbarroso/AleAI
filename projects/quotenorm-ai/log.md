@@ -27,10 +27,44 @@
 
 ### 2026-03-09 — Scope Tightening
 
-- **Decision: gated execution plan.** Phase 1 is lean — /normalize with text + PDF + URL input, Stripe billing, Python SDK, auto-generated docs. Everything else is gated on usage signal.
-- **Phase 1 scope (weeks 1-5):** Schema validation, extraction pipeline, POST /v1/normalize (text + PDF + URL), Stripe metered billing, API keys, Python SDK, deploy.
-- **Deliberately NOT in Phase 1:** TypeScript SDK, /compare, /validate, USDC payments, framework integrations, landing page, vendor fingerprinting.
+- **Decision: gated execution plan.** Phase 1 is lean — /normalize with text + PDF + URL input, Stripe billing, Python + TypeScript SDKs, auto-generated docs. Everything else is gated on usage signal.
+- **Phase 1 scope (weeks 1-5):** Schema validation, extraction pipeline, POST /v1/normalize (text + PDF + URL), Stripe metered billing, API keys, Python + TypeScript SDKs, deploy.
+- **Deliberately NOT in Phase 1:** /compare, /validate, USDC payments, framework integrations, landing page, vendor fingerprinting.
 - **Month 4 decision gate:** If < 5 active free-tier users → park the project. If signal → Phase 2 adds distribution (/compare, MCP, AgentsBoard, USDC).
 - **Phase 3 is demand-driven:** No pre-planned feature list. Build what paying customers actually ask for.
 - **Committed effort reduced:** ~52 hrs (Phases 0-2) vs original ~109 hrs. Phase 3 is unbudgeted.
 - **Rationale:** Claude Code makes building fast, but the risk isn't build time — it's investing in features before validating the core. The only question that matters: is QuoteNorm meaningfully better than prompting Claude directly?
+
+### 2026-03-09 — Tech Stack Decision
+
+- **Decision: TypeScript + Next.js** (shared stack with AgentsBoard)
+- Evaluated Python/FastAPI vs TypeScript/Next.js. Python has stronger LLM ecosystem and PDF parsing, but TS wins on:
+  - Shared infra with AgentsBoard: Prisma, Neon, Vercel deploy, and USDC payment code reuse in Phase 2
+  - One stack to maintain across projects (solo developer)
+  - TypeScript SDK becomes trivial (shared types)
+- PDF parsing gap is manageable: most SaaS inputs are pricing page URLs (cheerio), not complex PDFs. `pdf-parse` handles 80%+ of PDF cases.
+- **Escape hatch:** If Phase 0 testing reveals PDF extraction is a critical bottleneck, pivot to Python before Phase 1 (~14 hrs invested at that point).
+- Also decided: TypeScript SDK ships in Phase 1 alongside Python SDK (agent builder audience is heavily TS).
+
+### 2026-03-09 — MCP-First Distribution
+
+- **Key insight:** A developer can DIY quote normalization with a Claude prompt in 20 minutes. The strongest value prop isn't for developers manually integrating — it's for agents consuming this as a tool. Agents don't think "I could DIY this." They need a tool that does one thing reliably.
+- **Decision: MCP tool moves to Phase 1 as primary distribution.** REST API becomes secondary for power users who outgrow MCP.
+- MCP registries (Claude, Cursor, Windsurf) are the natural discovery channel — no signup page needed
+- AgentsBoard listing stays in Phase 2 (gated)
+- This reframes the product: QuoteNorm is an MCP tool first that also has an API, not an API that also has an MCP tool.
+
+### 2026-03-09 — MCP Architecture Details
+
+- **Architecture decided:** Shared `src/lib/extractor.ts` called by both MCP server and REST API. No code duplication.
+- **MCP server: local-first.** Published as `@quotenorm/mcp-server` on npm. Runs locally via stdio, calls hosted QuoteNorm REST API under the hood. Stdio is universally supported across MCP clients.
+- **Auth: API key required.** No anonymous MCP usage. User signs up → gets API key → adds to MCP config. Simpler than anonymous client ID tracking, and usage is tracked server-side via the API.
+- **Tech stack additions:** `@modelcontextprotocol/sdk` for MCP server. Three npm packages total: `@quotenorm/mcp-server`, `@quotenorm/sdk` (TS), `quotenorm` (Python/PyPI).
+- **Upgrade path unified:** Both MCP and API users hit the same 429 limit → same Stripe upgrade flow. MCP server surfaces the error message.
+
+### 2026-03-09 — Customer Targeting Update
+
+- **Key change:** "Primary: Agent Builders (Developers)" was too narrow for MCP-first distribution. Updated to "Primary: Developers Using AI Tools (MCP Users)."
+- **Rationale:** With MCP-first, the user doesn't need to be building an agent. Any developer using Claude/Cursor/Windsurf who encounters pricing data can use QuoteNorm as an MCP tool. The addressable pool is much larger than "a few hundred developers building procurement agents."
+- **Files updated:** Business plan (Section 1, Section 4 customer targeting, GTM Phase 1 signup contradiction, Phase 1 title), overview.md (goal, strategy, context, decisions table), tasks.md (pricing model question struck through).
+- **GTM fix:** "No signup required" contradicted the API key auth model. Fixed to "API key required (user signs up → gets key → adds to MCP config)."
