@@ -1,7 +1,7 @@
 # QuoteNorm.ai — Business Plan v1
 
-_Agent-only API for structured commercial data._
-_Draft: 2026-03-09_
+_Developer-first, agent-ready API for structured commercial data._
+_Draft: 2026-03-09 | Revised: 2026-03-09_
 
 ---
 
@@ -67,27 +67,37 @@ The AI agent ecosystem is moving from "agents that answer questions" to "agents 
 
 ## 4. Target Customers
 
-### Primary: Agent Builders
+### Strategy: Developer-First, Agent-Ready
 
-Developers building AI agents that handle procurement, vendor evaluation, or purchasing workflows. They need reliable structured data to feed into their decision logic.
+The business targets developers NOW (they have credit cards, they exist today) while designing the API and payment layer so autonomous agents can consume it directly when the infrastructure matures.
+
+**The core tension:** An "agent-only API" and a "developer GTM" target two different customers with different discovery, payment, and adoption patterns. Resolution: build for developers, design for agents.
+
+### Primary: Agent Builders (Developers)
+
+Developers building AI agents that handle procurement, vendor evaluation, or purchasing workflows. They need reliable structured data to feed into their decision logic. They pay with Stripe, integrate via API keys, and make purchasing decisions themselves.
 
 **Examples:**
 - A procurement agent that compares cloud hosting vendors
 - A SaaS management agent that evaluates renewal offers
 - An IT purchasing agent that processes vendor quotes from email
 
-### Secondary: Agent Platforms
+**Honest assessment:** The realistic addressable pool in 2026 is a few hundred developers worldwide actively building agents that process commercial quotes. This is a niche — growth will be steady, not explosive.
 
-Platforms that host or orchestrate multiple agents and need commercial data capabilities as a shared service.
+### Secondary: Autonomous Agents (Emerging)
 
-**Examples:**
-- Agent marketplaces (like AgentsBoard) where agents need to evaluate services
-- Enterprise AI platforms adding procurement workflows
-- Vertical SaaS adding AI-powered vendor management
+Agents that discover QuoteNorm via AgentsBoard, MCP registries, or agent framework tool lists, call the API, and pay per-call using USDC on Base L2. No human signs up — the agent has a wallet and a budget.
 
-### Tertiary: Traditional Software
+**Why not primary (yet):** Agents don't autonomously purchase services at scale in March 2026. The infrastructure is nascent — very few agents have wallets, budgets, or purchasing autonomy. Discovery is unsolved. This market is 12-24 months from critical mass.
 
-B2B software companies adding AI features to existing procurement or vendor management tools.
+### Tertiary: Agent Platforms & Traditional Software
+
+Platforms hosting/orchestrating multiple agents, or B2B software companies adding AI-powered vendor management. Longer-term opportunity.
+
+### Decision Signal
+- If 80%+ usage comes from developers → stay developer-focused
+- If agent-native usage picks up (even small amounts) → signal the wave is coming, invest more there
+- If neither shows traction by month 4 → park the project
 
 ## 5. Product
 
@@ -186,15 +196,18 @@ POST /v1/validate
 - Revenue scales directly with agent activity
 - Easy to measure and bill
 
-### Revenue Projections (Conservative)
+### Revenue Projections (Realistic)
 
-| Metric | Month 3 | Month 6 | Month 12 | Month 24 |
-|--------|---------|---------|----------|----------|
-| API customers | 10 | 50 | 200 | 800 |
-| Monthly API calls | 5K | 50K | 500K | 5M |
-| Avg revenue/call | $0.10 | $0.10 | $0.08 | $0.06 |
-| **MRR** | **$500** | **$5K** | **$40K** | **$300K** |
-| **ARR** | **$6K** | **$60K** | **$480K** | **$3.6M** |
+The original projections were optimistic for a niche side project. Revised to reflect realistic developer adoption pace:
+
+| Metric | Month 3 | Month 6 | Month 12 |
+|--------|---------|---------|----------|
+| API customers | 3-5 | 15-25 | 50-100 |
+| Monthly API calls | 1K | 10K | 100K |
+| Avg revenue/call | $0.10 | $0.10 | $0.08 |
+| **MRR** | **$100-200** | **$1-2K** | **$8-15K** |
+
+**Why the revision:** Finding 10 paying developers at month 3 requires a narrow funnel — developers who are (a) building procurement agents, (b) processing enough quotes to need an API, (c) willing to pay rather than DIY with Claude/GPT. CAC $50-100 is also unrealistic for a niche B2B developer API — content marketing in niche communities has high effort-per-lead. This is still a good outcome for ~100 hours invested, but don't plan around $40K MRR at month 12.
 
 Assumptions: blended rate decreases as volume discounts kick in. Customer growth driven by agent ecosystem growth and word-of-mouth in developer communities.
 
@@ -240,9 +253,10 @@ Assumptions: blended rate decreases as volume discounts kick in. Customer growth
 - **Community** — Post in agent builder communities (LangChain Discord, AI Twitter, Reddit r/LangChain, r/AutoGPT)
 - **Partnerships** — List on agent framework plugin registries (LangChain tools, CrewAI tools)
 
-### Phase 2: Platform Integrations (Months 6-12)
+### Phase 2: Platform Integrations + Agent-Native Path (Months 6-12)
 
-- **Agent marketplace presence** — AgentsBoard, other emerging platforms
+- **USDC payment path** — Pre-funded accounts on Base L2 for agent-native consumption
+- **Agent marketplace presence** — AgentsBoard listing, other emerging platforms
 - **Framework integrations** — Official LangChain tool, CrewAI tool, AutoGen plugin
 - **MCP server** — Publish as an MCP tool for Claude/Cursor/Windsurf users
 - **Case studies** — Publish 3-5 case studies of agents using QuoteNorm in production
@@ -276,7 +290,60 @@ Assumptions: blended rate decreases as volume discounts kick in. Customer growth
 | **Cache** | Redis or Upstash | Cache normalized results for repeated vendors |
 | **Auth** | API keys + usage tracking | Simple, standard for developer APIs |
 | **Hosting** | Vercel or Railway | Fast deployment, auto-scaling |
-| **Billing** | Stripe metered billing | Usage-based billing built-in |
+| **Billing (primary)** | Stripe metered billing | Usage-based billing for developers |
+| **Billing (secondary)** | USDC on Base L2 (pre-funded accounts) | Agent-native payment path |
+
+## 9b. Stablecoin Payment Design (Agent-Native Path)
+
+### Why USDC on Base L2
+
+Autonomous agents need a payment method that doesn't require human intervention per transaction. USDC on Base L2 provides: low gas costs (~$0.001/tx), fast finality (~2s), and a stablecoin agents can hold without currency risk.
+
+### Pre-Funded Account Model (Recommended)
+
+Per-call on-chain verification adds latency and gas costs per request. Instead, use a pre-funded account:
+
+```
+Agent Payment Flow:
+1. Agent (or its human operator) deposits USDC to a QuoteNorm-managed address on Base L2
+2. QuoteNorm credits the deposit to an internal balance tied to an API credential
+3. Agent calls POST /v1/normalize with the API credential
+4. QuoteNorm deducts from internal balance (off-chain, instant)
+5. When balance is low, agent or operator tops up with another USDC deposit
+```
+
+### Implementation Details
+
+| Component | Design |
+|-----------|--------|
+| **Deposit address** | Per-account managed address on Base L2 (or shared address with memo/reference ID) |
+| **Balance tracking** | Internal database — deposits increase balance, API calls deduct |
+| **Deposit detection** | Listen for USDC transfer events on Base L2 via webhook or polling |
+| **API credential** | Same API key format as Stripe path — agent doesn't need to know which payment method backs it |
+| **Minimum deposit** | $5 USDC (~50 normalizations at $0.10/call) |
+| **Withdrawal** | Support withdrawals of remaining balance to original deposit address |
+
+### Why Pre-Funded Over Per-Call
+
+- **No latency:** Balance check is a DB lookup, not an on-chain verification
+- **No gas per API call:** Only gas is on deposit/withdrawal, not every request
+- **Simpler agent integration:** Agent just uses an API key like any other API
+- **Reuse pattern:** Mirrors how exchanges and prepaid API services work
+
+### Synergy with AgentsBoard
+
+AgentsBoard is building USDC payment infrastructure for agent-to-agent commerce. QuoteNorm should reuse:
+- Wallet management patterns
+- Base L2 USDC contract integration
+- Deposit detection infrastructure
+
+### GTM Timeline for USDC
+
+- **Weeks 1-5:** Stripe-only (developer focus)
+- **Weeks 6-9:** Add USDC pre-funded accounts, list on AgentsBoard, publish as MCP tool
+- **Week 10+:** Monitor developer vs agent payment split, double down on winner
+
+---
 
 ## 10. Risks and Mitigations
 
@@ -293,22 +360,28 @@ Assumptions: blended rate decreases as volume discounts kick in. Customer growth
 
 ### Month 3
 - MVP API live with /normalize endpoint
-- 10+ developers using free tier
+- 5+ developers using free tier
 - Schema validated against 50+ real SaaS quotes
-- First paying customer
+- First paying customer (stretch goal)
+
+### Month 4 — Decision Gate
+- If neither developer nor agent usage shows traction → park the project
+- If any traction signal → continue investing
 
 ### Month 6
 - /compare endpoint live
-- 50+ API customers, 5+ paying
-- $5K MRR
+- 15-25 API customers, 3-5 paying
+- $1-2K MRR
 - Listed in 2+ agent framework plugin registries
+- USDC payment path live
 
 ### Month 12
 - /validate endpoint live
-- 200+ API customers, 50+ paying
-- $40K MRR
+- 50-100 API customers, 15-30 paying
+- $8-15K MRR
 - 3+ case studies published
 - Vendor fingerprinting covering top 50 SaaS vendors
+- Clear signal on developer vs agent-native usage split
 
 ## 12. What Makes This a Good Business
 

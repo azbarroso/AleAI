@@ -9,3 +9,18 @@
 - Business model: usage-based (per normalization, comparison, validation call)
 - Created QuoteNorm-BusinessPlan-v1.md — covers problem, solution, market sizing, product schema, pricing, competitive landscape, GTM, tech stack, risks, and success metrics
 - Added Section 14: Execution Plan — 5 phases over ~22 weeks (Foundation → MVP API → Quality & Distribution → Compare & Monetize → Validate & Scale), with week-by-week deliverables, time budget (~109 hrs total), and a concrete first session plan
+
+### 2026-03-09 — Strategic Review
+
+- **Core finding:** Business plan had a tension — "agent-only API" positioning but developer-focused GTM. These are different customers with different discovery, payment, and adoption patterns.
+- **Decision: Developer-first, agent-ready.** Target developers now (they exist, they have credit cards), but design API and payment layer so agents can consume directly when infra matures.
+- **Dual payment layer added:**
+  - Primary: Stripe metered billing (developers)
+  - Secondary: USDC pre-funded accounts on Base L2 (agents) — deposit USDC, get API credential tied to balance, each call deducts
+- **Revenue projections revised downward:** Original ($40K MRR at month 12) was optimistic for a niche side project. Realistic: $8-15K MRR at month 12.
+  - Key challenge: narrow funnel (developers building procurement agents AND processing enough quotes AND willing to pay vs. DIY with Claude)
+  - CAC $50-100 unrealistic for niche B2B developer API
+- **Month 4 decision gate added:** If neither developer nor agent usage shows traction, park the project.
+- **Stablecoin payment section (9b) added to business plan** — full pre-funded account architecture, Base L2 USDC integration design, synergy with AgentsBoard USDC patterns.
+- **GTM revised:** Weeks 1-5 developer-only (Stripe), weeks 6-9 add USDC + AgentsBoard listing + MCP tool, week 10+ follow the signal.
+- Updated overview.md, tasks.md, business plan, and _active.md.
