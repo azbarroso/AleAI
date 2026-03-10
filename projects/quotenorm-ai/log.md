@@ -68,3 +68,21 @@
 - **Rationale:** With MCP-first, the user doesn't need to be building an agent. Any developer using Claude/Cursor/Windsurf who encounters pricing data can use QuoteNorm as an MCP tool. The addressable pool is much larger than "a few hundred developers building procurement agents."
 - **Files updated:** Business plan (Section 1, Section 4 customer targeting, GTM Phase 1 signup contradiction, Phase 1 title), overview.md (goal, strategy, context, decisions table), tasks.md (pricing model question struck through).
 - **GTM fix:** "No signup required" contradicted the API key auth model. Fixed to "API key required (user signs up → gets key → adds to MCP config)."
+
+### 2026-03-09 — Minimal Web Dashboard Decision
+
+- **Decision:** Add a minimal web dashboard (`quotenorm.ai/dashboard`) to Phase 1 — signup (email → instant API key), key management, usage stats, Stripe billing portal.
+- **Rationale:** MCP-first requires an API key, so users need somewhere to sign up. Not a landing page — just the auth/billing UI. Needed for Stripe anyway.
+- **Added to Phase 1 deliverables** (week 4) and updated all user flow references from `api.quotenorm.ai/signup` to `quotenorm.ai/dashboard`.
+
+### 2026-03-10 — Business & Legal Setup
+
+- **Added Section 14 to business plan:** Business & Legal Setup — LLC formation, accounts, legal pages, data handling policy, taxes.
+- **Key decisions:**
+  - **AleLabs LLC** as parent entity for QuoteNorm + AgentsBoard (`alelabs.io`). Form before Stripe billing (Phase 1 week 3). Home state, not Delaware.
+  - Register domain and set up email forwarding in Phase 0.
+  - Stripe account created under LLC (not personal).
+  - Privacy policy + ToS generated (free tool), customized for data handling and accuracy disclaimers. Must disclose Claude API usage.
+  - Data retention: process and delete raw input (24-48hr debugging window). Store only normalized output and metadata.
+  - No PII commitment — terms prohibit sending PII.
+- **tasks.md updated** with "Pre-Phase 1: Business Setup" checklist.

@@ -1,7 +1,7 @@
 # QuoteNorm.ai — Business Plan v1
 
 _MCP tool + API for structured commercial data. Developer-first billing, agent-ready distribution._
-_Draft: 2026-03-09 | Revised: 2026-03-09_
+_Draft: 2026-03-09 | Revised: 2026-03-10_
 
 ---
 
@@ -249,8 +249,9 @@ Assumptions: blended rate decreases as volume discounts kick in. Customer growth
 
 ### Phase 1: MVP + MCP-First Distribution (Months 1-3)
 
-- **MCP tool** — Primary distribution channel. Agents and developers discover QuoteNorm as an MCP tool in registries, Claude/Cursor/Windsurf. API key required (user signs up → gets key → adds to MCP config).
+- **MCP tool** — Primary distribution channel. Agents and developers discover QuoteNorm as an MCP tool in registries, Claude/Cursor/Windsurf. API key required (sign up at minimal dashboard → get key → add to MCP config).
 - **API** — Same endpoint, also available as a standard REST API for power users who outgrow MCP
+- **Minimal web dashboard** (`quotenorm.ai/dashboard`) — signup (email → instant API key, no credit card), key management, usage stats, Stripe billing portal. Not a landing page — just the auth/billing UI needed to support MCP and API users.
 - **Free tier** — 50 calls/month, no credit card required
 - **Developer docs** — OpenAPI spec (via next-swagger-doc or hand-written), Python + TypeScript SDKs
 - **Stripe billing** — metered usage, credit card
@@ -330,7 +331,7 @@ Assumptions: blended rate decreases as volume discounts kick in. Customer growth
 
 **MCP auth model:**
 - API key required in MCP server config (no anonymous usage)
-- User signs up at `api.quotenorm.ai/signup`, gets API key, adds to MCP config
+- User signs up at `quotenorm.ai/dashboard`, gets API key, adds to MCP config
 - Free tier (50 calls/month) still applies — tracked server-side via API key
 - This adds one signup step vs truly zero-friction, but avoids the complexity of anonymous client ID tracking
 
@@ -442,7 +443,45 @@ AgentsBoard is building USDC payment infrastructure for agent-to-agent commerce.
 - The normalized schema doesn't generalize well across verticals (product risk)
 - Can't get unit economics right — LLM costs eat margins (cost risk)
 
-## 14. Execution Plan
+## 14. Business & Legal Setup
+
+### Legal Entity
+**AleLabs LLC** — parent entity for QuoteNorm and AgentsBoard (and future projects). Single-member LLC, formed before turning on Stripe billing (Phase 1 week 3). Provides liability protection (users send commercial documents, extraction accuracy isn't guaranteed) and clean tax separation. Home state is simpler than Delaware for a side project. Cost: ~$100-500 depending on state. Domain: `alelabs.io` (already registered).
+
+QuoteNorm and AgentsBoard operate as product lines under AleLabs LLC — no separate entities needed. One Stripe account (separate products per project), one bank account (optionally sub-accounts per project via Mercury).
+
+### Accounts & Infrastructure
+| When | Action | Cost |
+|------|--------|------|
+| Phase 0 | Register `quotenorm.ai` domain | ~$12/yr |
+| Phase 0 | Set up email forwarding (`support@quotenorm.ai` → personal) | Free |
+| Phase 1 week 3 | Form AleLabs LLC (home state) | $100-500 |
+| Phase 1 week 3 | Get EIN (IRS online) | Free |
+| Phase 1 week 3 | Open business bank account (Mercury or similar) | Free |
+| Phase 1 week 4 | Create Stripe account under AleLabs LLC | Free |
+
+### Legal Pages (Phase 1 week 4)
+- **Privacy Policy** — Required before collecting emails at signup. Must disclose: data collected (email, usage logs), third-party processing (Claude API — Anthropic doesn't train on API inputs), data retention policy. Generate with free tool (Termly, iubenda), customize data handling sections.
+- **Terms of Service** — Required before billing. Key clauses: no guarantees on extraction accuracy, usage limits, data handling (users send commercial documents), rate limits, payment terms.
+- **Acceptable Use Policy** — What users can't send (PII, classified documents, etc.).
+
+### Data Handling Policy
+- **Process and delete** — Don't store raw input documents beyond a short debugging window (24-48 hrs). Store only normalized output and metadata (input type, latency, token cost).
+- **Claude API disclosure** — User documents are sent to Anthropic's API for extraction. Anthropic's API terms: no training on API inputs. Disclose this in privacy policy.
+- **No PII commitment** — QuoteNorm processes commercial/pricing data, not personal data. Terms should prohibit sending PII.
+
+### Taxes
+- All revenue is pass-through income (single-member LLC → personal return).
+- Sales tax: below thresholds at <$5K MRR. Revisit at $10K+ ARR. Stripe Tax ($0.50/txn) handles EU VAT if needed.
+- Keep clean records from day one (Stripe does this automatically).
+
+### What You Don't Need Yet
+- Business insurance (revisit if enterprise customers appear)
+- Trademark registration (revisit if brand becomes valuable)
+- Lawyer-reviewed terms (revisit if revenue exceeds $50K ARR)
+- Separate accounting software (Stripe reports + bank statements are enough)
+
+## 15. Execution Plan
 
 ### Phase 0 — Foundation (Week 1-2)
 
@@ -475,6 +514,7 @@ AgentsBoard is building USDC payment infrastructure for agent-to-agent commerce.
 | 3 | Input handling: text passthrough, PDF extraction (pdf-parse), URL fetch + HTML-to-text (cheerio or Playwright) | Text + PDF + URL input support |
 | 3 | Response format: normalized quote JSON + confidence + missing fields + warnings | Stable response schema |
 | 3 | Error handling: invalid input, extraction failures, timeout handling | Error response format |
+| 4 | Minimal web dashboard: signup (email → API key), key management, usage stats | `quotenorm.ai/dashboard` live |
 | 4 | API key auth: generate keys, validate on requests, track usage | Key validation middleware |
 | 4 | Usage tracking: log every call (customer, input type, latency, token cost) | Usage table, logging middleware |
 | 4 | Rate limiting: free tier = 50/month, paid = based on plan | Rate limit middleware |
@@ -496,7 +536,7 @@ How users find it:
 - Agent frameworks and AI coding tools (Claude, Cursor, Windsurf) support MCP tools natively
 
 First use (< 5 minutes):
-1. Developer signs up at `api.quotenorm.ai/signup` → gets API key (free, no credit card)
+1. Developer signs up at `quotenorm.ai/dashboard` → gets API key instantly (email only, no credit card)
 2. Installs MCP server: `npx @quotenorm/mcp-server --api-key qn_...` or adds to MCP config:
    ```json
    {
@@ -523,7 +563,7 @@ How developers find it:
 
 Signup → First API call (< 5 minutes):
 1. Developer visits `api.quotenorm.ai/docs` — sees OpenAPI docs with live "Try it" functionality
-2. Signs up at `api.quotenorm.ai/signup` — email + password, no credit card required
+2. Signs up at `quotenorm.ai/dashboard` — email only, no credit card required
 3. Gets an API key immediately — displayed on screen + sent to email
 4. Makes first call — either via docs "Try it" button, curl, or SDK:
    ```bash
@@ -547,12 +587,12 @@ Signup → First API call (< 5 minutes):
 **Upgrade → Paying customer:**
 
 Both MCP and API users already have an API key (required at signup). When they hit the 50-call free tier limit:
-1. API returns `429` with message: "Free tier limit reached. Upgrade at api.quotenorm.ai/billing"
+1. API returns `429` with message: "Free tier limit reached. Upgrade at quotenorm.ai/dashboard"
 2. MCP server surfaces this error to the agent/developer
-3. Developer visits `api.quotenorm.ai/billing` — Stripe Checkout session
+3. Developer visits `quotenorm.ai/dashboard` → billing tab → Stripe Checkout session
 4. Enters credit card → switches to pay-as-you-go ($0.10/normalize)
 5. Stripe metered billing: usage tracked per API call, invoiced monthly
-6. Usage visible via `GET /v1/usage` endpoint (programmatic) or Stripe customer portal (UI)
+6. Usage visible via `GET /v1/usage` endpoint (programmatic) or dashboard (UI)
 
 **What's deliberately NOT in Phase 1:** /compare, /validate, USDC payments, AgentsBoard listing, framework integrations, landing page. These are gated on usage signal.
 

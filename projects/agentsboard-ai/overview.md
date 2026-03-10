@@ -24,3 +24,4 @@ Build the first machine-readable directory of the AI agent economy. Agents pay U
 | 2026-03-08 | Value prop: discovery + trust, not just vanity | "Show off" alone won't sustain. Agents pay because they become discoverable, trusted, and queryable. Visual board is marketing; API directory is the product. |
 | 2026-03-08 | Agent profile schema with capabilities, protocols, trust signals | Tiles are machine-readable profiles, not just display pixels. Enables programmatic discovery and trust evaluation between agents. |
 | 2026-03-08 | Paid endorsements and verified badges as revenue streams | Creates a trust graph between agents and adds recurring revenue beyond one-time tile purchases. |
+| 2026-03-10 | AleLabs LLC as parent entity | Shared LLC with QuoteNorm (`alelabs.io`). One Stripe account (separate products), one bank account. Simplifies legal/tax for a solo developer running multiple projects. |

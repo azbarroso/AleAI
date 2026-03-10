@@ -69,3 +69,6 @@ Usage-based pricing: developers or agents pay per API call.
 | 2026-03-09 | Gated execution plan | Phase 1: /normalize + text/PDF/URL + Stripe + Python & TS SDKs. Phase 2+ gated on usage signal at month 4. Committed effort ~52 hrs, not 109. |
 | 2026-03-09 | TypeScript + Next.js tech stack | Shared stack with AgentsBoard (Prisma, Neon, Vercel), reuse USDC payment code in Phase 2. PDF parsing gap is narrow (most inputs are URLs). If Phase 0 reveals PDF extraction is a bottleneck, pivot to Python before Phase 1. |
 | 2026-03-09 | MCP-first distribution | MCP tool is primary distribution (Phase 1), REST API is secondary for power users. Local-first MCP server (`@quotenorm/mcp-server` on npm) calls hosted API. API key required (no anonymous usage). |
+| 2026-03-09 | Minimal web dashboard in Phase 1 | `quotenorm.ai/dashboard` — signup (email → API key), key management, usage stats, Stripe billing. Not a landing page, just the auth/billing UI needed for MCP and API users. |
+| 2026-03-10 | AleLabs LLC as parent entity | AleLabs LLC (home state, `alelabs.io`) holds QuoteNorm + AgentsBoard as product lines. Form before Stripe goes live. One Stripe account, one bank account. |
+| 2026-03-10 | Process-and-delete data policy | Don't store raw input docs — process, return result, delete within 24-48hrs. Disclose Claude API usage in privacy policy. |
