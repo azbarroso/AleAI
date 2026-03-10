@@ -65,3 +65,4 @@ Usage-based pricing: developers or agents pay per API call.
 | 2026-03-09 | Developer-first, agent-ready strategy | Developers exist today with credit cards; agent-native commerce is 12-24mo from critical mass. Build for devs now, support agents when ready. |
 | 2026-03-09 | Dual payment: Stripe + USDC (Base L2) | Stripe for developers (primary), USDC pre-funded accounts for agents (secondary). Low incremental effort, positions for agentic commerce wave. |
 | 2026-03-09 | Revised revenue projections downward | Original projections ($40K MRR at month 12) were optimistic. Realistic: $8-15K MRR at month 12 for a side project. |
+| 2026-03-09 | Gated execution plan | Phase 1: /normalize + text/PDF/URL + Stripe + Python SDK. Phase 2+ gated on usage signal at month 4. Committed effort ~52 hrs, not 109. |

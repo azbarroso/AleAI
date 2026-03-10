@@ -24,3 +24,13 @@
 - **Stablecoin payment section (9b) added to business plan** — full pre-funded account architecture, Base L2 USDC integration design, synergy with AgentsBoard USDC patterns.
 - **GTM revised:** Weeks 1-5 developer-only (Stripe), weeks 6-9 add USDC + AgentsBoard listing + MCP tool, week 10+ follow the signal.
 - Updated overview.md, tasks.md, business plan, and _active.md.
+
+### 2026-03-09 — Scope Tightening
+
+- **Decision: gated execution plan.** Phase 1 is lean — /normalize with text + PDF + URL input, Stripe billing, Python SDK, auto-generated docs. Everything else is gated on usage signal.
+- **Phase 1 scope (weeks 1-5):** Schema validation, extraction pipeline, POST /v1/normalize (text + PDF + URL), Stripe metered billing, API keys, Python SDK, deploy.
+- **Deliberately NOT in Phase 1:** TypeScript SDK, /compare, /validate, USDC payments, framework integrations, landing page, vendor fingerprinting.
+- **Month 4 decision gate:** If < 5 active free-tier users → park the project. If signal → Phase 2 adds distribution (/compare, MCP, AgentsBoard, USDC).
+- **Phase 3 is demand-driven:** No pre-planned feature list. Build what paying customers actually ask for.
+- **Committed effort reduced:** ~52 hrs (Phases 0-2) vs original ~109 hrs. Phase 3 is unbudgeted.
+- **Rationale:** Claude Code makes building fast, but the risk isn't build time — it's investing in features before validating the core. The only question that matters: is QuoteNorm meaningfully better than prompting Claude directly?

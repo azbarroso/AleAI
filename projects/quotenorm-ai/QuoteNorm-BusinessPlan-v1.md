@@ -56,7 +56,7 @@ The AI agent ecosystem is moving from "agents that answer questions" to "agents 
 |-------|--------|-------|
 | **TAM** | $5B+ | All commercial document processing and procurement automation |
 | **SAM** | $500M | Programmatic quote/proposal processing for software and B2B services |
-| **SOM (Year 1-2)** | $1-5M | SaaS quote normalization for agent builders and platforms |
+| **SOM (Year 1-2)** | $100-200K ARR | Realistic for a side project: 50-100 customers, $8-15K MRR at month 12 |
 
 ### Why Now
 
@@ -169,15 +169,17 @@ POST /v1/validate
 }
 ```
 
-### Expansion Roadmap
+### Expansion Roadmap (Gated)
 
-| Phase | Timeline | Capabilities |
-|-------|----------|-------------|
-| **1 — Normalize** | Months 1-3 | Single-quote normalization for SaaS quotes |
-| **2 — Compare** | Months 3-6 | Multi-quote comparison, delta detection |
-| **3 — Validate** | Months 6-9 | Policy checking, compliance validation |
-| **4 — Score & Recommend** | Months 9-12 | Value scoring, risk flags, purchase recommendations |
-| **5 — Expand verticals** | Year 2 | Hardware, professional services, cloud infrastructure, contracts |
+Each phase beyond Normalize is gated on usage signal from the previous phase. Timelines are aspirational, not committed.
+
+| Phase | Gate | Capabilities |
+|-------|------|-------------|
+| **1 — Normalize** | None (committed) | Single-quote normalization for SaaS quotes (text, PDF, URL) |
+| **2 — Compare** | 5+ active free-tier users at month 4 | Multi-quote comparison, delta detection |
+| **3 — Validate** | Paying customers exist | Policy checking, compliance validation |
+| **4 — Score & Recommend** | Demand signal | Value scoring, risk flags, purchase recommendations |
+| **5 — Expand verticals** | Product-market fit confirmed | Hardware, professional services, cloud infrastructure, contracts |
 
 ## 6. Business Model
 
@@ -207,7 +209,7 @@ The original projections were optimistic for a niche side project. Revised to re
 | Avg revenue/call | $0.10 | $0.10 | $0.08 |
 | **MRR** | **$100-200** | **$1-2K** | **$8-15K** |
 
-**Why the revision:** Finding 10 paying developers at month 3 requires a narrow funnel — developers who are (a) building procurement agents, (b) processing enough quotes to need an API, (c) willing to pay rather than DIY with Claude/GPT. CAC $50-100 is also unrealistic for a niche B2B developer API — content marketing in niche communities has high effort-per-lead. This is still a good outcome for ~100 hours invested, but don't plan around $40K MRR at month 12.
+**Why the revision:** Finding 10 paying developers at month 3 requires a narrow funnel — developers who are (a) building procurement agents, (b) processing enough quotes to need an API, (c) willing to pay rather than DIY with Claude/GPT. CAC is likely $150-300+ for a niche B2B developer API — content marketing in small communities has high effort-per-lead. This is still a good outcome for ~50-100 hours invested, but don't plan around $40K MRR at month 12.
 
 Assumptions: blended rate decreases as volume discounts kick in. Customer growth driven by agent ecosystem growth and word-of-mouth in developer communities.
 
@@ -217,7 +219,7 @@ Assumptions: blended rate decreases as volume discounts kick in. Customer growth
 |--------|----------|-------|
 | Cost per normalization | ~$0.02-0.04 | LLM API cost (Claude/GPT) + compute |
 | Gross margin | 60-80% | Improves with caching, fine-tuning, smaller models |
-| CAC | ~$50-100 | Developer marketing, content, community |
+| CAC | ~$150-300 | Niche B2B developer API — content marketing in small communities has high effort-per-lead |
 | LTV (12-month) | ~$500-2,000 | Depends on agent activity volume |
 
 ## 7. Competitive Landscape
@@ -245,39 +247,37 @@ Assumptions: blended rate decreases as volume discounts kick in. Customer growth
 
 ## 8. Go-to-Market
 
-### Phase 1: Developer Adoption (Months 1-6)
+### Phase 1: MVP + Developer Adoption (Months 1-3)
 
 - **Free tier** — 50 calls/month, no credit card required
-- **Developer docs** — OpenAPI spec, SDKs (Python, TypeScript), example agents
-- **Content** — "How to build a procurement agent" tutorials, blog posts
-- **Community** — Post in agent builder communities (LangChain Discord, AI Twitter, Reddit r/LangChain, r/AutoGPT)
-- **Partnerships** — List on agent framework plugin registries (LangChain tools, CrewAI tools)
+- **Developer docs** — OpenAPI spec auto-generated, Python SDK
+- **Stripe billing** — metered usage, credit card
+- **Focus:** Get /normalize live with text + PDF + URL. Validate extraction quality. Find first 5+ free-tier users.
 
-### Phase 2: Platform Integrations + Agent-Native Path (Months 6-12)
+### Phase 2: Distribution + Agent-Native Path (Months 4-6) — GATED ON USAGE SIGNAL
 
+- **MCP tool** — Publish as MCP tool (low effort, high discovery leverage)
+- **AgentsBoard listing** — Agent marketplace presence
 - **USDC payment path** — Pre-funded accounts on Base L2 for agent-native consumption
-- **Agent marketplace presence** — AgentsBoard listing, other emerging platforms
-- **Framework integrations** — Official LangChain tool, CrewAI tool, AutoGen plugin
-- **MCP server** — Publish as an MCP tool for Claude/Cursor/Windsurf users
-- **Case studies** — Publish 3-5 case studies of agents using QuoteNorm in production
+- **`/v1/compare`** — Multi-quote comparison endpoint
+- **Community launch** — Agent builder communities, direct outreach
 
-### Phase 3: Enterprise (Year 2)
+### Phase 3: Demand-Driven (Months 6+) — GATED ON PAYING CUSTOMERS
 
-- **Sales motion** — Target companies building internal procurement agents
-- **Custom schemas** — Industry-specific normalization (healthcare, government, manufacturing)
-- **On-prem** — For enterprises that can't send commercial data to external APIs
-- **Data products** — Anonymized pricing benchmarks, vendor intelligence
+- Build what users actually ask for: /validate, framework integrations, TypeScript SDK, vendor fingerprinting, landing page
+- Enterprise path (custom schemas, on-prem) only if enterprise interest materializes
 
 ### Distribution Channels
 
-| Channel | Cost | Expected Impact |
-|---------|------|----------------|
-| Free tier + docs | Low | Primary driver — developers discover via docs and try free |
-| Agent framework plugins | Low | High-leverage — listed where agent builders already look |
-| Content marketing | Low-Medium | SEO + social for "procurement agent" / "quote parsing" queries |
-| Community engagement | Low | Build trust in agent builder communities |
-| MCP tool publication | Low | Direct integration into Claude/AI coding tools |
-| Partnerships | Medium | Platform deals with agent marketplaces |
+| Channel | Cost | Phase | Expected Impact |
+|---------|------|-------|----------------|
+| Free tier + docs | Low | 1 | Primary driver — developers discover via docs and try free |
+| MCP tool publication | Low | 2 | Direct integration into Claude/AI coding tools |
+| AgentsBoard listing | Low | 2 | Agent marketplace discovery |
+| Community engagement | Low | 2 | Build trust in agent builder communities |
+| Content marketing | Low-Medium | 2-3 | SEO + social for "procurement agent" / "quote parsing" queries |
+| Agent framework plugins | Low | 3 | High-leverage — listed where agent builders already look |
+| Partnerships | Medium | 3 | Platform deals with agent marketplaces |
 
 ## 9. Tech Stack (Proposed)
 
@@ -285,7 +285,7 @@ Assumptions: blended rate decreases as volume discounts kick in. Customer growth
 |-------|--------|-----------|
 | **API framework** | FastAPI (Python) or Next.js API routes | Python preferred for LLM integration; Next.js if sharing infra with AgentsBoard |
 | **LLM extraction** | Claude API (structured output) | Best-in-class for document understanding, native JSON mode |
-| **Document parsing** | Apache Tika / pdf-parse / Playwright | PDF, HTML, email body extraction |
+| **Document parsing** | pdf-parse (PDF), cheerio or Playwright (URL/HTML) | PDF and web page extraction |
 | **Database** | PostgreSQL (Neon) | Store schemas, usage, customer data |
 | **Cache** | Redis or Upstash | Cache normalized results for repeated vendors |
 | **Auth** | API keys + usage tracking | Simple, standard for developer APIs |
@@ -358,29 +358,29 @@ AgentsBoard is building USDC payment infrastructure for agent-to-agent commerce.
 
 ## 11. Success Metrics
 
-### Month 3
-- MVP API live with /normalize endpoint
+### Month 3 (End of Phase 1)
+- `/v1/normalize` live with text + PDF + URL input
+- Stripe billing working
+- Python SDK published
 - 5+ developers using free tier
-- Schema validated against 50+ real SaaS quotes
-- First paying customer (stretch goal)
+- Schema validated against 15+ real SaaS quotes
+- Core question answered: is output meaningfully better than prompting Claude directly?
 
 ### Month 4 — Decision Gate
-- If neither developer nor agent usage shows traction → park the project
-- If any traction signal → continue investing
+- If no usage signal (< 5 active free-tier users) → park the project
+- If signal → proceed to Phase 2 (distribution, /compare, USDC)
 
-### Month 6
+### Month 6 (End of Phase 2 — if gated)
 - /compare endpoint live
+- MCP tool + AgentsBoard listing live
+- USDC payment path live
 - 15-25 API customers, 3-5 paying
 - $1-2K MRR
-- Listed in 2+ agent framework plugin registries
-- USDC payment path live
 
-### Month 12
-- /validate endpoint live
+### Month 12 (Phase 3 — demand-driven, if gated)
+- Additional endpoints based on what users actually request
 - 50-100 API customers, 15-30 paying
 - $8-15K MRR
-- 3+ case studies published
-- Vendor fingerprinting covering top 50 SaaS vendors
 - Clear signal on developer vs agent-native usage split
 
 ## 12. What Makes This a Good Business
@@ -408,114 +408,106 @@ AgentsBoard is building USDC payment infrastructure for agent-to-agent commerce.
 
 | Week | Task | Deliverable |
 |------|------|-------------|
-| 1 | Collect 10-15 real SaaS quotes (pricing pages, PDF proposals, email quotes) | `test_data/` folder with real inputs |
+| 1 | Collect 15+ real SaaS quotes (pricing pages, PDF proposals, email quotes) | `test_data/` folder with real inputs |
 | 1 | Finalize the normalized quote JSON schema — test it against collected quotes, refine fields | `schema/quote-v1.json` (JSON Schema) |
 | 1 | Choose tech stack and scaffold API project | Repo with FastAPI or Next.js, project structure, CI |
 | 1 | Set up database (Neon Postgres) — tables for API keys, usage logs, cached normalizations | Prisma schema or SQLAlchemy models, migration run |
 | 2 | Build extraction pipeline: document → text → LLM prompt → structured JSON | `lib/extractor.py` or `src/lib/extractor.ts` |
 | 2 | Build confidence scoring: per-field confidence based on extraction clarity | Confidence model v1 |
 | 2 | Build missing-field detection: compare output against full schema, flag gaps | Missing fields logic |
-| 2 | Test pipeline against all 10-15 collected quotes, measure accuracy | Accuracy report: % fields correct, avg confidence |
+| 2 | Test pipeline against all 15+ collected quotes, measure accuracy | Accuracy report: % fields correct, avg confidence |
 
 **Key decisions in Phase 0:**
 - Python (FastAPI) vs TypeScript (Next.js) — Python is stronger for LLM pipelines and document parsing; TypeScript shares infra with AgentsBoard
 - Claude vs GPT-4 for extraction — Claude has better structured output and document understanding
-- Document parsing library — pdf-parse, Apache Tika, or Playwright for HTML pricing pages
+- Document parsing library — pdf-parse for PDFs
 
 ### Phase 1 — MVP API (Week 3-5)
 
-**Goal:** `/v1/normalize` endpoint live, documented, testable by external developers.
+**Goal:** `/v1/normalize` endpoint live with text, PDF, and URL input, documented, deployable. Core question answered: is this meaningfully better than prompting Claude directly?
 
 | Week | Task | Deliverable |
 |------|------|-------------|
-| 3 | Build `POST /v1/normalize` endpoint — accepts text, PDF (base64), URL | Working endpoint |
-| 3 | Input handling: text passthrough, PDF extraction (pdf-parse), URL fetch + HTML-to-text (Playwright or cheerio) | Multi-format input support |
+| 3 | Build `POST /v1/normalize` endpoint — accepts text, PDF (base64), and URL | Working endpoint |
+| 3 | Input handling: text passthrough, PDF extraction (pdf-parse), URL fetch + HTML-to-text (cheerio or Playwright) | Text + PDF + URL input support |
 | 3 | Response format: normalized quote JSON + confidence + missing fields + warnings | Stable response schema |
 | 3 | Error handling: invalid input, extraction failures, timeout handling | Error response format |
-| 4 | API key auth: generate keys, validate on requests, track usage | `POST /v1/keys` (admin), key validation middleware |
+| 4 | API key auth: generate keys, validate on requests, track usage | Key validation middleware |
 | 4 | Usage tracking: log every call (customer, input type, latency, token cost) | Usage table, logging middleware |
 | 4 | Rate limiting: free tier = 50/month, paid = based on plan | Rate limit middleware |
-| 4 | Caching: if same document hash seen before, return cached result | Cache layer (Redis/Upstash or DB) |
+| 4 | Stripe integration: metered billing, customer portal, webhook handling | Billing live |
 | 5 | API docs: OpenAPI spec auto-generated, hosted docs page | `/docs` endpoint (Swagger/Redoc) |
 | 5 | Python SDK: thin wrapper around the API | `quotenorm` PyPI package |
-| 5 | TypeScript SDK: thin wrapper around the API | `@quotenorm/sdk` npm package |
 | 5 | Deploy to production (Railway or Vercel) | Live API at `api.quotenorm.ai` |
 
-**End of Phase 1:** A developer can sign up for an API key, send a SaaS quote (text, PDF, or URL), and get back structured JSON. Free tier works. Docs are live.
+**End of Phase 1:** A developer can sign up for an API key, send a SaaS quote (text, PDF, or URL), and get back structured JSON. Stripe billing works. Docs are live. Python SDK available.
 
-### Phase 2 — Quality & Distribution (Week 6-9)
+**What's deliberately NOT in Phase 1:** TypeScript SDK, /compare, /validate, USDC payments, framework integrations, landing page. These are gated on usage signal.
 
-**Goal:** Improve extraction accuracy, get first users, build credibility.
+### ⚑ Month 4 — Decision Gate
+
+Before investing further, evaluate:
+- Are developers using /normalize? (target: 5+ active free-tier users)
+- Is the output meaningfully better than "just prompt Claude"?
+- Any signal of willingness to pay?
+
+**If no traction → park the project.** If signal → proceed to Phase 2.
+
+### Phase 2 — Distribution & Compare (Week 6-9) — GATED ON PHASE 1 SIGNAL
+
+**Goal:** Add distribution channels, second endpoint, and agent-native payment. Only build if Phase 1 shows usage signal.
 
 | Week | Task | Deliverable |
 |------|------|-------------|
-| 6 | Expand test corpus to 50+ quotes across 20+ SaaS vendors | Broader test coverage |
-| 6 | Build accuracy benchmark: automated test suite comparing output to hand-labeled ground truth | `tests/accuracy/` with pass/fail per vendor |
-| 6 | Vendor fingerprinting v1: detect known vendors (Salesforce, AWS, Datadog, etc.) and apply vendor-specific extraction rules | Vendor detection + custom prompts |
-| 7 | Feedback endpoint: `POST /v1/feedback` — agents report incorrect fields | Feedback table, correction pipeline |
-| 7 | Landing page: single page explaining what QuoteNorm does, link to docs, sign-up | `quotenorm.ai` live |
-| 7 | Write "How to build a procurement agent with QuoteNorm" tutorial | Blog post + example agent code |
-| 8 | LangChain tool integration: publish QuoteNorm as a LangChain tool | Listed in LangChain community tools |
-| 8 | CrewAI tool integration | Listed in CrewAI tools |
-| 8 | MCP server: publish QuoteNorm as an MCP tool | MCP tool spec published |
+| 6 | MCP tool publication — low effort, high discovery leverage | MCP tool spec published |
+| 6 | AgentsBoard listing | Listed on AgentsBoard |
+| 7 | Build `POST /v1/compare` — accepts 2-5 normalized quotes, returns comparison matrix | Working endpoint |
+| 7 | Comparison logic: side-by-side fields, delta highlights, "best value" flags | Comparison output schema |
+| 8 | USDC pre-funded accounts on Base L2 | Agent-native payment live |
+| 8 | Expand test corpus to 50+ quotes across 20+ SaaS vendors | Broader test coverage |
 | 9 | Community launch: post in agent builder communities (LangChain Discord, Reddit, HN, Twitter) | Launch posts |
 | 9 | Reach out to 10 agent builders directly, offer free usage in exchange for feedback | 5+ active beta users |
 
-**End of Phase 2:** 10+ developers using the API. Accuracy benchmarked. Listed in major agent framework registries. First feedback data flowing.
+**End of Phase 2:** /compare live. USDC payment path available. MCP + AgentsBoard distribution. 10+ developers using the API.
 
-### Phase 3 — Compare & Monetize (Week 10-14)
+### Phase 3 — Deepen & Scale (Week 10+) — GATED ON PAYING CUSTOMERS
 
-**Goal:** `/v1/compare` live, Stripe billing connected, first paying customers.
+**Goal:** Only build these after paying customers exist. Sequence based on what users actually ask for.
 
-| Week | Task | Deliverable |
-|------|------|-------------|
-| 10 | Build `POST /v1/compare` — accepts 2-5 normalized quotes, returns comparison matrix | Working endpoint |
-| 10 | Comparison logic: side-by-side fields, delta highlights, "best value" flags | Comparison output schema |
-| 11 | Stripe integration: metered billing, customer portal, webhook handling | Billing live |
-| 11 | Usage dashboard (API-only): `GET /v1/usage` — customers can check their usage programmatically | Usage endpoint |
-| 12 | Pricing page on landing site | Pricing live on quotenorm.ai |
-| 12 | Onboarding email sequence: welcome → docs → first call → upgrade prompt | 3-email sequence |
-| 13 | Convert free-tier users to paid: personal outreach + in-API upgrade prompts | First paying customers |
-| 13 | Write 2 case studies from beta users | Published case studies |
-| 14 | Performance optimization: reduce latency (parallel extraction, smaller models for simple quotes) | P95 latency < 3s for text input |
+**Available to build (prioritize by demand):**
+- `POST /v1/validate` — policy checking, compliance validation
+- Vendor fingerprinting — vendor-specific extraction rules for top SaaS vendors
+- TypeScript SDK
+- LangChain/CrewAI tool integrations
+- Feedback endpoint (`POST /v1/feedback`)
+- Performance optimization (smaller models, caching, latency reduction)
+- Landing page beyond docs
 
-**End of Phase 3:** Revenue flowing. Compare endpoint live. 50+ API customers, 5+ paying. Stripe billing working.
-
-### Phase 4 — Validate & Scale (Week 15-22)
-
-**Goal:** `/v1/validate` live, vendor fingerprinting mature, $5K+ MRR.
-
-| Week | Task | Deliverable |
-|------|------|-------------|
-| 15-16 | Build `POST /v1/validate` — check quote against policy rules (budget, required terms, compliance) | Working endpoint |
-| 17-18 | Vendor fingerprinting v2: top 50 SaaS vendors recognized, accuracy > 90% for known vendors | Vendor database |
-| 19-20 | Fine-tuned or distilled extraction model for common quote patterns (reduce LLM cost per call) | Cost per call reduced 30-50% |
-| 21-22 | Second vertical exploration: test schema against B2B hardware quotes or professional services proposals | Vertical expansion assessment |
-
-**End of Phase 4:** Full API surface live (normalize + compare + validate). Vendor fingerprinting covering major SaaS vendors. Unit economics validated. Clear path to $40K MRR.
+**End of Phase 3:** Determined by what the market actually wants, not a pre-planned feature list.
 
 ### Execution Timeline Summary
 
 ```
 Week  1-2   ████  Phase 0: Foundation (schema, pipeline, test data)
-Week  3-5   ██████  Phase 1: MVP API (/normalize live, docs, SDKs, deploy)
-Week  6-9   ████████  Phase 2: Quality & Distribution (accuracy, integrations, launch)
-Week 10-14  ██████████  Phase 3: Compare & Monetize (/compare, Stripe, first revenue)
-Week 15-22  ████████████████  Phase 4: Validate & Scale (/validate, fingerprinting, optimization)
+Week  3-5   ██████  Phase 1: MVP API (/normalize, text+PDF+URL, Stripe, Python SDK, deploy)
+  ⚑  Month 4: Decision gate — traction or park
+Week  6-9   ████████  Phase 2: Distribution + Compare (MCP, AgentsBoard, /compare, USDC) [GATED]
+Week 10+    ░░░░░░░░  Phase 3: Deepen & Scale (demand-driven) [GATED]
 ```
 
 ### Time Budget
 
-Assuming similar constraints to other projects (part-time, Claude does heavy lifting):
+Assuming similar constraints to other projects (part-time, Claude Code does heavy lifting):
 
 | Phase | Calendar time | Effort/week | Total effort |
 |-------|---------------|-------------|-------------|
 | Phase 0 | 2 weeks | 6-8 hrs | ~14 hrs |
 | Phase 1 | 3 weeks | 5-7 hrs | ~18 hrs |
 | Phase 2 | 4 weeks | 4-6 hrs | ~20 hrs |
-| Phase 3 | 5 weeks | 4-6 hrs | ~25 hrs |
-| Phase 4 | 8 weeks | 3-5 hrs | ~32 hrs |
-| **Total** | **~22 weeks** | | **~109 hrs** |
+| Phase 3 | TBD | TBD | TBD |
+| **Committed** | **~9 weeks** | | **~52 hrs** |
+
+Phase 3 effort is intentionally unbudgeted — it depends on what the market asks for.
 
 ### Phase 0, Week 1 — Concrete First Session
 
@@ -531,4 +523,4 @@ If starting today, here's what the first working session looks like:
 
 ---
 
-_This is a v1 plan. Timelines and effort estimates will be refined after Phase 0 validates the core extraction quality and schema fit._
+_This is a v1 plan (revised). Phases 2-3 are gated on usage signal. Build fast, validate early, only invest further if the market responds._
