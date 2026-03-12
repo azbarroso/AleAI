@@ -86,3 +86,15 @@
   - Data retention: process and delete raw input (24-48hr debugging window). Store only normalized output and metadata.
   - No PII commitment — terms prohibit sending PII.
 - **tasks.md updated** with "Pre-Phase 1: Business Setup" checklist.
+
+### 2026-03-11 — x402-Only Payment Pivot
+
+- **Major strategic pivot: x402 replaces Stripe + USDC dual payment.** QuoteNorm will use x402 protocol (Coinbase, HTTP 402 + USDC on Base L2) as the sole payment method from Phase 1. No Stripe, no user accounts, no API keys, no billing dashboard.
+- **Rationale:** QuoteNorm claims to be "the structured data layer for agentic commerce" — it should itself be consumable by agents natively. x402 eliminates the entire auth+billing stack (accounts, API key management, Stripe webhooks, dashboard UI) with one line of middleware. The x402 ecosystem is growing fast (Coinbase, Stripe, Etherlink all supporting it).
+- **Sandbox endpoint added for discovery:** `POST /v1/sandbox/normalize` returns truncated output (first 3 fields, no confidence details) for free, no wallet needed. Rate-limited by IP (20 calls/hr). Provides a "try before you buy" path without reintroducing accounts.
+- **What's eliminated from Phase 1:** Stripe integration, user accounts/signup, API key management, billing dashboard (`quotenorm.ai/dashboard`), Python/TS SDKs (moved to Phase 2). Estimated effort savings: ~5 hrs.
+- **What's added to Phase 0:** x402 proof of concept — evaluate npm package, test facilitator setup, verify payment flow on Base testnet.
+- **Revenue projections adjusted:** Lower (narrower addressable market of agents with funded wallets) but engineering cost is also dramatically lower. Break-even is easier.
+- **Decision gate updated:** Month 4 now evaluates: (1) x402 payments flowing? (2) sandbox usage? If high sandbox but zero paid → x402 ecosystem isn't ready, consider Stripe fallback. If both low → park.
+- **Total committed effort revised:** ~47 hrs (down from ~52 hrs).
+- Updated: overview.md, tasks.md, business plan (all sections), _active.md.

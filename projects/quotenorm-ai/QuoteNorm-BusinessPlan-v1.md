@@ -1,7 +1,7 @@
 # QuoteNorm.ai — Business Plan v1
 
-_MCP tool + API for structured commercial data. Developer-first billing, agent-ready distribution._
-_Draft: 2026-03-09 | Revised: 2026-03-10_
+_x402-native API for structured commercial data. Agent-native payment, MCP distribution._
+_Draft: 2026-03-09 | Revised: 2026-03-11_
 
 ---
 
@@ -21,7 +21,7 @@ Every developer and agent encountering this data is solving it from scratch. It'
 
 ## 2. The Solution
 
-QuoteNorm.ai is a single-purpose tool (MCP tool + REST API): send unstructured commercial input, get back structured, decision-ready JSON.
+QuoteNorm.ai is a single-purpose x402-native API: send unstructured commercial input, pay per-request with USDC, get back structured, decision-ready JSON. No accounts, no API keys — payment is the authentication.
 
 **Core capabilities:**
 - **Normalize** — Extract and structure pricing, terms, limits, constraints from any format
@@ -56,7 +56,7 @@ The AI agent ecosystem is moving from "agents that answer questions" to "agents 
 |-------|--------|-------|
 | **TAM** | $5B+ | All commercial document processing and procurement automation |
 | **SAM** | $500M | Programmatic quote/proposal processing for software and B2B services |
-| **SOM (Year 1-2)** | $100-200K ARR | Realistic for a side project: 50-100 customers, $8-15K MRR at month 12 |
+| **SOM (Year 1-2)** | $60-120K ARR | Realistic for a side project with x402-only: 30-80 paying wallets, $5-10K MRR at month 12 |
 
 ### Why Now
 
@@ -67,36 +67,34 @@ The AI agent ecosystem is moving from "agents that answer questions" to "agents 
 
 ## 4. Target Customers
 
-### Strategy: MCP-First Distribution, Developer-First Billing
+### Strategy: x402-Only, Agent-Native
 
-Distribution is agent-native: MCP tool in registries where agents and agent-building developers already look. Billing is developer-first: Stripe for humans with credit cards, USDC for autonomous agents (Phase 2).
+Payment is x402 protocol (HTTP 402 + USDC on Base L2) from day one. No Stripe, no accounts, no API keys. A sandbox endpoint provides free, truncated access for evaluation.
 
-**The resolved tension:** Discovery happens through MCP registries (agent-native), but payment comes from developers (Stripe) until autonomous agent payment infrastructure matures.
+**The bet:** The x402 agent ecosystem is growing fast enough (Coinbase, Stripe, Etherlink) that by the time Phase 1 ships, there will be enough agents with funded wallets to generate traction signal. If not, the sandbox endpoint still allows developer evaluation, and the project parks cleanly at month 4.
 
-### Primary: Developers Using AI Tools (MCP Users)
+### Primary: Autonomous Agents
 
-Any developer using AI coding tools (Claude, Cursor, Windsurf) who encounters pricing, quote, or proposal data in their workflow. They install QuoteNorm as an MCP tool and use it naturally — "normalize this pricing page," "extract terms from this PDF." They pay with Stripe when they exceed the free tier.
+Agents that discover QuoteNorm via MCP registries, AgentsBoard, or agent framework tool lists, call the API, and pay per-request via x402 with USDC on Base L2. No human signs up — the agent has a wallet and a budget.
+
+**Why primary now:** x402 adoption is accelerating. Coinbase launched it, Stripe integrated it, Etherlink adopted it. QuoteNorm is positioned as "the structured data layer for agentic commerce" — being x402-native from day one is walking the talk and planting a flag early.
+
+### Secondary: Developers Evaluating via Sandbox
+
+Developers who discover QuoteNorm via MCP registries, docs, or word-of-mouth. They test via the sandbox endpoint (free, truncated output, no wallet needed), evaluate quality, then integrate x402 payments into their agent workflows.
 
 **Examples:**
-- A developer researching cloud vendors in Cursor — asks the tool to normalize each pricing page
-- A team lead evaluating SaaS renewals — feeds proposals through Claude with QuoteNorm
-- An agent builder integrating QuoteNorm into a procurement workflow via the REST API
-
-**Why this is broader than "agent builders":** MCP-first distribution means the user doesn't need to be building an agent. Anyone whose AI tool has QuoteNorm in its MCP config can use it. The addressable pool is every developer using MCP-compatible AI tools who encounters commercial data — significantly larger than "a few hundred developers building procurement agents."
-
-### Secondary: Autonomous Agents (Emerging)
-
-Agents that discover QuoteNorm via AgentsBoard, MCP registries, or agent framework tool lists, call the API, and pay per-call using USDC on Base L2. No human signs up — the agent has a wallet and a budget.
-
-**Why not primary (yet):** Agents don't autonomously purchase services at scale in March 2026. The infrastructure is nascent — very few agents have wallets, budgets, or purchasing autonomy. Discovery is unsolved. This market is 12-24 months from critical mass.
+- A developer tests QuoteNorm's sandbox with a Slack pricing URL, sees the quality, then wires up x402 for production
+- An agent builder integrates QuoteNorm into a procurement workflow — the agent pays per-call via x402
+- A team lead evaluates extraction quality via sandbox before giving their agent a USDC budget for QuoteNorm
 
 ### Tertiary: Agent Platforms & Traditional Software
 
 Platforms hosting/orchestrating multiple agents, or B2B software companies adding AI-powered vendor management. Longer-term opportunity.
 
 ### Decision Signal
-- If 80%+ usage comes from developers → stay developer-focused
-- If agent-native usage picks up (even small amounts) → signal the wave is coming, invest more there
+- If x402 payments are flowing → the bet is working, double down
+- If only sandbox usage (no paid conversions) → either x402 ecosystem isn't ready yet, or the product isn't compelling enough
 - If neither shows traction by month 4 → park the project
 
 ## 5. Product
@@ -104,15 +102,21 @@ Platforms hosting/orchestrating multiple agents, or B2B software companies addin
 ### MVP API Surface
 
 ```
-POST /v1/normalize
+POST /v1/normalize  [x402 — paid]
   Input: document (text, PDF, HTML, or URL)
   Output: normalized quote JSON + confidence scores + missing fields
+  Payment: x402 (USDC on Base L2, e.g. $0.10/call)
 
-POST /v1/compare
+POST /v1/sandbox/normalize  [free — truncated]
+  Input: document (text, PDF, HTML, or URL)
+  Output: truncated normalized quote JSON (first 3 fields only, no confidence details)
+  Payment: none — for evaluation purposes
+
+POST /v1/compare  [Phase 2+, x402 — paid]
   Input: array of normalized quotes
   Output: comparison matrix + recommendations + delta highlights
 
-POST /v1/validate
+POST /v1/validate  [Phase 3+, x402 — paid]
   Input: normalized quote + policy rules
   Output: pass/fail per rule + violations + warnings
 ```
@@ -175,52 +179,59 @@ Each phase beyond Normalize is gated on usage signal from the previous phase. Ti
 
 | Phase | Gate | Capabilities |
 |-------|------|-------------|
-| **1 — Normalize** | None (committed) | Single-quote normalization for SaaS quotes (text, PDF, URL). MCP tool + REST API. |
-| **2 — Compare** | 5+ active free-tier users at month 4 | Multi-quote comparison, delta detection |
+| **1 — Normalize** | None (committed) | Single-quote normalization for SaaS quotes (text, PDF, URL). x402-native API + sandbox endpoint + MCP tool. |
+| **2 — Compare** | 5+ unique paying wallets at month 4 | Multi-quote comparison, delta detection |
 | **3 — Validate** | Paying customers exist | Policy checking, compliance validation |
 | **4 — Score & Recommend** | Demand signal | Value scoring, risk flags, purchase recommendations |
 | **5 — Expand verticals** | Product-market fit confirmed | Hardware, professional services, cloud infrastructure, contracts |
 
 ## 6. Business Model
 
-### Pricing: Usage-Based
+### Pricing: x402 Per-Request
 
-| Tier | Price | Includes |
-|------|-------|----------|
-| **Free** | $0 | 50 normalizations/month — enough to build and test |
-| **Builder** | $0.10/normalize, $0.15/compare, $0.20/validate | Pay-as-you-go, no commitment |
-| **Scale** | Volume discounts at 10K+ calls/month | Custom pricing, SLA, dedicated support |
-| **Enterprise** | Custom | On-prem option, custom schemas, priority support |
+| Endpoint | Price | Notes |
+|----------|-------|-------|
+| **`/v1/sandbox/normalize`** | Free | Truncated output (first 3 fields). No wallet needed. For evaluation. |
+| **`/v1/normalize`** | $0.10 USDC | Full normalized JSON + confidence + missing fields. x402 payment. |
+| **`/v1/compare`** (Phase 2+) | $0.15 USDC | Multi-quote comparison matrix. |
+| **`/v1/validate`** (Phase 3+) | $0.20 USDC | Policy checking, compliance validation. |
 
-**Why usage-based works:**
+No tiers, no subscriptions, no accounts. Every paid request is a single x402 transaction. Volume discounts could be introduced later via smart contract logic if demand warrants.
+
+**Why x402 per-request works:**
 - Agents consume APIs in bursts — subscription doesn't fit
-- Low barrier to start (free tier) drives adoption
+- Zero onboarding friction — no signup, no API keys, no credit card
 - Revenue scales directly with agent activity
-- Easy to measure and bill
+- Payment is authentication — no separate auth system needed
+- Near-zero protocol fees (only Base L2 gas ~$0.001/tx)
+- Sandbox endpoint provides the "try before you buy" path that a free tier would normally serve
 
-### Revenue Projections (Realistic)
+### Revenue Projections (Realistic — x402)
 
-The original projections were optimistic for a niche side project. Revised to reflect realistic developer adoption pace:
+Projections are more uncertain with x402-only. The addressable market (agents with funded USDC wallets) is smaller today but growing fast. Upside: zero CAC (agents discover and pay autonomously). Downside: if the x402 ecosystem isn't ready, revenue is near zero.
 
 | Metric | Month 3 | Month 6 | Month 12 |
 |--------|---------|---------|----------|
-| API customers | 3-5 | 15-25 | 50-100 |
-| Monthly API calls | 1K | 10K | 100K |
-| Avg revenue/call | $0.10 | $0.10 | $0.08 |
-| **MRR** | **$100-200** | **$1-2K** | **$8-15K** |
+| Unique paying wallets | 2-5 | 10-20 | 30-80 |
+| Monthly paid API calls | 500 | 5K | 50K |
+| Revenue/call | $0.10 | $0.10 | $0.10 |
+| **MRR** | **$50-100** | **$500-1K** | **$5-10K** |
+| Sandbox calls (free) | 2K | 5K | 10K |
 
-**Why the revision:** Finding 10 paying developers at month 3 requires a narrow funnel — developers who are (a) building procurement agents, (b) processing enough quotes to need an API, (c) willing to pay rather than DIY with Claude/GPT. CAC is likely $150-300+ for a niche B2B developer API — content marketing in small communities has high effort-per-lead. This is still a good outcome for ~50-100 hours invested, but don't plan around $40K MRR at month 12.
+**Why lower than previous projections:** x402-only narrows the funnel to agents with funded wallets. But engineering cost is also dramatically lower (no Stripe, no dashboard, no accounts), so break-even is easier to reach. The sandbox endpoint provides a conversion funnel — if sandbox usage is high but paid conversion is low, the signal is "product is good, x402 ecosystem isn't ready yet" (which is useful to know).
 
-Assumptions: blended rate decreases as volume discounts kick in. Customer growth driven by agent ecosystem growth and word-of-mouth in developer communities.
+**Key unknown:** How many agents have x402-compatible wallets with USDC on Base in mid-2026? This is the critical assumption. If the Coinbase/Stripe x402 push succeeds, the number could be significant. If it stalls, revenue will be minimal regardless of product quality.
 
 ### Unit Economics
 
 | Metric | Estimate | Notes |
 |--------|----------|-------|
-| Cost per normalization | ~$0.02-0.04 | LLM API cost (Claude/GPT) + compute |
+| Cost per normalization | ~$0.02-0.04 | LLM API cost (Claude) + compute |
+| Revenue per normalization | $0.10 USDC | x402 per-request |
 | Gross margin | 60-80% | Improves with caching, fine-tuning, smaller models |
-| CAC | ~$150-300 | Niche B2B developer API — content marketing in small communities has high effort-per-lead |
-| LTV (12-month) | ~$500-2,000 | Depends on agent activity volume |
+| Payment processing cost | ~$0.001/tx | Base L2 gas only — no Stripe 2.9% + $0.30 |
+| CAC | ~$0 | Agents discover and pay autonomously. No marketing funnel. |
+| Sandbox cost | ~$0.02-0.04/call | Free calls still cost LLM tokens. Monitor for abuse. |
 
 ## 7. Competitive Landscape
 
@@ -247,21 +258,20 @@ Assumptions: blended rate decreases as volume discounts kick in. Customer growth
 
 ## 8. Go-to-Market
 
-### Phase 1: MVP + MCP-First Distribution (Months 1-3)
+### Phase 1: x402-Native MVP (Months 1-3)
 
-- **MCP tool** — Primary distribution channel. Agents and developers discover QuoteNorm as an MCP tool in registries, Claude/Cursor/Windsurf. API key required (sign up at minimal dashboard → get key → add to MCP config).
-- **API** — Same endpoint, also available as a standard REST API for power users who outgrow MCP
-- **Minimal web dashboard** (`quotenorm.ai/dashboard`) — signup (email → instant API key, no credit card), key management, usage stats, Stripe billing portal. Not a landing page — just the auth/billing UI needed to support MCP and API users.
-- **Free tier** — 50 calls/month, no credit card required
-- **Developer docs** — OpenAPI spec (via next-swagger-doc or hand-written), Python + TypeScript SDKs
-- **Stripe billing** — metered usage, credit card
-- **Focus:** Get /normalize live as MCP tool + API. Validate extraction quality. Find first 5+ users (MCP or API).
+- **x402 API** — `POST /v1/normalize` with x402 payment middleware. Agents pay per-request with USDC on Base L2. No accounts, no API keys.
+- **Sandbox endpoint** — `POST /v1/sandbox/normalize` returns truncated output for free. Lets developers evaluate quality without a wallet.
+- **MCP tool** — `@quotenorm/mcp-server` on npm. Wraps the x402 API. Agent's wallet handles payment. Discovery via MCP registries (Claude, Cursor, Windsurf).
+- **Developer docs** — OpenAPI spec, usage examples, x402 client setup guide.
+- **No Stripe, no dashboard, no user accounts, no API keys, no SDKs** — all of this is eliminated by x402.
+- **Focus:** Get /normalize live with x402 payment. Validate extraction quality. Monitor sandbox usage and paid conversions.
 
-### Phase 2: Scale Distribution + Agent-Native Payment (Months 4-6) — GATED ON USAGE SIGNAL
+### Phase 2: Distribution & Compare (Months 4-6) — GATED ON USAGE SIGNAL
 
 - **AgentsBoard listing** — Agent marketplace presence
-- **USDC payment path** — Pre-funded accounts on Base L2 for agent-native consumption
-- **`/v1/compare`** — Multi-quote comparison endpoint
+- **`/v1/compare`** — Multi-quote comparison endpoint (x402 paid)
+- **Python + TypeScript SDKs** — with x402 payment handling built in
 - **Community launch** — Agent builder communities, direct outreach
 
 ### Phase 3: Demand-Driven (Months 6+) — GATED ON PAYING CUSTOMERS
@@ -273,29 +283,28 @@ Assumptions: blended rate decreases as volume discounts kick in. Customer growth
 
 | Channel | Cost | Phase | Expected Impact |
 |---------|------|-------|----------------|
-| MCP tool in registries | Low | 1 | **Primary driver** — agents and developers discover QuoteNorm as a tool, not a signup page |
-| Free tier + docs (API) | Low | 1 | Secondary — power users who want direct API access |
+| MCP tool in registries | Low | 1 | **Primary driver** — agents discover QuoteNorm as a tool, pay via x402 |
+| Sandbox endpoint + docs | Low | 1 | Developer evaluation path — try before buying |
+| x402 ecosystem directories | Low | 1 | Listed in x402 ecosystem/registry (x402.org, Coinbase docs) |
 | AgentsBoard listing | Low | 2 | Agent marketplace discovery |
 | Community engagement | Low | 2 | Build trust in agent builder communities |
 | Content marketing | Low-Medium | 2-3 | SEO + social for "procurement agent" / "quote parsing" queries |
 | Agent framework plugins | Low | 3 | Listed where agent builders already look |
-| Partnerships | Medium | 3 | Platform deals with agent marketplaces |
 
 ## 9. Tech Stack (Proposed)
 
 | Layer | Choice | Rationale |
 |-------|--------|-----------|
-| **Core extraction** | `src/lib/extractor.ts` (shared) | Single extraction pipeline used by both MCP server and REST API |
-| **MCP server** | `@modelcontextprotocol/sdk` (TypeScript) | Primary distribution. Local-first: npm package users add to MCP config. Calls hosted REST API internally. |
-| **REST API** | Next.js API routes (TypeScript) | Secondary interface. Shared stack with AgentsBoard (Prisma, Neon, Vercel). |
+| **Core extraction** | `src/lib/extractor.ts` (shared) | Single extraction pipeline used by both API and MCP server |
+| **MCP server** | `@modelcontextprotocol/sdk` (TypeScript) | Distribution channel. Local-first: npm package. Calls hosted x402 API internally. Agent's wallet handles payment. |
+| **x402 API** | Next.js API routes (TypeScript) + x402 middleware | Primary interface. x402 payment middleware handles auth+billing in one layer. |
 | **LLM extraction** | Claude API (structured output) | Best-in-class for document understanding, native JSON mode |
 | **Document parsing** | pdf-parse (PDF), cheerio or Playwright (URL/HTML) | PDF and web page extraction |
-| **Database** | PostgreSQL (Neon) | Store schemas, usage, customer data |
+| **Database** | PostgreSQL (Neon) | Store extraction logs, cached normalizations. No user/account tables needed. |
 | **Cache** | Redis or Upstash | Cache normalized results for repeated vendors |
-| **Auth** | API keys + MCP client tracking | API keys for REST API; MCP server requires API key in config (passed through to hosted API) |
-| **Hosting** | Vercel or Railway | REST API + extraction backend. MCP server runs locally on user's machine. |
-| **Billing (primary)** | Stripe metered billing | Usage-based billing for developers |
-| **Billing (secondary)** | USDC on Base L2 (pre-funded accounts) | Agent-native payment path |
+| **Auth + Billing** | x402 protocol (Coinbase) | HTTP 402 + USDC on Base L2. Payment IS authentication. No API keys, no Stripe. |
+| **x402 facilitator** | Coinbase CDP or self-hosted | Verifies payment, settles USDC. Single dependency for all billing. |
+| **Hosting** | Vercel or Railway | API + extraction backend. MCP server runs locally on user's machine. |
 
 ### Architecture
 
@@ -308,82 +317,109 @@ Assumptions: blended rate decreases as volume discounts kick in. Customer growth
                 ┌────────────┼────────────┐
                 │                         │
         ┌───────┴───────┐        ┌────────┴────────┐
-        │  MCP Server   │        │  REST API       │
-        │  (primary)    │        │  (secondary)    │
+        │  MCP Server   │        │  x402 API       │
         │  npm package  │        │  Next.js routes │
         │  runs locally │        │  hosted         │
         │  calls API    │        │                 │
+        │  agent wallet │        │  x402 middleware │
+        │  handles pay  │        │  + sandbox      │
         └───────────────┘        └─────────────────┘
+                                         │
+                                 ┌───────┴───────┐
+                                 │  x402         │
+                                 │  Facilitator  │
+                                 │  (Coinbase)   │
+                                 │  USDC on Base │
+                                 └───────────────┘
 ```
+
+**x402 payment flow:**
+1. Agent sends `POST /v1/normalize` without payment
+2. Server responds `402 Payment Required` with payment instructions (amount, facilitator, network)
+3. Agent constructs USDC payment on Base L2, includes payment proof in `PAYMENT-SIGNATURE` header
+4. Server verifies payment via facilitator, processes request, returns full normalized JSON
+5. USDC settles to QuoteNorm's wallet on Base L2
+
+**Sandbox flow (no payment):**
+1. Agent/developer sends `POST /v1/sandbox/normalize`
+2. Server processes request, returns truncated output (first 3 fields, no confidence details)
+3. No wallet, no payment, no authentication needed
+4. Rate limited by IP to prevent abuse (e.g., 20 calls/hour)
 
 **MCP server design (local-first):**
 - Published as `@quotenorm/mcp-server` on npm
 - User installs: `npx @quotenorm/mcp-server` or adds to MCP config
 - Runs locally, connects to Claude/Cursor/Windsurf via stdio
-- Calls the hosted QuoteNorm REST API under the hood (API key required in config)
-- Exposes one tool: `normalize_quote` with input `{ source: "url" | "text" | "pdf", content: "..." }`
+- Calls the hosted QuoteNorm x402 API under the hood
+- Agent's wallet configuration is passed through MCP config — the MCP server handles x402 payment negotiation
+- Exposes two tools: `normalize_quote` (paid, x402) and `sandbox_normalize_quote` (free, truncated)
 
 **Why local-first over remote MCP:**
 - stdio transport is universally supported across MCP clients
 - Remote MCP (HTTP+SSE) support varies across clients and adds latency
 - Local server is just a thin proxy — all real work happens on the hosted API
-- Usage tracking is automatic (every MCP call = API call = tracked)
 
-**MCP auth model:**
-- API key required in MCP server config (no anonymous usage)
-- User signs up at `quotenorm.ai/dashboard`, gets API key, adds to MCP config
-- Free tier (50 calls/month) still applies — tracked server-side via API key
-- This adds one signup step vs truly zero-friction, but avoids the complexity of anonymous client ID tracking
+**Auth model: payment IS authentication.**
+- No API keys, no user accounts, no signup
+- x402 payment proof serves as both authentication and billing
+- Sandbox endpoint is unauthenticated, rate-limited by IP
 
-## 9b. Stablecoin Payment Design (Agent-Native Path)
+## 9b. x402 Payment Design
 
-### Why USDC on Base L2
+### Why x402 + USDC on Base L2
 
-Autonomous agents need a payment method that doesn't require human intervention per transaction. USDC on Base L2 provides: low gas costs (~$0.001/tx), fast finality (~2s), and a stablecoin agents can hold without currency risk.
+x402 is an open protocol (Coinbase) that uses HTTP 402 status codes for internet-native payments. Instead of building a custom pre-funded account system, x402 provides a standardized payment layer at the HTTP level. Agents pay per-request — no accounts, no deposits, no balance tracking.
 
-### Pre-Funded Account Model (Recommended)
+**Why x402 over custom USDC pre-funded accounts (previous design):**
+- Eliminates wallet management, deposit detection, balance tracking, withdrawal logic
+- Standard protocol — agents with x402-compatible clients can pay any x402 API, not just QuoteNorm
+- One line of middleware vs weeks of custom payment infrastructure
+- Growing ecosystem: Coinbase, Stripe, Etherlink all supporting x402
 
-Per-call on-chain verification adds latency and gas costs per request. Instead, use a pre-funded account:
+### x402 Payment Flow
 
 ```
 Agent Payment Flow:
-1. Agent (or its human operator) deposits USDC to a QuoteNorm-managed address on Base L2
-2. QuoteNorm credits the deposit to an internal balance tied to an API credential
-3. Agent calls POST /v1/normalize with the API credential
-4. QuoteNorm deducts from internal balance (off-chain, instant)
-5. When balance is low, agent or operator tops up with another USDC deposit
+1. Agent sends POST /v1/normalize (no payment header)
+2. Server responds 402 Payment Required with PAYMENT-REQUIRED header:
+   - amount: 0.10 USDC
+   - network: Base L2
+   - facilitator: <facilitator address>
+3. Agent's x402-compatible wallet constructs USDC payment
+4. Agent retries request with PAYMENT-SIGNATURE header containing payment proof
+5. x402 middleware verifies payment via facilitator
+6. Server processes request and returns full normalized JSON
+7. USDC settles to QuoteNorm's wallet on Base L2
 ```
 
 ### Implementation Details
 
 | Component | Design |
 |-----------|--------|
-| **Deposit address** | Per-account managed address on Base L2 (or shared address with memo/reference ID) |
-| **Balance tracking** | Internal database — deposits increase balance, API calls deduct |
-| **Deposit detection** | Listen for USDC transfer events on Base L2 via webhook or polling |
-| **API credential** | Same API key format as Stripe path — agent doesn't need to know which payment method backs it |
-| **Minimum deposit** | $5 USDC (~50 normalizations at $0.10/call) |
-| **Withdrawal** | Support withdrawals of remaining balance to original deposit address |
+| **x402 middleware** | Coinbase x402 npm package — one line of Express/Next.js middleware |
+| **Facilitator** | Coinbase CDP facilitator (hosted) or self-hosted facilitator |
+| **Settlement** | USDC settles to a QuoteNorm-controlled wallet on Base L2 |
+| **Pricing config** | Per-endpoint pricing defined in middleware config |
+| **Sandbox bypass** | `/v1/sandbox/*` routes skip x402 middleware entirely |
+| **Rate limiting** | Sandbox: IP-based (20 calls/hr). Paid: no limit (payment = rate limiting) |
 
-### Why Pre-Funded Over Per-Call
+### What We DON'T Need to Build (vs Previous Design)
 
-- **No latency:** Balance check is a DB lookup, not an on-chain verification
-- **No gas per API call:** Only gas is on deposit/withdrawal, not every request
-- **Simpler agent integration:** Agent just uses an API key like any other API
-- **Reuse pattern:** Mirrors how exchanges and prepaid API services work
+- ~~Per-account deposit addresses~~
+- ~~Balance tracking database~~
+- ~~Deposit detection (webhook/polling)~~
+- ~~Withdrawal system~~
+- ~~API key management~~
+- ~~Stripe integration~~
+- ~~Billing dashboard~~
+- ~~User account system~~
 
 ### Synergy with AgentsBoard
 
-AgentsBoard is building USDC payment infrastructure for agent-to-agent commerce. QuoteNorm should reuse:
-- Wallet management patterns
-- Base L2 USDC contract integration
-- Deposit detection infrastructure
-
-### GTM Timeline for USDC
-
-- **Weeks 1-5:** Stripe-only (developer focus)
-- **Weeks 6-9:** Add USDC pre-funded accounts, list on AgentsBoard
-- **Week 10+:** Monitor developer vs agent payment split, double down on winner
+AgentsBoard can adopt x402 as well for agent-to-agent payment. Shared learning:
+- x402 facilitator setup and configuration
+- Base L2 wallet management
+- USDC settlement patterns
 
 ---
 
@@ -392,39 +428,41 @@ AgentsBoard is building USDC payment infrastructure for agent-to-agent commerce.
 | Risk | Severity | Mitigation |
 |------|----------|------------|
 | **"Just use Claude directly"** | High | QuoteNorm adds schema stability, confidence calibration, comparison logic, and vendor fingerprinting that raw LLM calls don't provide. Price competitiveness matters — batch and cache to stay cheaper than direct LLM calls. |
-| **Market timing too early** | Medium | Free tier keeps barrier low. Even a small number of paying customers validates demand. The API can serve human-built software too, not only agents. |
+| **x402 ecosystem too early** | High | If few agents have x402-compatible wallets with funded USDC, paid usage will be near zero regardless of product quality. Mitigation: sandbox endpoint provides value and generates usage signal even without x402 adoption. If sandbox usage is high but paid is zero, consider adding Stripe as a fallback. |
+| **Market timing too early** | Medium | Sandbox keeps barrier low for evaluation. The x402 bet is time-bounded — if no traction by month 4, park cleanly. |
 | **LLM cost compression** | Medium | As LLM costs drop, QuoteNorm's margins improve. The value is in the schema and intelligence layer, not the raw extraction. |
 | **Extraction quality** | Medium | Start narrow (SaaS quotes only). Build feedback loops. Vendor fingerprinting improves accuracy over time. Confidence scores set honest expectations. |
+| **Sandbox abuse** | Low-Medium | Free sandbox could be used to extract full data via repeated calls with different inputs. Mitigation: truncation is per-response (not per-user), rate limiting by IP, and truncated output is genuinely less useful than paid output. |
 | **Data sensitivity** | Medium | Commercial quotes contain pricing and terms. Offer data processing agreements, SOC 2 path, and eventually on-prem for enterprise. |
 | **Incumbent entry** | Low (short term) | Big cloud providers could add this but it's too niche for them now. Move fast, build the schema standard, create switching costs. |
 
 ## 11. Success Metrics
 
 ### Month 3 (End of Phase 1)
-- `/v1/normalize` live as MCP tool + REST API with text + PDF + URL input
+- `/v1/normalize` live with x402 payment (USDC on Base L2)
+- `/v1/sandbox/normalize` live (free, truncated)
 - `@quotenorm/mcp-server` published on npm, listed in MCP community tools directory
-- Stripe billing working
-- Python + TypeScript SDKs published
-- 5+ users (MCP or API) on free tier
+- Listed in x402 ecosystem directory
 - Schema validated against 15+ real SaaS quotes
 - Core question answered: is output meaningfully better than prompting Claude directly?
+- Monitoring: sandbox calls/day, paid x402 calls/day, unique wallets
 
 ### Month 4 — Decision Gate
-- If no usage signal (< 5 active users across MCP + API) → park the project
-- If signal → proceed to Phase 2 (AgentsBoard, /compare, USDC)
+- If no usage signal (< 5 unique wallets paying OR < 50 sandbox calls/week) → park the project
+- If sandbox usage is high but paid is zero → x402 ecosystem isn't ready; consider adding Stripe as fallback
+- If paid usage is flowing → proceed to Phase 2 (AgentsBoard, /compare, SDKs)
 
 ### Month 6 (End of Phase 2 — if gated)
-- /compare endpoint live
+- /compare endpoint live (x402 paid)
 - AgentsBoard listing live
-- USDC payment path live
-- 15-25 API customers, 3-5 paying
-- $1-2K MRR
+- Python + TypeScript SDKs published (with x402 handling)
+- 10-20 unique paying wallets
+- $500-1K MRR
 
 ### Month 12 (Phase 3 — demand-driven, if gated)
 - Additional endpoints based on what users actually request
-- 50-100 API customers, 15-30 paying
-- $8-15K MRR
-- Clear signal on developer vs agent-native usage split
+- 30-80 unique paying wallets
+- $5-10K MRR
 
 ## 12. What Makes This a Good Business
 
@@ -438,6 +476,7 @@ AgentsBoard is building USDC payment infrastructure for agent-to-agent commerce.
 
 ## 13. What Could Kill It
 
+- x402 ecosystem doesn't mature fast enough — too few agents with funded wallets (distribution risk)
 - Agents don't actually make purchasing decisions at scale for 3+ years (timing risk)
 - A major LLM provider ships "commerce mode" with built-in quote parsing (platform risk)
 - The normalized schema doesn't generalize well across verticals (product risk)
@@ -446,9 +485,9 @@ AgentsBoard is building USDC payment infrastructure for agent-to-agent commerce.
 ## 14. Business & Legal Setup
 
 ### Legal Entity
-**AleLabs LLC** — parent entity for QuoteNorm and AgentsBoard (and future projects). Single-member LLC, formed before turning on Stripe billing (Phase 1 week 3). Provides liability protection (users send commercial documents, extraction accuracy isn't guaranteed) and clean tax separation. Home state is simpler than Delaware for a side project. Cost: ~$100-500 depending on state. Domain: `alelabs.io` (already registered).
+**AleLabs LLC** — parent entity for QuoteNorm and AgentsBoard (and future projects). Single-member LLC, formed before going live. Provides liability protection (users send commercial documents, extraction accuracy isn't guaranteed) and clean tax separation. Home state is simpler than Delaware for a side project. Cost: ~$100-500 depending on state. Domain: `alelabs.io` (already registered).
 
-QuoteNorm and AgentsBoard operate as product lines under AleLabs LLC — no separate entities needed. One Stripe account (separate products per project), one bank account (optionally sub-accounts per project via Mercury).
+QuoteNorm and AgentsBoard operate as product lines under AleLabs LLC — no separate entities needed. One bank account (optionally sub-accounts per project via Mercury). USDC revenue settles on Base L2 and can be converted to fiat via Coinbase or similar.
 
 ### Accounts & Infrastructure
 | When | Action | Cost |
@@ -458,11 +497,12 @@ QuoteNorm and AgentsBoard operate as product lines under AleLabs LLC — no sepa
 | Phase 1 week 3 | Form AleLabs LLC (home state) | $100-500 |
 | Phase 1 week 3 | Get EIN (IRS online) | Free |
 | Phase 1 week 3 | Open business bank account (Mercury or similar) | Free |
-| Phase 1 week 4 | Create Stripe account under AleLabs LLC | Free |
+| Phase 1 week 3 | Set up x402 facilitator account (Coinbase CDP) | Free |
+| Phase 1 week 3 | Set up USDC receiving wallet on Base L2 | Free |
 
 ### Legal Pages (Phase 1 week 4)
-- **Privacy Policy** — Required before collecting emails at signup. Must disclose: data collected (email, usage logs), third-party processing (Claude API — Anthropic doesn't train on API inputs), data retention policy. Generate with free tool (Termly, iubenda), customize data handling sections.
-- **Terms of Service** — Required before billing. Key clauses: no guarantees on extraction accuracy, usage limits, data handling (users send commercial documents), rate limits, payment terms.
+- **Privacy Policy** — Must disclose: data collected (IP for rate limiting, extraction logs), third-party processing (Claude API — Anthropic doesn't train on API inputs), data retention policy. Generate with free tool (Termly, iubenda), customize data handling sections. Note: no email/account data collected (x402 = no accounts).
+- **Terms of Service** — Required before going live. Key clauses: no guarantees on extraction accuracy, data handling (users send commercial documents), rate limits on sandbox, x402 payment terms, USDC settlement.
 - **Acceptable Use Policy** — What users can't send (PII, classified documents, etc.).
 
 ### Data Handling Policy
@@ -472,27 +512,29 @@ QuoteNorm and AgentsBoard operate as product lines under AleLabs LLC — no sepa
 
 ### Taxes
 - All revenue is pass-through income (single-member LLC → personal return).
-- Sales tax: below thresholds at <$5K MRR. Revisit at $10K+ ARR. Stripe Tax ($0.50/txn) handles EU VAT if needed.
-- Keep clean records from day one (Stripe does this automatically).
+- USDC revenue needs to be tracked for tax purposes — record each x402 payment (amount, timestamp, wallet address). On-chain records provide an audit trail.
+- Sales tax: below thresholds at <$5K MRR. Revisit at $10K+ ARR.
+- Crypto-to-fiat conversion: track cost basis for any USDC → USD conversions (though USDC is pegged 1:1, IRS still requires reporting).
 
 ### What You Don't Need Yet
 - Business insurance (revisit if enterprise customers appear)
 - Trademark registration (revisit if brand becomes valuable)
 - Lawyer-reviewed terms (revisit if revenue exceeds $50K ARR)
-- Separate accounting software (Stripe reports + bank statements are enough)
+- Separate accounting software (on-chain records + bank statements are enough)
 
 ## 15. Execution Plan
 
 ### Phase 0 — Foundation (Week 1-2)
 
-**Goal:** Project scaffolded, schema validated, first extraction working end-to-end.
+**Goal:** Project scaffolded, schema validated, first extraction working end-to-end. x402 evaluated.
 
 | Week | Task | Deliverable |
 |------|------|-------------|
 | 1 | Collect 15+ real SaaS quotes (pricing pages, PDF proposals, email quotes) | `test_data/` folder with real inputs |
 | 1 | Finalize the normalized quote JSON schema — test it against collected quotes, refine fields | `schema/quote-v1.json` (JSON Schema) |
 | 1 | Scaffold Next.js API project (TypeScript) | Repo with Next.js, project structure, CI |
-| 1 | Set up database (Neon Postgres) — tables for API keys, usage logs, cached normalizations | Prisma schema, migration run |
+| 1 | Set up database (Neon Postgres) — tables for extraction logs, cached normalizations (no user/account tables) | Prisma schema, migration run |
+| 1 | Evaluate x402 npm package — test facilitator setup, payment flow, USDC settlement on Base L2 testnet | x402 proof of concept working |
 | 2 | Build extraction pipeline: document → text → LLM prompt → structured JSON | `src/lib/extractor.ts` |
 | 2 | Build confidence scoring: per-field confidence based on extraction clarity | Confidence model v1 |
 | 2 | Build missing-field detection: compare output against full schema, flag gaps | Missing fields logic |
@@ -502,11 +544,11 @@ QuoteNorm and AgentsBoard operate as product lines under AleLabs LLC — no sepa
 - ~~Python (FastAPI) vs TypeScript (Next.js)~~ — Decided: TypeScript/Next.js. Shared stack with AgentsBoard outweighs Python's LLM ecosystem advantage. Pivot to Python if PDF extraction proves to be a bottleneck.
 - Claude vs GPT-4 for extraction — Claude has better structured output and document understanding
 - Document parsing: pdf-parse for PDFs, cheerio for static HTML, Playwright only if needed for JS-rendered pricing pages
-- MCP architecture: shared `src/lib/extractor.ts` called by both MCP server (local npm package) and REST API (hosted Next.js)
+- x402 facilitator: Coinbase CDP (hosted) vs self-hosted — evaluate in Phase 0
 
-### Phase 1 — MVP MCP Tool + API (Week 3-5)
+### Phase 1 — x402-Native MVP (Week 3-5)
 
-**Goal:** `/v1/normalize` endpoint live with text, PDF, and URL input, documented, deployable. Core question answered: is this meaningfully better than prompting Claude directly?
+**Goal:** `/v1/normalize` live with x402 payment, sandbox endpoint live, MCP tool published. Core question answered: is this meaningfully better than prompting Claude directly?
 
 | Week | Task | Deliverable |
 |------|------|-------------|
@@ -514,112 +556,114 @@ QuoteNorm and AgentsBoard operate as product lines under AleLabs LLC — no sepa
 | 3 | Input handling: text passthrough, PDF extraction (pdf-parse), URL fetch + HTML-to-text (cheerio or Playwright) | Text + PDF + URL input support |
 | 3 | Response format: normalized quote JSON + confidence + missing fields + warnings | Stable response schema |
 | 3 | Error handling: invalid input, extraction failures, timeout handling | Error response format |
-| 4 | Minimal web dashboard: signup (email → API key), key management, usage stats | `quotenorm.ai/dashboard` live |
-| 4 | API key auth: generate keys, validate on requests, track usage | Key validation middleware |
-| 4 | Usage tracking: log every call (customer, input type, latency, token cost) | Usage table, logging middleware |
-| 4 | Rate limiting: free tier = 50/month, paid = based on plan | Rate limit middleware |
-| 4 | Stripe integration: metered billing, customer portal, webhook handling | Billing live |
-| 5 | API docs: OpenAPI spec (next-swagger-doc or hand-written), hosted Swagger UI | `/docs` endpoint |
-| 5 | Python SDK: thin wrapper around the API | `quotenorm` PyPI package |
-| 5 | TypeScript SDK: thin wrapper around the API | `@quotenorm/sdk` npm package |
-| 5 | MCP server: build local MCP server wrapping the hosted API, publish `@quotenorm/mcp-server` to npm | npm package live, listed in MCP community tools |
+| 3 | Add x402 payment middleware to `/v1/normalize` — configure pricing ($0.10 USDC), facilitator, Base L2 | x402 payment working on mainnet |
+| 4 | Build `POST /v1/sandbox/normalize` — same extraction, truncated output (first 3 fields, no confidence details) | Sandbox endpoint live |
+| 4 | Sandbox rate limiting: IP-based, 20 calls/hour | Rate limit middleware |
+| 4 | Usage tracking: log every call (wallet address or IP, input type, latency, token cost, paid/sandbox) | Extraction logs table, logging middleware |
+| 4 | Set up USDC receiving wallet on Base L2, configure x402 facilitator for production | Wallet + facilitator live |
+| 5 | API docs: OpenAPI spec, x402 payment flow documentation, client setup guide | `/docs` endpoint |
+| 5 | MCP server: build local MCP server wrapping the x402 API, agent wallet passthrough, publish `@quotenorm/mcp-server` to npm | npm package live, listed in MCP community tools |
+| 5 | Submit to x402 ecosystem directory (x402.org) | Listed in x402 ecosystem |
 | 5 | Deploy to production (Railway or Vercel) | Live API at `api.quotenorm.ai` |
 
-**End of Phase 1:** QuoteNorm is available as an MCP tool (primary) and a REST API (secondary). An agent or developer can normalize a SaaS quote (text, PDF, or URL) and get back structured JSON. Stripe billing works. Docs are live. Python + TypeScript SDKs available.
+**End of Phase 1:** QuoteNorm is live as an x402-native API + MCP tool. An agent can normalize a SaaS quote (text, PDF, or URL) and pay per-request with USDC. Developers can evaluate via the free sandbox. No accounts, no API keys, no Stripe, no dashboard.
 
 #### User Experience Flows (Phase 1)
 
-**Flow A: MCP Tool (Primary — low friction)**
+**Flow A: Agent via x402 (Primary — zero friction)**
+
+How agents find it:
+- MCP tool in registries (Claude, Cursor, Windsurf)
+- x402 ecosystem directory (x402.org)
+- Agent framework tool lists, AgentsBoard (Phase 2)
+
+First use (zero setup):
+1. Agent sends `POST /v1/normalize` with a quote URL
+2. Gets `402 Payment Required` with payment instructions ($0.10 USDC, Base L2)
+3. Agent's x402-compatible wallet pays automatically
+4. Retries with `PAYMENT-SIGNATURE` header
+5. Gets full structured JSON — pricing, terms, confidence scores, missing fields
+
+No accounts, no API keys, no signup. The agent discovers the tool and pays in the same request cycle.
+
+**Flow B: MCP Tool (Primary distribution channel)**
 
 How users find it:
 - Developer discovers QuoteNorm in MCP community tools directory, npm, or word of mouth
 - Agent frameworks and AI coding tools (Claude, Cursor, Windsurf) support MCP tools natively
 
-First use (< 5 minutes):
-1. Developer signs up at `quotenorm.ai/dashboard` → gets API key instantly (email only, no credit card)
-2. Installs MCP server: `npx @quotenorm/mcp-server --api-key qn_...` or adds to MCP config:
+First use:
+1. Installs MCP server with wallet config:
    ```json
    {
      "mcpServers": {
        "quotenorm": {
          "command": "npx",
          "args": ["@quotenorm/mcp-server"],
-         "env": { "QUOTENORM_API_KEY": "qn_..." }
+         "env": { "WALLET_PRIVATE_KEY": "0x..." }
        }
      }
    }
    ```
-3. Agent/developer calls: "Normalize the pricing at https://slack.com/pricing"
+2. Agent/developer calls: "Normalize the pricing at https://slack.com/pricing"
+3. MCP server handles x402 payment negotiation with the hosted API
 4. Gets structured JSON back — pricing, terms, confidence scores, missing fields
-5. Free tier: 50 calls/month tracked via API key
+5. Each call costs $0.10 USDC, deducted from the configured wallet
 
-Why this works: An agent doesn't think "I could DIY this." It needs a tool that does one thing reliably. The MCP tool IS the product — discovery and value delivery happen in the developer's existing workflow, not on a separate website.
-
-**Flow B: REST API (Secondary — power users)**
+**Flow C: Sandbox (Evaluation — no wallet needed)**
 
 How developers find it:
-- Organic search, direct outreach, or graduates from MCP usage needing direct API access
-- Docs site (Swagger UI at `api.quotenorm.ai/docs`) IS the landing page. Note: Next.js doesn't auto-generate OpenAPI like FastAPI — use `next-swagger-doc` or maintain a hand-written spec.
+- Docs site at `api.quotenorm.ai/docs`
+- Linked from MCP tool description and x402 ecosystem listing
 
-Signup → First API call (< 5 minutes):
-1. Developer visits `api.quotenorm.ai/docs` — sees OpenAPI docs with live "Try it" functionality
-2. Signs up at `quotenorm.ai/dashboard` — email only, no credit card required
-3. Gets an API key immediately — displayed on screen + sent to email
-4. Makes first call — either via docs "Try it" button, curl, or SDK:
-   ```bash
-   pip install quotenorm
-   ```
-   ```python
-   from quotenorm import QuoteNorm
-   qn = QuoteNorm(api_key="qn_...")
-   result = qn.normalize(url="https://slack.com/pricing")
-   print(result.pricing.base_price)  # structured output
-   print(result.confidence.overall)  # 0.87
-   print(result.missing_fields)      # ["cancellation_notice_days", "data_residency"]
-   ```
-5. Free tier: 50 normalizations/month — enough to build and test an integration
+First use (< 1 minute):
+1. Developer sends `POST /v1/sandbox/normalize` with a quote URL
+2. Gets truncated JSON back — first 3 fields only, no confidence details
+3. Evaluates quality — is this good enough to integrate?
+4. If yes → sets up x402 client or MCP tool with wallet for full access
 
-**SDK distribution:**
-- **Python:** Published to PyPI as `quotenorm` — `pip install quotenorm`. Thin wrapper: `httpx` + `pydantic` for typed responses. Source: `github.com/quotenorm/quotenorm-python`
-- **TypeScript:** Published to npm as `@quotenorm/sdk` — `npm install @quotenorm/sdk`. Thin wrapper: `fetch` + TypeScript types. Source: `github.com/quotenorm/quotenorm-js`
-- Both SDKs are trivial — auth, request formatting, typed response parsing. ~2 hrs each with Claude Code.
+```bash
+# Sandbox — free, no wallet needed
+curl -X POST https://api.quotenorm.ai/v1/sandbox/normalize \
+  -H "Content-Type: application/json" \
+  -d '{"source": "url", "content": "https://slack.com/pricing"}'
 
-**Upgrade → Paying customer:**
+# Returns truncated output:
+# { "vendor": { "name": "Slack", ... }, "pricing": { "model": "per_seat", ... },
+#   "terms": { "billing_frequency": "monthly", ... },
+#   "_truncated": true, "_message": "Full output available via x402 payment" }
+```
 
-Both MCP and API users already have an API key (required at signup). When they hit the 50-call free tier limit:
-1. API returns `429` with message: "Free tier limit reached. Upgrade at quotenorm.ai/dashboard"
-2. MCP server surfaces this error to the agent/developer
-3. Developer visits `quotenorm.ai/dashboard` → billing tab → Stripe Checkout session
-4. Enters credit card → switches to pay-as-you-go ($0.10/normalize)
-5. Stripe metered billing: usage tracked per API call, invoiced monthly
-6. Usage visible via `GET /v1/usage` endpoint (programmatic) or dashboard (UI)
-
-**What's deliberately NOT in Phase 1:** /compare, /validate, USDC payments, AgentsBoard listing, framework integrations, landing page. These are gated on usage signal.
+**What's deliberately NOT in Phase 1:** /compare, /validate, SDKs, AgentsBoard listing, framework integrations, landing page. These are gated on usage signal.
 
 ### ⚑ Month 4 — Decision Gate
 
 Before investing further, evaluate:
-- Are agents/developers using /normalize via MCP or API? (target: 5+ active users)
+- Are agents paying via x402? (target: 5+ unique wallets)
+- Is the sandbox getting usage? (target: 50+ calls/week)
 - Is the output meaningfully better than "just prompt Claude"?
-- Any signal of willingness to pay?
 
-**If no traction → park the project.** If signal → proceed to Phase 2.
+**Decision matrix:**
+- x402 payments flowing → proceed to Phase 2
+- High sandbox, zero paid → x402 ecosystem not ready; consider adding Stripe as fallback
+- Low sandbox, zero paid → product or market isn't there; park the project
 
 ### Phase 2 — Distribution & Compare (Week 6-9) — GATED ON PHASE 1 SIGNAL
 
-**Goal:** Add distribution channels, second endpoint, and agent-native payment. Only build if Phase 1 shows usage signal.
+**Goal:** Add distribution channels, second endpoint, and SDKs. Only build if Phase 1 shows x402 payment signal.
 
 | Week | Task                                                                                         | Deliverable               |
 | ---- | -------------------------------------------------------------------------------------------- | ------------------------- |
 | 6    | AgentsBoard listing                                                                          | Listed on AgentsBoard     |
-| 7    | Build `POST /v1/compare` — accepts 2-5 normalized quotes, returns comparison matrix          | Working endpoint          |
+| 7    | Build `POST /v1/compare` — accepts 2-5 normalized quotes, returns comparison matrix (x402 paid, $0.15) | Working endpoint          |
 | 7    | Comparison logic: side-by-side fields, delta highlights, "best value" flags                  | Comparison output schema  |
-| 8    | USDC pre-funded accounts on Base L2                                                          | Agent-native payment live |
+| 8    | Python SDK with x402 payment handling built in                                               | `quotenorm` PyPI package  |
+| 8    | TypeScript SDK with x402 payment handling built in                                           | `@quotenorm/sdk` npm package |
 | 8    | Expand test corpus to 50+ quotes across 20+ SaaS vendors                                     | Broader test coverage     |
 | 9    | Community launch: post in agent builder communities (LangChain Discord, Reddit, HN, Twitter) | Launch posts              |
-| 9    | Reach out to 10 agent builders directly, offer free usage in exchange for feedback           | 5+ active beta users      |
+| 9    | Reach out to 10 agent builders directly, offer sandbox access for feedback                   | 5+ active beta users      |
 
-**End of Phase 2:** /compare live. USDC payment path available. AgentsBoard distribution. 10+ users across MCP + API.
+**End of Phase 2:** /compare live (x402 paid). AgentsBoard distribution. Python + TS SDKs. 10+ unique paying wallets.
 
 ### Phase 3 — Deepen & Scale (Week 10+) — GATED ON PAYING CUSTOMERS
 
@@ -638,24 +682,24 @@ Before investing further, evaluate:
 ### Execution Timeline Summary
 
 ```
-Week  1-2   ████  Phase 0: Foundation (schema, pipeline, test data)
-Week  3-5   ██████  Phase 1: MVP (/normalize, MCP tool, API, Stripe, SDKs, deploy)
-  ⚑  Month 4: Decision gate — traction or park
-Week  6-9   ████████  Phase 2: Scale + Compare (AgentsBoard, /compare, USDC) [GATED]
+Week  1-2   ████  Phase 0: Foundation (schema, pipeline, test data, x402 proof of concept)
+Week  3-5   ██████  Phase 1: x402-Native MVP (/normalize, sandbox, MCP tool, deploy)
+  ⚑  Month 4: Decision gate — x402 payments flowing, or park
+Week  6-9   ████████  Phase 2: Distribution + Compare (AgentsBoard, /compare, SDKs) [GATED]
 Week 10+    ░░░░░░░░  Phase 3: Deepen & Scale (demand-driven) [GATED]
 ```
 
 ### Time Budget
 
-Assuming similar constraints to other projects (part-time, Claude Code does heavy lifting):
+Assuming similar constraints to other projects (part-time, Claude Code does heavy lifting). x402 pivot significantly reduces Phase 1 effort (no Stripe, no dashboard, no accounts, no SDKs):
 
 | Phase | Calendar time | Effort/week | Total effort |
 |-------|---------------|-------------|-------------|
-| Phase 0 | 2 weeks | 6-8 hrs | ~14 hrs |
-| Phase 1 | 3 weeks | 5-7 hrs | ~18 hrs |
+| Phase 0 | 2 weeks | 6-8 hrs | ~14 hrs (includes x402 evaluation) |
+| Phase 1 | 3 weeks | 4-5 hrs | ~13 hrs (down from ~18 — no Stripe/dashboard/SDKs) |
 | Phase 2 | 4 weeks | 4-6 hrs | ~20 hrs |
 | Phase 3 | TBD | TBD | TBD |
-| **Committed** | **~9 weeks** | | **~52 hrs** |
+| **Committed** | **~9 weeks** | | **~47 hrs** |
 
 Phase 3 effort is intentionally unbudgeted — it depends on what the market asks for.
 
@@ -667,10 +711,11 @@ If starting today, here's what the first working session looks like:
 2. **Validate schema (45 min)** — Take 3 quotes and manually map them to the proposed JSON schema. Identify fields that don't fit, fields that are missing, fields that are redundant.
 3. **Scaffold project (30 min)** — Create repo, install dependencies, basic project structure.
 4. **First extraction test (45 min)** — Take one quote, send it to Claude API with a structured output prompt, see what comes back. Compare to the schema. Iterate the prompt.
-5. **Log findings (15 min)** — What worked, what didn't, schema adjustments needed.
+5. **x402 proof of concept (30 min)** — Install x402 npm package, set up a test endpoint with payment middleware on Base testnet. Verify the 402 → pay → retry flow works.
+6. **Log findings (15 min)** — What worked, what didn't, schema adjustments needed, x402 impressions.
 
-**Total: ~3 hours.** By the end you have a validated schema and a working extraction prompt.
+**Total: ~3.5 hours.** By the end you have a validated schema, a working extraction prompt, and confirmed x402 integration path.
 
 ---
 
-_This is a v1 plan (revised). Phases 2-3 are gated on usage signal. Build fast, validate early, only invest further if the market responds._
+_This is a v1 plan (revised 2026-03-11: x402-only pivot). Phases 2-3 are gated on usage signal. Build fast, validate early, only invest further if the market responds. The x402 bet is time-bounded — if the ecosystem isn't ready by month 4, the sandbox signal will tell us._
