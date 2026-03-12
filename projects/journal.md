@@ -9,6 +9,13 @@ Daily notes, observations, and miscellaneous items worth keeping for context and
 - Created ale-markets project — removed after rethinking approach (market data fetching too token-heavy via web search; needs a proper data pipeline before it's useful)
 - **ContextSignal strategy pivot:** Revised from SEO-volume strategy (v2.5.2) to product-first model. Three constraints drove the change: (1) real time budget is 2–3 hrs/week, not 5–7; (2) Claude does all writing with minimal human editing; (3) no direct PM/Sales domain expertise. Flipped revenue model to lead with digital products (45%), cut 8 verticals to 1 (PM only), killed automated content tier entirely, set honest targets ($1k–$2k at Month 12). The insight: AI-generated content is strong for utility products (prompt packs, templates) but weak for SEO authority plays.
 
+### 2026-03-11
+
+- **PolicyNorm.ai project created** from x402-native business ideation brainstorm. Evaluated multiple ideas following the QuoteNorm pattern; PolicyNorm (ToS/Privacy Policy normalizer) selected as strongest candidate.
+- Key differentiators vs QuoteNorm: broader market (every agent interacting with web services, not just procurement), higher per-call value ($0.25 vs $0.10), stronger moat (long legal docs + risk analysis), safety narrative (agents must understand terms before acting).
+- Same playbook: x402-only, sandbox endpoint, MCP tool, gated execution, AleLabs LLC. Separate codebase and domain (`policynorm.ai`).
+- Open question: run PolicyNorm Phase 0 in parallel with QuoteNorm or sequential?
+
 ### 2026-03-06
 
 - ContextSignal homepage v6 is live. Revised footer, About page, and contact form guidance prepared. Site files organised under `site/` subfolder.
