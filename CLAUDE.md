@@ -9,6 +9,9 @@ This is a markdown-based project knowledge base for use with Claude Code. It hol
 ## Directory Structure
 
 ```
+_memory/                # Claude Code memory — preferences, project map, feedback (synced via git)
+├── MEMORY.md           # Index of memory files
+├── *.md                # Individual memory files
 projects/
 ├── _active.md          # Status page — one-liner per project
 ├── _inbox.md           # Unsorted capture for new ideas/notes
@@ -17,13 +20,22 @@ projects/
 │   ├── overview.md
 │   ├── tasks.md
 │   └── log.md
-├── _archive/           # Completed projects (moved here, one-liner kept in _active.md)
+├── _archive/           # Completed/parked projects (moved here, one-liner kept in _active.md)
 │   └── [project-name]/ # Full project folder preserved for reference
 └── [project-name]/     # One folder per project
     ├── overview.md     # Goal, context, decisions, links
     ├── tasks.md        # Session brief — questions, directives, open items
     └── log.md          # Progress notes and session summaries
 ```
+
+## Memory
+
+Claude Code memory lives in `_memory/` at the repo root (committed and synced via git). This replaces the default `~/.claude/` memory path so that memory is portable across machines.
+
+- `_memory/MEMORY.md` is the index — read it at the start of a session to see what's available
+- Memory files store user preferences, project-to-repo mappings, and feedback
+- When saving new memories, write them to `_memory/` and update `_memory/MEMORY.md`
+- See `_memory/MEMORY.md` for the full list of memory files
 
 ## Key Files
 
@@ -41,6 +53,7 @@ projects/
 - Dated entries for observations, notes, and miscellaneous items worth keeping
 - Cross-project or general — not tied to a specific project
 - Permanent record (unlike inbox, which gets processed and cleared)
+- **Descending order** — most recent entry at the top
 
 **projects/[name]/overview.md**: Project definition
 - Goal: Success criteria
@@ -74,6 +87,28 @@ projects/
 4. Log what was done in log.md with today's date
 5. Update tasks.md — remove completed items, add new ones that came up
 6. Update _active.md status line if the project state changed
+
+## Code Repos vs Knowledge Base
+
+This repo is **strategy and context only** — no application code lives here. Each project that has a codebase gets its own separate git repo:
+
+```
+~/dev/claude_dev/
+├── AleAI/                    # This repo — knowledge base (markdown only)
+│   └── projects/
+│       ├── agentsboard-ai/   # Strategy, tasks, logs
+│       ├── quotenorm-ai/
+│       └── policynorm-ai/
+├── agentsboard-ai/           # Code repo — Next.js app
+├── quotenorm-ai/             # Code repo — Next.js app
+└── policynorm-ai/            # Code repo — Next.js app
+```
+
+### Separation of concerns
+- **Knowledge base (this repo):** decisions, strategy, task briefs, session logs
+- **Code repos:** application code, build/test/deploy instructions, code-level `CLAUDE.md`
+- Each code repo's `CLAUDE.md` should point back here for strategy context
+- Phase 0 scratch work (test scripts, schema drafts) can live in `projects/[name]/scratch/` until the real code repo is scaffolded in Phase 1
 
 ## Git Usage
 
@@ -125,7 +160,7 @@ New projects often emerge mid-conversation from a discussion topic. When this ha
 When archiving a completed or paused project:
 - Move the project folder to `projects/_archive/`
 - Remove the project from the Active section in _active.md
-- Add a one-liner to the Completed section with date and summary
+- Add a one-liner to the correct section: **Parked** (may resume later) or **Completed** (done), with date and summary
 - Don't delete any content — the full project is preserved in _archive/
 
 ### Git Workflow

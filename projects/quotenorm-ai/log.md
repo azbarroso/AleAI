@@ -87,6 +87,14 @@
   - No PII commitment — terms prohibit sending PII.
 - **tasks.md updated** with "Pre-Phase 1: Business Setup" checklist.
 
+### 2026-03-12 — Phase 0 Playbook Created
+
+- Created `scratch/phase-0-playbook.md` — detailed execution plan for Phase 0 validation
+- Four work blocks (~7-8 hrs total): (1) collect 15+ sample quotes, (2) design & validate schema, (3) test extraction with Claude API, (4) x402 proof of concept + go/no-go decision
+- Defined go/no-go decision framework: field accuracy >85%, schema coverage >80%, cost per call <$0.05, clear "better than raw Claude" signal
+- Key recommendations: use tool_use mode for structured output, test with Haiku first for cost, track token counts per call, keep x402 test minimal
+- Next: start Work Block 1 — collect sample SaaS pricing pages and quotes
+
 ### 2026-03-11 — x402-Only Payment Pivot
 
 - **Major strategic pivot: x402 replaces Stripe + USDC dual payment.** QuoteNorm will use x402 protocol (Coinbase, HTTP 402 + USDC on Base L2) as the sole payment method from Phase 1. No Stripe, no user accounts, no API keys, no billing dashboard.
