@@ -88,7 +88,7 @@ Usage-based pricing via x402: agents pay per API call with USDC on Base L2.
 - Legal docs are long, repetitive, and text-heavy — ideal for structured extraction + risk flagging
 - Long-term play: become the policy intelligence layer for the agentic web
 - Under AleLabs LLC (same parent entity as QuoteNorm and AgentsBoard)
-- Same tech stack: Next.js, Claude API, x402, Neon, Vercel
+- Same tech stack: Express, TypeScript, Claude API, x402, Neon, Railway/Vercel
 - Shared x402 facilitator setup and Base L2 wallet with QuoteNorm
 - Separate codebase and domain (`policynorm.ai`)
 

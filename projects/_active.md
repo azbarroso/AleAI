@@ -1,12 +1,12 @@
 # Projects
 
-Last updated: 2026-03-12
+Last updated: 2026-03-13
 
 ## Active
 
 **agentsboard-ai** — API built and tested (claim, discovery, stats, feed). Neon DB live. Frontend restyled to match visual design.
 
-**quotenorm-ai** — x402-native quote normalization API. **Phase 0 complete — GO decision.** Schema validated, extraction tested (0.83 avg confidence), x402 evaluated (production-ready). Phase 1 next: scaffold Express + TS project, build /normalize endpoint, x402 payment, sandbox, MCP tool.
+**quotenorm-ai** — x402-native quote normalization API. **Phase 1 scaffolding complete.** Code repo live on GitHub, Express + x402 middleware, extraction pipeline working (Haiku-first/Sonnet fallback), sandbox endpoint tested. Next: deploy, MCP tool, real-world testing.
 
 **policynorm-ai** — x402-native ToS/Privacy Policy normalizer API. Structured JSON with risk flags, notable clauses, confidence scores. $0.25/call USDC on Base L2. Phase 0: collect sample docs, design schema, test extraction. Under AleLabs LLC alongside QuoteNorm.
 

@@ -1,5 +1,15 @@
 # Log
 
+### 2026-03-13 — Phase 1 Scaffolding Complete
+
+- Code repo scaffolded at `~/dev/claude_dev/quotenorm-ai/` and pushed to GitHub (`azbarroso/quotenorm-ai`)
+- **Files created:** Express server (`src/index.ts`), extraction pipeline (`src/lib/extractor.ts`), schema types (`src/lib/schema.ts`), config (`src/lib/config.ts`), normalize route with x402 middleware (`src/routes/normalize.ts`), sandbox route (`src/routes/sandbox.ts`), rate limiter (`src/middleware/rateLimit.ts`)
+- **Dependencies:** `@x402/express`, `@x402/evm`, `@x402/core` (all v2.6.0), `@anthropic-ai/sdk`, `express`, `dotenv`
+- **Verified x402 packages:** Actual npm packages differ from evaluation notes — `@x402/express` (not `@x402/http`), `@x402/evm` (not `@x402/mechanisms`)
+- **Sandbox endpoint tested:** `POST /v1/sandbox/normalize` successfully extracted 2 plans from minimal pricing text. Haiku handled it in ~4 seconds, confidence 0.70.
+- Typecheck passes clean
+- **Next:** Deploy (Railway), MCP tool, test with full-length documents, set up x402 wallet
+
 ### 2026-03-09
 
 - Project created

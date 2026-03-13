@@ -2,6 +2,12 @@
 
 Daily notes, observations, and miscellaneous items worth keeping for context and history.
 
+### 2026-03-13
+
+- **QuoteNorm Phase 1 scaffolding complete.** Code repo live on GitHub (`azbarroso/quotenorm-ai`). Express + x402 middleware, Claude extraction pipeline (Haiku-first/Sonnet fallback), sandbox endpoint tested with real extraction. All 7 source files, typechecks clean.
+- x402 npm packages verified: actual names are `@x402/express`, `@x402/evm`, `@x402/core` (v2.6.0) — differ from earlier evaluation notes which referenced `@x402/http` and `@x402/mechanisms`.
+- Next for QuoteNorm: deploy to Railway, build MCP tool, test on full-length documents, set up Base L2 wallet for USDC payments.
+
 ### 2026-03-11
 
 - **PolicyNorm.ai project created** from x402-native business ideation brainstorm. Evaluated multiple ideas following the QuoteNorm pattern; PolicyNorm (ToS/Privacy Policy normalizer) selected as strongest candidate.
