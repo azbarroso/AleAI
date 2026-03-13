@@ -95,6 +95,16 @@
 - 5 sites failed fetch (Slack, Stripe, HubSpot, Jira, Figma — client-rendered)
 - Test data index created with schema coverage analysis
 
+**Work Block 4: x402 evaluation + Go/No-Go decision**
+- Evaluated x402 protocol: 75M txns, $24M volume, 94K buyers, Coinbase-backed, Apache 2.0. Production-viable.
+- Key packages: `@x402/core`, `@x402/http` (Express/Hono middleware), `@x402/mcp` (MCP integration), `@x402/mechanisms`
+- MCP package exists (`@x402/mcp`) — agents discover and pay through MCP natively
+- Base L2 gas: ~$0.001-$0.005/txn — acceptable at $0.10/call pricing
+- **Tech stack change: Express instead of Next.js.** x402 has native Express middleware; QuoteNorm is a pure API with no frontend. Express is simpler and cleaner.
+- Bazaar discovery catalog available for listing QuoteNorm endpoints
+- Concerns: v2 package migration (need to verify npm publish), Next.js middleware gap (resolved by switching to Express), facilitator single dependency (acceptable for v1)
+- **GO/NO-GO: GO.** All 6 criteria passed. Proceed to Phase 1.
+
 **Work Block 3: Extraction tested**
 - Designed extraction prompt v1 (`scratch/prompts/extraction-v1.md`) — system prompt for tool_use mode, ~350 words
 - Ran extraction on 5 diverse samples: Linear (clean tiers), Datadog (multi-product), Twilio (pure usage), mock simple (email quote), mock complex (enterprise proposal)

@@ -10,18 +10,20 @@
 
 ## Directives
 
-- **Phase 0: Validate the core** — Collect 15+ real SaaS quotes, finalize schema, build extraction pipeline, test accuracy. Answer: is this meaningfully better than prompting Claude directly?
+- ~~**Phase 0: Validate the core** — Collect 15+ real SaaS quotes, finalize schema, build extraction pipeline, test accuracy. Answer: is this meaningfully better than prompting Claude directly?~~ — Done 2026-03-12. GO decision. 14 test samples, schema v1 validated, extraction avg confidence 0.83, x402 production-ready, Haiku cost ~$0.003/call.
 - ~~**Phase 1: Ship /normalize as MCP tool + REST API** — Build shared extractor (`src/lib/extractor.ts`), publish local MCP server (`@quotenorm/mcp-server` on npm), REST API on Vercel/Railway, minimal dashboard (signup + key mgmt + billing), Stripe billing, Python/TS SDKs. No /compare, no USDC yet.~~ — Superseded 2026-03-11, replaced by x402-only Phase 1.
 - **Phase 1: Ship /normalize as x402-native API** — Build extraction pipeline, `POST /v1/normalize` with x402 payment middleware (USDC on Base L2), `POST /v1/sandbox/normalize` (free, truncated output), MCP tool wrapping the x402 API. No Stripe, no accounts, no API keys, no dashboard, no SDKs.
 
 ## Open Items
 
-- ~~Tech stack decision~~ — Done, TypeScript/Next.js + Prisma + Neon (shared with AgentsBoard). Pivot to Python if Phase 0 PDF extraction is a bottleneck.
-- ~~Pricing model specifics (per-call tiers, free tier for adoption?)~~ — Revised 2026-03-11: x402 per-request pricing (e.g., $0.10/normalize). No free tier — sandbox endpoint (`/v1/sandbox/normalize`) replaces it with truncated output.
-- First demo input: find or create a sample SaaS quote to test normalization against
+- ~~Tech stack decision~~ — Revised 2026-03-12: Express + TypeScript (not Next.js). x402 has native Express middleware; pure API doesn't need Next.js.
+- ~~Pricing model specifics (per-call tiers, free tier for adoption?)~~ — Revised 2026-03-11: x402 per-request pricing ($0.10/normalize). Sandbox replaces free tier.
+- ~~First demo input: find or create a sample SaaS quote to test normalization against~~ — Done 2026-03-12. 14 test samples collected (11 real + 3 mock).
 - Competitive landscape: any existing quote normalization APIs?
-- x402 middleware: evaluate Coinbase's x402 npm package, understand facilitator setup and USDC settlement on Base L2
-- Sandbox endpoint design: what fields to truncate/redact? First 3 fields? Watermarked? Needs to show enough quality to convert.
+- ~~x402 middleware: evaluate Coinbase's x402 npm package, understand facilitator setup and USDC settlement on Base L2~~ — Done 2026-03-12. `@x402/http` for Express, Coinbase hosted facilitator, Base L2 gas ~$0.001-0.005. See `scratch/x402/x402-evaluation.md`.
+- ~~Sandbox endpoint design: what fields to truncate/redact?~~ — Done 2026-03-12. First 2 plans, no confidence details. Separate route (no x402 middleware). IP rate-limited.
+- Verify `@x402/http` and `@x402/mcp` are published on npm (v2 packages) before scaffolding Phase 1
+- Test extraction on full-length real HTML pages and PDFs (not just pre-processed text snapshots)
 
 ### Pre-Phase 1: Business Setup
 - Register `quotenorm.ai` domain
