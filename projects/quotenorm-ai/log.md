@@ -87,6 +87,33 @@
   - No PII commitment — terms prohibit sending PII.
 - **tasks.md updated** with "Pre-Phase 1: Business Setup" checklist.
 
+### 2026-03-12 — Phase 0 Work Blocks 1 & 2
+
+**Work Block 1: Test data collected**
+- 11 real SaaS pricing pages fetched and saved (Linear, Vercel, GitHub, Notion, Datadog, 1Password, MongoDB, Postman, Twilio, Render, Neon)
+- 3 mock enterprise quotes created (simple email, medium proposal, complex enterprise)
+- 5 sites failed fetch (Slack, Stripe, HubSpot, Jira, Figma — client-rendered)
+- Test data index created with schema coverage analysis
+
+**Work Block 3: Extraction tested**
+- Designed extraction prompt v1 (`scratch/prompts/extraction-v1.md`) — system prompt for tool_use mode, ~350 words
+- Ran extraction on 5 diverse samples: Linear (clean tiers), Datadog (multi-product), Twilio (pure usage), mock simple (email quote), mock complex (enterprise proposal)
+- Average overall confidence: 0.83. Enterprise quotes score highest (0.94), complex multi-product pages lowest (0.72) — as expected
+- Schema handles all 5 input types well. `plans[]` array was the right structural decision. `rate_card` model handles pure usage-based pricing.
+- Key findings: (1) features are subjective — cap at 5-8 per plan, (2) `annual` price field needs clearer semantics, (3) multi-product vendors create many plans but this is acceptable
+- Cost estimate: Haiku ~$0.003/call (97% margin at $0.10), Sonnet ~$0.015/call (85% margin). Recommend Haiku-first with Sonnet fallback for low-confidence extractions.
+- Identified 5 prompt refinements for v2
+- **Go/No-Go signal from extraction: strong GO.** Schema works, quality is high, margins are healthy.
+
+**Work Block 2: Schema designed and validated**
+- Mapped 5 diverse samples against business plan schema — found 6 structural problems
+- Key finding: flat `pricing` object doesn't work. Real quotes have multiple tiers, multiple products, or multiple pricing components. Restructured as `plans[]` array.
+- Other changes: added `add_ons[]`, `quote_metadata`, expanded `support` with SLA details, `terms` with price escalation/termination, `one_time_costs`, `source` metadata
+- Wrote formal JSON Schema (`scratch/schema/quote-v1.json`)
+- Defined confidence scoring rubric: High (0.9-1.0), Medium (0.6-0.89), Low (0.3-0.59), Not found (→ missing_fields)
+- Deliberately deferred: multi-year breakdowns, IP/legal terms (PolicyNorm territory), liability caps
+- Next: Work Block 3 — test extraction with Claude API
+
 ### 2026-03-12 — Phase 0 Playbook Created
 
 - Created `scratch/phase-0-playbook.md` — detailed execution plan for Phase 0 validation

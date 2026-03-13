@@ -1,0 +1,243 @@
+{
+  "vendor": {
+    "name": "Datadog",
+    "product": null,
+    "website": "https://www.datadoghq.com"
+  },
+  "plans": [
+    {
+      "name": "Infrastructure Monitoring — Free",
+      "pricing": {
+        "model": "per_host",
+        "price": {
+          "monthly": 0,
+          "annual": null,
+          "currency": "USD",
+          "unit": "host",
+          "period": "monthly"
+        }
+      },
+      "limits": {
+        "users": null,
+        "storage_gb": null,
+        "api_calls": null,
+        "projects": null,
+        "custom": [
+          { "name": "hosts", "value": 5, "period": null },
+          { "name": "metric_retention_days", "value": 1, "period": null }
+        ]
+      },
+      "features": [
+        "Core collection and visualization",
+        "1,000+ integrations",
+        "Out-of-the-box dashboards"
+      ]
+    },
+    {
+      "name": "Infrastructure Monitoring — Pro",
+      "pricing": {
+        "model": "per_host",
+        "price": {
+          "monthly": 18,
+          "annual": 15,
+          "currency": "USD",
+          "unit": "host",
+          "period": "monthly"
+        },
+        "rates": [
+          { "service": "Custom metrics", "rate": 1, "unit": "per 100 custom metrics/month", "included": 100, "included_unit": "per host" },
+          { "service": "Containers", "rate": null, "unit": "per container", "included": 5, "included_unit": "per host" }
+        ]
+      },
+      "limits": {
+        "users": null,
+        "storage_gb": null,
+        "api_calls": null,
+        "projects": null,
+        "custom": [
+          { "name": "metric_retention_months", "value": 15, "period": null },
+          { "name": "custom_metrics_per_host", "value": 100, "period": null },
+          { "name": "custom_events_per_host", "value": 500, "period": null },
+          { "name": "containers_per_host", "value": 5, "period": null }
+        ]
+      },
+      "features": [
+        "15-month metric retention",
+        "Unlimited alerts"
+      ]
+    },
+    {
+      "name": "Infrastructure Monitoring — Enterprise",
+      "pricing": {
+        "model": "per_host",
+        "price": {
+          "monthly": 27,
+          "annual": 23,
+          "currency": "USD",
+          "unit": "host",
+          "period": "monthly"
+        }
+      },
+      "limits": {
+        "users": null,
+        "storage_gb": null,
+        "api_calls": null,
+        "projects": null,
+        "custom": [
+          { "name": "custom_metrics_per_host", "value": 200, "period": null },
+          { "name": "custom_events_per_host", "value": 1000, "period": null },
+          { "name": "containers_per_host", "value": 10, "period": null }
+        ]
+      },
+      "features": [
+        "All Pro features",
+        "Machine learning alerts",
+        "Live Processes",
+        "Governance Console"
+      ]
+    },
+    {
+      "name": "APM — Standard",
+      "pricing": {
+        "model": "per_host",
+        "price": {
+          "monthly": null,
+          "annual": 31,
+          "currency": "USD",
+          "unit": "host",
+          "period": "monthly"
+        },
+        "rates": [
+          { "service": "Span ingestion", "rate": null, "unit": "per GB", "included": 150, "included_unit": "GB per host/month" },
+          { "service": "Indexed spans", "rate": null, "unit": "per million spans", "included": 1000000, "included_unit": "per host/month" }
+        ]
+      },
+      "limits": null,
+      "features": [
+        "End-to-end distributed traces",
+        "Automatic service discovery",
+        "Universal Service Monitoring",
+        "15-minute live trace search",
+        "15-day historical search"
+      ]
+    },
+    {
+      "name": "APM — Enterprise",
+      "pricing": {
+        "model": "per_host",
+        "price": {
+          "monthly": null,
+          "annual": 40,
+          "currency": "USD",
+          "unit": "host",
+          "period": "monthly"
+        }
+      },
+      "limits": null,
+      "features": [
+        "All APM Pro features",
+        "Continuous Profiler",
+        "Code-level tracing",
+        "CPU/memory profiling"
+      ]
+    },
+    {
+      "name": "Log Management",
+      "pricing": {
+        "model": "usage_based",
+        "price": null,
+        "rates": [
+          { "service": "Log ingestion", "rate": 0.10, "unit": "per GB/month", "included": null, "included_unit": null },
+          { "service": "Standard indexing", "rate": 1.70, "unit": "per million events/month (annual)", "included": null, "included_unit": null },
+          { "service": "Flex storage", "rate": 0.05, "unit": "per million events/month (annual)", "included": null, "included_unit": null },
+          { "service": "Flex Logs Starter", "rate": 0.60, "unit": "per million events/month (annual)", "included": null, "included_unit": null },
+          { "service": "Log forwarding", "rate": 0.25, "unit": "per GB outbound/destination/month", "included": null, "included_unit": null }
+        ]
+      },
+      "limits": null,
+      "features": [
+        "200+ log source parsing",
+        "Dynamic routing",
+        "Archive options",
+        "3-30 day retention (Standard)",
+        "1-15 months retention (Flex)"
+      ]
+    },
+    {
+      "name": "Other Products",
+      "pricing": {
+        "model": "rate_card",
+        "price": null,
+        "rates": [
+          { "service": "Code Coverage", "rate": 8, "unit": "per committer/month (annual)", "included": null, "included_unit": null },
+          { "service": "Feature Flags (1M-10M requests)", "rate": 55, "unit": "per month (annual)", "included": 1000000, "included_unit": "requests (free)" },
+          { "service": "Bits AI SRE Investigations", "rate": 500, "unit": "per 20 investigations/month (annual)", "included": null, "included_unit": null },
+          { "service": "Custom Metrics Add-on", "rate": 1, "unit": "per 100 custom metrics/month", "included": null, "included_unit": null }
+        ]
+      },
+      "limits": null,
+      "features": null
+    }
+  ],
+  "add_ons": null,
+  "terms": {
+    "contract_length_months": null,
+    "billing_frequency": null,
+    "auto_renewal": null,
+    "cancellation_notice_days": null,
+    "payment_terms": null,
+    "price_lock_months": null,
+    "price_escalation_cap_pct": null,
+    "early_termination": null,
+    "refund_policy": null
+  },
+  "support": {
+    "tiers": null,
+    "sla": null
+  },
+  "compliance": {
+    "certifications": ["SOC 2", "PCI", "HIPAA"],
+    "data_residency": null,
+    "encryption": null,
+    "sso": "SAML SSO (Enterprise)",
+    "scim": true
+  },
+  "one_time_costs": null,
+  "quote_metadata": null,
+  "confidence": {
+    "overall": 0.72,
+    "per_field": {
+      "vendor": 1.0,
+      "plans": 0.85,
+      "plans.pricing": 0.80,
+      "plans.limits": 0.70,
+      "plans.features": 0.75,
+      "terms": 0.0,
+      "support": 0.0,
+      "compliance": 0.60
+    }
+  },
+  "missing_fields": [
+    "terms (all — no contract terms on pricing page)",
+    "support.tiers (no support details on pricing page)",
+    "support.sla",
+    "compliance.data_residency",
+    "compliance.encryption",
+    "APM Standard monthly (on-demand) price",
+    "APM Pro and Enterprise on-demand prices (only annual shown for with-Infrastructure bundle)",
+    "DevSecOps tiers (omitted for brevity — could be separate plans)"
+  ],
+  "warnings": [
+    "Datadog has many products — only Infrastructure, APM, Log Management, and select others extracted. Full extraction would include DevSecOps, Serverless, Synthetics, RUM, etc.",
+    "APM pricing shown is 'with Infrastructure' bundle — standalone prices are higher ($36, $41, $47)",
+    "Multi-year/volume discounts mentioned for 500+ hosts but no specific rates given",
+    "DevSecOps Pro and Enterprise tiers omitted from plans[] to avoid excessive length — they bundle Infrastructure + CSM",
+    "Currency assumed USD — not explicitly stated on all products"
+  ],
+  "source": {
+    "type": "url",
+    "url": "https://www.datadoghq.com/pricing/",
+    "document_date": null
+  },
+  "extracted_at": "2026-03-12T00:00:00Z"
+}

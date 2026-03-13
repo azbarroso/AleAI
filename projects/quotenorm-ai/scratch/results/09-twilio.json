@@ -1,0 +1,195 @@
+{
+  "vendor": {
+    "name": "Twilio",
+    "product": null,
+    "website": "https://www.twilio.com"
+  },
+  "plans": [
+    {
+      "name": "Communications — Messaging",
+      "pricing": {
+        "model": "rate_card",
+        "price": null,
+        "rates": [
+          { "service": "SMS", "rate": 0.0083, "unit": "per message", "included": null, "included_unit": null },
+          { "service": "RCS", "rate": 0.0083, "unit": "per message", "included": null, "included_unit": null },
+          { "service": "WhatsApp Business API", "rate": 0.005, "unit": "per message", "included": null, "included_unit": null }
+        ]
+      },
+      "limits": null,
+      "features": [
+        "Send and receive SMS/RCS/WhatsApp messages",
+        "Prices vary by use case for WhatsApp"
+      ]
+    },
+    {
+      "name": "Communications — Voice",
+      "pricing": {
+        "model": "rate_card",
+        "price": null,
+        "rates": [
+          { "service": "Receiving calls", "rate": 0.0085, "unit": "per minute", "included": null, "included_unit": null },
+          { "service": "Making calls", "rate": 0.014, "unit": "per minute", "included": null, "included_unit": null },
+          { "service": "Video", "rate": 0.004, "unit": "per minute", "included": null, "included_unit": null }
+        ]
+      },
+      "limits": null,
+      "features": [
+        "Programmable voice calls",
+        "Video API"
+      ]
+    },
+    {
+      "name": "Communications — Email (SendGrid)",
+      "pricing": {
+        "model": "flat",
+        "price": {
+          "monthly": 19.95,
+          "annual": null,
+          "currency": "USD",
+          "unit": "org",
+          "period": "monthly"
+        },
+        "rates": [
+          { "service": "Free tier", "rate": 0, "unit": "up to 100 emails/day", "included": 100, "included_unit": "emails/day" }
+        ]
+      },
+      "limits": null,
+      "features": [
+        "Email API",
+        "Free tier: 100 emails/day"
+      ]
+    },
+    {
+      "name": "Communications — Flex (Contact Center)",
+      "pricing": {
+        "model": "usage_based",
+        "price": null,
+        "rates": [
+          { "service": "Active user hour", "rate": 1.00, "unit": "per active user hour", "included": 5000, "included_unit": "hours (free)" },
+          { "service": "Named user (alternative)", "rate": 150, "unit": "per named user/month", "included": null, "included_unit": null }
+        ]
+      },
+      "limits": null,
+      "features": [
+        "Contact center platform",
+        "5,000 free hours"
+      ]
+    },
+    {
+      "name": "Communications — Conversations API",
+      "pricing": {
+        "model": "usage_based",
+        "price": null,
+        "rates": [
+          { "service": "Conversations", "rate": 0.05, "unit": "per active user/month", "included": null, "included_unit": null }
+        ]
+      },
+      "limits": null,
+      "features": null
+    },
+    {
+      "name": "Authentication",
+      "pricing": {
+        "model": "rate_card",
+        "price": null,
+        "rates": [
+          { "service": "Lookup", "rate": 0.01, "unit": "per request", "included": null, "included_unit": null },
+          { "service": "Verify", "rate": 0.05, "unit": "per verification", "included": null, "included_unit": null }
+        ]
+      },
+      "limits": null,
+      "features": [
+        "Phone number lookup",
+        "Multi-channel verification"
+      ]
+    },
+    {
+      "name": "Conversational AI",
+      "pricing": {
+        "model": "rate_card",
+        "price": null,
+        "rates": [
+          { "service": "ConversationRelay", "rate": 0.07, "unit": "per minute", "included": null, "included_unit": null },
+          { "service": "Transcription", "rate": 0.035, "unit": "per minute", "included": null, "included_unit": null },
+          { "service": "Language operators", "rate": 0.005, "unit": "per minute", "included": null, "included_unit": null }
+        ]
+      },
+      "limits": null,
+      "features": null
+    },
+    {
+      "name": "Builder Tools",
+      "pricing": {
+        "model": "rate_card",
+        "price": null,
+        "rates": [
+          { "service": "Studio", "rate": 0.0025, "unit": "per flow execution", "included": null, "included_unit": null },
+          { "service": "TaskRouter", "rate": 0.06, "unit": "per task", "included": 100, "included_unit": "tasks/month (free)" },
+          { "service": "Elastic SIP Trunking (origination)", "rate": 0.0045, "unit": "per minute", "included": null, "included_unit": null },
+          { "service": "Elastic SIP Trunking (termination)", "rate": 0.007, "unit": "per minute", "included": null, "included_unit": null },
+          { "service": "Serverless", "rate": 0.0001, "unit": "per request/invocation", "included": null, "included_unit": null },
+          { "service": "Functions", "rate": 0.0001, "unit": "per invocation", "included": 10000, "included_unit": "invocations (free)" },
+          { "service": "Twilio for Salesforce", "rate": 15, "unit": "per seat/month", "included": null, "included_unit": null }
+        ]
+      },
+      "limits": null,
+      "features": null
+    }
+  ],
+  "add_ons": null,
+  "terms": {
+    "contract_length_months": null,
+    "billing_frequency": null,
+    "auto_renewal": null,
+    "cancellation_notice_days": null,
+    "payment_terms": null,
+    "price_lock_months": null,
+    "price_escalation_cap_pct": null,
+    "early_termination": null,
+    "refund_policy": null
+  },
+  "support": {
+    "tiers": null,
+    "sla": null
+  },
+  "compliance": null,
+  "one_time_costs": null,
+  "quote_metadata": null,
+  "confidence": {
+    "overall": 0.75,
+    "per_field": {
+      "vendor": 1.0,
+      "plans": 0.80,
+      "plans.pricing": 0.72,
+      "plans.limits": 0.0,
+      "plans.features": 0.50,
+      "terms": 0.30,
+      "support": 0.0,
+      "compliance": 0.0
+    }
+  },
+  "missing_fields": [
+    "terms.contract_length_months (pay-as-you-go, no contract required)",
+    "terms.billing_frequency",
+    "terms.payment_terms",
+    "support (no support details on pricing page)",
+    "compliance (no certifications listed on pricing page)",
+    "plans.limits (no usage limits — purely consumption-based)",
+    "Volume discount breakpoints (mentioned but no specifics)"
+  ],
+  "warnings": [
+    "SMS/RCS rates stated as 'starts at' — actual rates vary by destination/volume",
+    "WhatsApp pricing varies by use case — $0.005 is a starting point",
+    "SendGrid pricing shows paid plans 'start at' $19.95 — likely has multiple tiers not captured",
+    "Flex has two pricing models (active user hour vs named user) — both captured as rates",
+    "Many products not shown on the main pricing page (Segment, Engage, etc.) — only what's on the page extracted",
+    "Currency assumed USD"
+  ],
+  "source": {
+    "type": "url",
+    "url": "https://www.twilio.com/en-us/pricing",
+    "document_date": null
+  },
+  "extracted_at": "2026-03-12T00:00:00Z"
+}

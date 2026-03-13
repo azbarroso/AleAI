@@ -1,0 +1,131 @@
+{
+  "vendor": {
+    "name": "TaskFlow",
+    "product": "TaskFlow Pro",
+    "website": "https://taskflow.io"
+  },
+  "plans": [
+    {
+      "name": "Team Plan",
+      "pricing": {
+        "model": "per_seat",
+        "price": {
+          "monthly": null,
+          "annual": 12,
+          "currency": "USD",
+          "unit": "user",
+          "period": "monthly"
+        },
+        "discounts": [
+          {
+            "type": "volume",
+            "description": "10% off for 50+ seats",
+            "percentage": 10,
+            "conditions": "50+ seats"
+          }
+        ]
+      },
+      "limits": {
+        "users": 25,
+        "storage_gb": 250,
+        "api_calls": null,
+        "projects": "unlimited",
+        "custom": null
+      },
+      "features": [
+        "Unlimited projects and tasks",
+        "Gantt charts and timeline views",
+        "Time tracking and reporting",
+        "Slack and Jira integrations",
+        "10 GB file storage per user",
+        "Priority email support (24-hour response)",
+        "14-day free trial available"
+      ]
+    }
+  ],
+  "add_ons": [
+    {
+      "name": "SSO",
+      "price": 2,
+      "unit": "user/month",
+      "description": "Single sign-on",
+      "available_on": ["Team Plan"]
+    }
+  ],
+  "terms": {
+    "contract_length_months": 12,
+    "billing_frequency": "annual",
+    "auto_renewal": true,
+    "cancellation_notice_days": 30,
+    "payment_terms": "Net 30",
+    "price_lock_months": null,
+    "price_escalation_cap_pct": null,
+    "early_termination": null,
+    "refund_policy": null
+  },
+  "support": {
+    "tiers": [
+      {
+        "name": "Priority email",
+        "price": "included",
+        "hours": null,
+        "response_time": "24 hours",
+        "channels": ["email"]
+      }
+    ],
+    "sla": null
+  },
+  "compliance": null,
+  "one_time_costs": null,
+  "quote_metadata": {
+    "quote_id": null,
+    "customer_name": "Acme Corp",
+    "valid_until": null,
+    "prepared_date": null,
+    "contact_name": "Sarah Chen",
+    "contact_email": "sales@taskflow.io",
+    "seats_quoted": 25,
+    "total_annual_cost": 3600
+  },
+  "confidence": {
+    "overall": 0.91,
+    "per_field": {
+      "vendor": 1.0,
+      "plans": 0.95,
+      "plans.pricing": 0.95,
+      "plans.limits": 0.88,
+      "plans.features": 0.95,
+      "add_ons": 0.95,
+      "terms": 0.92,
+      "support": 0.80,
+      "compliance": 0.0,
+      "quote_metadata": 0.85
+    }
+  },
+  "missing_fields": [
+    "plans.pricing.price.monthly (only annual pricing stated — monthly rate not shown)",
+    "terms.price_lock_months",
+    "terms.price_escalation_cap_pct",
+    "terms.early_termination",
+    "terms.refund_policy",
+    "support.tiers.hours (business hours not specified)",
+    "support.sla",
+    "compliance (no certifications or security details mentioned)",
+    "quote_metadata.quote_id",
+    "quote_metadata.valid_until",
+    "quote_metadata.prepared_date"
+  ],
+  "warnings": [
+    "Storage calculated as 10 GB/user × 25 seats = 250 GB — this is per-user storage, total is inferred",
+    "Monthly pricing not stated — only annual billing mentioned ($12/user/month billed annually)",
+    "Customer name inferred from email domain (procurement@acmecorp.com) — not explicitly stated",
+    "'Not included' items indicate Enterprise plan exists but no details provided",
+    "Professional Services mentioned as available but not priced"
+  ],
+  "source": {
+    "type": "email",
+    "url": null,
+    "document_date": null
+  },
+  "extracted_at": "2026-03-12T00:00:00Z"
+}

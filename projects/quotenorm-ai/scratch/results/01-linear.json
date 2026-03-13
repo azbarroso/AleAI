@@ -1,0 +1,201 @@
+{
+  "vendor": {
+    "name": "Linear",
+    "product": "Linear",
+    "website": "https://linear.app"
+  },
+  "plans": [
+    {
+      "name": "Free",
+      "pricing": {
+        "model": "per_seat",
+        "price": {
+          "monthly": 0,
+          "annual": null,
+          "currency": "USD",
+          "unit": "user",
+          "period": "monthly"
+        }
+      },
+      "limits": {
+        "users": "unlimited",
+        "storage_gb": null,
+        "api_calls": null,
+        "projects": null,
+        "custom": [
+          { "name": "teams", "value": 2, "period": null },
+          { "name": "issues", "value": 250, "period": null },
+          { "name": "file_upload_mb", "value": 10, "period": null }
+        ]
+      },
+      "features": [
+        "Issues, projects, cycles, initiatives",
+        "Customer requests",
+        "API/webhook access",
+        "Import/export",
+        "Triage and pulse",
+        "Issue sync",
+        "Slack and GitHub integrations",
+        "AI agents with MCP access"
+      ]
+    },
+    {
+      "name": "Basic",
+      "pricing": {
+        "model": "per_seat",
+        "price": {
+          "monthly": null,
+          "annual": 10,
+          "currency": "USD",
+          "unit": "user",
+          "period": "monthly"
+        }
+      },
+      "limits": {
+        "users": "unlimited",
+        "storage_gb": null,
+        "api_calls": null,
+        "projects": null,
+        "custom": [
+          { "name": "teams", "value": 5, "period": null },
+          { "name": "issues", "value": "unlimited", "period": null },
+          { "name": "file_uploads", "value": "unlimited", "period": null }
+        ]
+      },
+      "features": [
+        "All Free features",
+        "Admin roles"
+      ]
+    },
+    {
+      "name": "Business",
+      "pricing": {
+        "model": "per_seat",
+        "price": {
+          "monthly": null,
+          "annual": 16,
+          "currency": "USD",
+          "unit": "user",
+          "period": "monthly"
+        }
+      },
+      "limits": {
+        "users": "unlimited",
+        "storage_gb": null,
+        "api_calls": null,
+        "projects": null,
+        "custom": [
+          { "name": "teams", "value": "unlimited", "period": null },
+          { "name": "issues", "value": "unlimited", "period": null },
+          { "name": "file_uploads", "value": "unlimited", "period": null }
+        ]
+      },
+      "features": [
+        "All Basic features",
+        "Private teams",
+        "Guest accounts",
+        "Triage Intelligence",
+        "Linear Insights",
+        "Linear Asks",
+        "Issue SLAs",
+        "Zendesk and Intercom integrations"
+      ]
+    },
+    {
+      "name": "Enterprise",
+      "pricing": {
+        "model": "custom",
+        "price": null
+      },
+      "limits": {
+        "users": "unlimited",
+        "storage_gb": null,
+        "api_calls": null,
+        "projects": null,
+        "custom": [
+          { "name": "teams", "value": "unlimited", "period": null }
+        ]
+      },
+      "features": [
+        "All Business features",
+        "Sub-initiatives",
+        "Advanced Linear Asks",
+        "Dashboards",
+        "SAML/SCIM",
+        "Advanced security",
+        "Migration and onboarding support",
+        "HIPAA compliance"
+      ]
+    }
+  ],
+  "add_ons": null,
+  "terms": null,
+  "support": {
+    "tiers": [
+      {
+        "name": "Standard",
+        "price": "included",
+        "hours": null,
+        "response_time": null,
+        "channels": null
+      },
+      {
+        "name": "Priority with account manager",
+        "price": null,
+        "hours": null,
+        "response_time": null,
+        "channels": null
+      }
+    ],
+    "sla": null
+  },
+  "compliance": {
+    "certifications": ["HIPAA"],
+    "data_residency": null,
+    "encryption": null,
+    "sso": "Google SSO, SAML (Enterprise)",
+    "scim": true
+  },
+  "one_time_costs": null,
+  "quote_metadata": null,
+  "confidence": {
+    "overall": 0.82,
+    "per_field": {
+      "vendor": 1.0,
+      "plans": 0.92,
+      "plans.pricing": 0.78,
+      "plans.limits": 0.85,
+      "plans.features": 0.88,
+      "terms": 0.0,
+      "support": 0.45,
+      "compliance": 0.65
+    }
+  },
+  "missing_fields": [
+    "plans.pricing.price.monthly (Basic, Business — only annual pricing shown)",
+    "terms.billing_frequency",
+    "terms.contract_length_months",
+    "terms.auto_renewal",
+    "terms.cancellation_notice_days",
+    "terms.payment_terms",
+    "support.tiers.hours",
+    "support.tiers.response_time",
+    "support.sla.uptime_pct",
+    "compliance.data_residency",
+    "compliance.encryption",
+    "plans.limits.storage_gb"
+  ],
+  "warnings": [
+    "Basic and Business prices are stated as 'when billed yearly' — monthly prices not shown; actual monthly rates likely higher",
+    "Enterprise pricing requires contacting sales — no price extractable",
+    "Support details are vague — 'priority support with account manager availability on higher tiers' lacks specifics",
+    "Common features listed separately may apply differently per tier — mapped as available to all but confidence is medium",
+    "HIPAA listed only for Enterprise tier"
+  ],
+  "source": {
+    "type": "url",
+    "url": "https://linear.app/pricing",
+    "document_date": null
+  },
+  "extracted_at": "2026-03-12T00:00:00Z"
+}

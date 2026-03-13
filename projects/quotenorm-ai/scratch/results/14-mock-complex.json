@@ -1,0 +1,319 @@
+{
+  "vendor": {
+    "name": "DataStream Inc.",
+    "product": "DataStream Analytics Platform",
+    "website": "https://datastream.io"
+  },
+  "plans": [
+    {
+      "name": "Enterprise Platform License",
+      "pricing": {
+        "model": "flat",
+        "price": {
+          "monthly": null,
+          "annual": 180000,
+          "currency": "USD",
+          "unit": "org",
+          "period": "annual"
+        },
+        "discounts": [
+          {
+            "type": "negotiated",
+            "description": "20% discount on platform license (standard: $225,000)",
+            "percentage": 20,
+            "conditions": "3-year commitment"
+          }
+        ]
+      },
+      "limits": {
+        "users": null,
+        "storage_gb": null,
+        "api_calls": null,
+        "projects": null,
+        "custom": [
+          { "name": "data_sources", "value": "unlimited", "period": null }
+        ]
+      },
+      "features": [
+        "Base platform license",
+        "Unlimited data sources"
+      ]
+    },
+    {
+      "name": "Real-Time Processing Engine",
+      "pricing": {
+        "model": "component",
+        "price": {
+          "monthly": null,
+          "annual": 96000,
+          "currency": "USD",
+          "unit": "org",
+          "period": "annual"
+        }
+      },
+      "limits": {
+        "users": null,
+        "storage_gb": null,
+        "api_calls": null,
+        "projects": null,
+        "custom": [
+          { "name": "events_per_second", "value": 500000, "period": null }
+        ]
+      },
+      "features": [
+        "Stream processing up to 500K events/second"
+      ]
+    },
+    {
+      "name": "Advanced Analytics Module",
+      "pricing": {
+        "model": "component",
+        "price": {
+          "monthly": null,
+          "annual": 72000,
+          "currency": "USD",
+          "unit": "org",
+          "period": "annual"
+        }
+      },
+      "limits": null,
+      "features": [
+        "ML-powered forecasting",
+        "Anomaly detection",
+        "What-if modeling"
+      ]
+    },
+    {
+      "name": "Dashboard & Reporting Suite",
+      "pricing": {
+        "model": "component",
+        "price": {
+          "monthly": null,
+          "annual": 0,
+          "currency": "USD",
+          "unit": "org",
+          "period": "annual"
+        }
+      },
+      "limits": null,
+      "features": [
+        "Unlimited dashboards",
+        "Scheduled reports",
+        "Embedded analytics"
+      ]
+    },
+    {
+      "name": "User Licenses — Admin/Power Users",
+      "pricing": {
+        "model": "per_seat",
+        "price": {
+          "monthly": 150,
+          "annual": null,
+          "currency": "USD",
+          "unit": "user",
+          "period": "monthly"
+        }
+      },
+      "limits": {
+        "users": 25,
+        "storage_gb": null,
+        "api_calls": null,
+        "projects": null,
+        "custom": null
+      },
+      "features": [
+        "Full platform access",
+        "Admin capabilities"
+      ]
+    },
+    {
+      "name": "User Licenses — Analyst Users",
+      "pricing": {
+        "model": "per_seat",
+        "price": {
+          "monthly": 75,
+          "annual": null,
+          "currency": "USD",
+          "unit": "user",
+          "period": "monthly"
+        }
+      },
+      "limits": {
+        "users": 100,
+        "storage_gb": null,
+        "api_calls": null,
+        "projects": null,
+        "custom": null
+      },
+      "features": null
+    },
+    {
+      "name": "User Licenses — Viewer/Consumer Users",
+      "pricing": {
+        "model": "per_seat",
+        "price": {
+          "monthly": 0,
+          "annual": null,
+          "currency": "USD",
+          "unit": "user",
+          "period": "monthly"
+        }
+      },
+      "limits": {
+        "users": "unlimited",
+        "storage_gb": null,
+        "api_calls": null,
+        "projects": null,
+        "custom": null
+      },
+      "features": null
+    },
+    {
+      "name": "Infrastructure & Data",
+      "pricing": {
+        "model": "usage_based",
+        "price": null,
+        "rates": [
+          { "service": "Data ingestion", "rate": 50, "unit": "per TB overage", "included": 10, "included_unit": "TB/month" },
+          { "service": "Data storage (hot)", "rate": 80, "unit": "per TB/month overage", "included": 50, "included_unit": "TB" },
+          { "service": "Data storage (warm/archive)", "rate": 15, "unit": "per TB/month overage", "included": 200, "included_unit": "TB" },
+          { "service": "API calls", "rate": 0.50, "unit": "per 1M calls overage", "included": 100000000, "included_unit": "calls/month" },
+          { "service": "Compute (query processing)", "rate": 2.50, "unit": "per compute-hour overage", "included": 500, "included_unit": "compute-hours/day" }
+        ]
+      },
+      "limits": null,
+      "features": null
+    }
+  ],
+  "add_ons": null,
+  "terms": {
+    "contract_length_months": 36,
+    "billing_frequency": "quarterly",
+    "auto_renewal": true,
+    "cancellation_notice_days": 90,
+    "payment_terms": "Net 60",
+    "price_lock_months": 36,
+    "price_escalation_cap_pct": 7,
+    "early_termination": "After month 18, with 6 months notice and payment of 25% of remaining contract value",
+    "refund_policy": null
+  },
+  "support": {
+    "tiers": [
+      {
+        "name": "Standard",
+        "price": "included",
+        "hours": "Mon-Fri 8AM-6PM ET",
+        "response_time": "P1: 4 hours, P2: 8 hours, P3: 24 hours",
+        "channels": null
+      },
+      {
+        "name": "Premium",
+        "price": "$5,000/month",
+        "hours": "24/7",
+        "response_time": "P1: 30 minutes, P2: 2 hours, P3: 8 hours",
+        "channels": null
+      },
+      {
+        "name": "Mission Critical",
+        "price": "$12,000/month",
+        "hours": "24/7",
+        "response_time": "P1: 15 minutes, P2: 1 hour, P3: 4 hours",
+        "channels": null
+      }
+    ],
+    "sla": {
+      "uptime_pct": 99.95,
+      "service_credits": "10% of monthly platform fee per 0.05% below 99.95%. Max aggregate: 30% of monthly fees.",
+      "rpo_hours": 1,
+      "rto_hours": 4
+    }
+  },
+  "compliance": {
+    "certifications": [
+      "SOC 2 Type II",
+      "ISO 27001:2022",
+      "PCI DSS Level 1",
+      "HIPAA (BAA available)",
+      "GDPR",
+      "CCPA",
+      "FedRAMP Moderate (in progress, expected Q3 2026)"
+    ],
+    "data_residency": ["US-East (primary)", "US-West (DR)", "EU (optional, +10% infrastructure cost)"],
+    "encryption": "AES-256 at rest, TLS 1.3 in transit, customer-managed keys (BYOK) available",
+    "sso": null,
+    "scim": null
+  },
+  "one_time_costs": [
+    {
+      "name": "Implementation & Integration",
+      "amount": 125000,
+      "currency": "USD",
+      "description": "Data source integration (SAP, Shopify, custom POS), ETL pipeline setup, dashboard buildout"
+    },
+    {
+      "name": "Data Migration",
+      "amount": 45000,
+      "currency": "USD",
+      "description": "Historical data migration (up to 100 TB from legacy Teradata)"
+    },
+    {
+      "name": "Custom Model Development",
+      "amount": 75000,
+      "currency": "USD",
+      "description": "3 custom predictive models (demand forecasting, shrinkage detection, price optimization)"
+    },
+    {
+      "name": "Training",
+      "amount": 15000,
+      "currency": "USD",
+      "description": "5 days on-site training (up to 30 attendees)"
+    }
+  ],
+  "quote_metadata": {
+    "quote_id": "DS-ENT-2026-1192",
+    "customer_name": "GlobalRetail Corp",
+    "valid_until": "2026-03-14",
+    "prepared_date": "2026-01-28",
+    "contact_name": "Michelle Torres",
+    "contact_email": "mtorres@datastream.io",
+    "seats_quoted": 125,
+    "total_annual_cost": 911000
+  },
+  "confidence": {
+    "overall": 0.94,
+    "per_field": {
+      "vendor": 1.0,
+      "plans": 0.95,
+      "plans.pricing": 0.95,
+      "plans.limits": 0.90,
+      "plans.features": 0.85,
+      "terms": 0.95,
+      "support": 0.95,
+      "compliance": 0.95,
+      "one_time_costs": 0.98,
+      "quote_metadata": 0.90
+    }
+  },
+  "missing_fields": [
+    "terms.refund_policy",
+    "compliance.sso",
+    "compliance.scim",
+    "add_ons (premium support could be modeled as add-on, but modeled as support tier instead)"
+  ],
+  "warnings": [
+    "Valid until date calculated: Jan 28 + 45 days = ~March 14, 2026",
+    "Infrastructure costs are estimates based on 20% annual data growth — Year 2 and Year 3 totals will vary",
+    "Total annual cost ($911,000) includes one-time professional services ($260,000) — recurring annual cost is ~$651,000",
+    "seats_quoted set to 125 (25 admin + 100 analyst) — viewer users are unlimited and not counted",
+    "Price escalation cap (≤7%) applies only to infrastructure after 18 months — platform and user fees locked for full 3-year term",
+    "Professional services have 15% negotiated discount (standard: $305,000)",
+    "First 3 months of premium support included free — not reflected in support tier pricing",
+    "Billing is mixed: quarterly in advance for platform/users, monthly in arrears for infrastructure"
+  ],
+  "source": {
+    "type": "text",
+    "url": null,
+    "document_date": "2026-01-28"
+  },
+  "extracted_at": "2026-03-12T00:00:00Z"
+}

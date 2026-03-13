@@ -1,0 +1,290 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "QuoteNorm Normalized Quote v1",
+  "description": "Structured representation of a SaaS quote, pricing page, or vendor proposal",
+  "type": "object",
+  "required": ["vendor", "plans", "confidence", "missing_fields", "source", "extracted_at"],
+  "properties": {
+    "vendor": {
+      "type": "object",
+      "description": "Vendor identification",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Company or vendor name"
+        },
+        "product": {
+          "type": ["string", "null"],
+          "description": "Specific product name (if different from vendor name)"
+        },
+        "website": {
+          "type": ["string", "null"],
+          "format": "uri",
+          "description": "Vendor or product website URL"
+        }
+      }
+    },
+
+    "plans": {
+      "type": "array",
+      "description": "Array of pricing plans/tiers. For tiered SaaS: one entry per tier. For enterprise quotes: one entry per pricing component.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["name", "pricing"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Plan/tier name (e.g., 'Free', 'Pro', 'Enterprise', 'Platform License')"
+          },
+          "pricing": {
+            "type": "object",
+            "required": ["model"],
+            "properties": {
+              "model": {
+                "type": "string",
+                "enum": ["per_seat", "per_host", "per_org", "usage_based", "flat", "rate_card", "component", "custom"],
+                "description": "Primary pricing model for this plan"
+              },
+              "price": {
+                "type": ["object", "null"],
+                "description": "Recurring price. Include both monthly and annual when available.",
+                "properties": {
+                  "monthly": { "type": ["number", "null"], "description": "Monthly price" },
+                  "annual": { "type": ["number", "null"], "description": "Annual price (total per year, or monthly-equivalent if stated that way)" },
+                  "currency": { "type": "string", "default": "USD" },
+                  "unit": { "type": "string", "description": "What the price is per (e.g., 'seat', 'host', 'org', 'GB', 'request')" },
+                  "period": { "type": "string", "enum": ["monthly", "annual", "hourly", "per_use"], "description": "Billing period" }
+                }
+              },
+              "rates": {
+                "type": ["array", "null"],
+                "description": "For usage-based/rate_card models: list of usage rates",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "service": { "type": "string", "description": "Service or metric name (e.g., 'SMS', 'API calls', 'storage')" },
+                    "rate": { "type": "number" },
+                    "unit": { "type": "string", "description": "Unit (e.g., 'per message', 'per GB', 'per 1M requests')" },
+                    "included": { "type": ["number", "null"], "description": "Amount included before overage kicks in" },
+                    "included_unit": { "type": ["string", "null"] }
+                  }
+                }
+              },
+              "overage": {
+                "type": ["array", "null"],
+                "description": "Overage rates when usage exceeds included amounts",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "metric": { "type": "string" },
+                    "rate": { "type": "number" },
+                    "unit": { "type": "string" }
+                  }
+                }
+              },
+              "discounts": {
+                "type": ["array", "null"],
+                "description": "Available discounts",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "type": { "type": "string", "enum": ["volume", "annual", "multi_year", "negotiated", "promotional", "other"] },
+                    "description": { "type": "string" },
+                    "percentage": { "type": ["number", "null"] },
+                    "conditions": { "type": ["string", "null"] }
+                  }
+                }
+              }
+            }
+          },
+          "limits": {
+            "type": ["object", "null"],
+            "description": "Usage limits for this plan",
+            "properties": {
+              "users": { "type": ["number", "string", "null"], "description": "User/seat limit. Use 'unlimited' if explicitly stated." },
+              "storage_gb": { "type": ["number", "string", "null"] },
+              "api_calls": { "type": ["number", "string", "null"], "description": "API call limit per period" },
+              "projects": { "type": ["number", "string", "null"] },
+              "custom": {
+                "type": ["array", "null"],
+                "description": "Product-specific limits not covered by standard fields",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": { "type": "string" },
+                    "value": { "type": ["number", "string"] },
+                    "period": { "type": ["string", "null"] }
+                  }
+                }
+              }
+            }
+          },
+          "features": {
+            "type": ["array", "null"],
+            "description": "Key features included in this plan (not exhaustive — focus on differentiating features)",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+
+    "add_ons": {
+      "type": ["array", "null"],
+      "description": "Optional recurring extras available across plans (e.g., SSO, premium support, HIPAA BAA)",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "price": { "type": ["number", "null"] },
+          "unit": { "type": ["string", "null"], "description": "Per what (e.g., 'user/month', 'month', 'GB')" },
+          "description": { "type": ["string", "null"] },
+          "available_on": { "type": ["array", "null"], "description": "Which plans this add-on is available for", "items": { "type": "string" } }
+        }
+      }
+    },
+
+    "terms": {
+      "type": ["object", "null"],
+      "description": "Contract and billing terms. Often only present in direct quotes, not public pricing pages.",
+      "properties": {
+        "contract_length_months": { "type": ["number", "null"] },
+        "billing_frequency": { "type": ["string", "null"], "enum": ["monthly", "annual", "quarterly", "custom", null] },
+        "auto_renewal": { "type": ["boolean", "null"] },
+        "cancellation_notice_days": { "type": ["number", "null"] },
+        "payment_terms": { "type": ["string", "null"], "description": "e.g., 'Net 30', 'Net 60', 'Due on receipt'" },
+        "price_lock_months": { "type": ["number", "null"], "description": "Duration pricing is guaranteed" },
+        "price_escalation_cap_pct": { "type": ["number", "null"], "description": "Max annual price increase as percentage (e.g., 5 for ≤5%)" },
+        "early_termination": { "type": ["string", "null"], "description": "Early termination terms if stated" },
+        "refund_policy": { "type": ["string", "null"] }
+      }
+    },
+
+    "support": {
+      "type": ["object", "null"],
+      "description": "Support and SLA details",
+      "properties": {
+        "tiers": {
+          "type": ["array", "null"],
+          "description": "Available support tiers",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "price": { "type": ["string", "null"], "description": "Price or 'included'" },
+              "hours": { "type": ["string", "null"], "description": "e.g., '24/7', 'Mon-Fri 9-5'" },
+              "response_time": { "type": ["string", "null"], "description": "Initial response time SLA" },
+              "channels": { "type": ["array", "null"], "items": { "type": "string" } }
+            }
+          }
+        },
+        "sla": {
+          "type": ["object", "null"],
+          "properties": {
+            "uptime_pct": { "type": ["number", "null"], "description": "e.g., 99.9, 99.95, 99.99" },
+            "service_credits": { "type": ["string", "null"], "description": "Service credit terms for downtime" },
+            "rpo_hours": { "type": ["number", "null"], "description": "Recovery Point Objective in hours" },
+            "rto_hours": { "type": ["number", "null"], "description": "Recovery Time Objective in hours" }
+          }
+        }
+      }
+    },
+
+    "compliance": {
+      "type": ["object", "null"],
+      "description": "Security and compliance information",
+      "properties": {
+        "certifications": {
+          "type": ["array", "null"],
+          "items": { "type": "string" },
+          "description": "e.g., ['SOC 2 Type II', 'ISO 27001', 'HIPAA', 'PCI DSS', 'GDPR', 'FedRAMP']"
+        },
+        "data_residency": {
+          "type": ["array", "string", "null"],
+          "description": "Available data residency regions"
+        },
+        "encryption": { "type": ["string", "null"], "description": "Encryption details if stated" },
+        "sso": { "type": ["string", "null"], "description": "SSO support (e.g., 'SAML 2.0', 'OIDC')" },
+        "scim": { "type": ["boolean", "null"], "description": "SCIM provisioning support" }
+      }
+    },
+
+    "one_time_costs": {
+      "type": ["array", "null"],
+      "description": "One-time fees (implementation, migration, training, setup)",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "amount": { "type": ["number", "null"] },
+          "currency": { "type": "string", "default": "USD" },
+          "description": { "type": ["string", "null"] }
+        }
+      }
+    },
+
+    "quote_metadata": {
+      "type": ["object", "null"],
+      "description": "Metadata specific to direct quotes/proposals (not present for public pricing pages)",
+      "properties": {
+        "quote_id": { "type": ["string", "null"] },
+        "customer_name": { "type": ["string", "null"] },
+        "valid_until": { "type": ["string", "null"], "format": "date" },
+        "prepared_date": { "type": ["string", "null"], "format": "date" },
+        "contact_name": { "type": ["string", "null"] },
+        "contact_email": { "type": ["string", "null"], "format": "email" },
+        "seats_quoted": { "type": ["number", "null"] },
+        "total_annual_cost": { "type": ["number", "null"], "description": "Total annual cost as quoted (if stated)" }
+      }
+    },
+
+    "confidence": {
+      "type": "object",
+      "description": "Extraction confidence scores",
+      "required": ["overall"],
+      "properties": {
+        "overall": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Weighted average confidence across all extracted fields"
+        },
+        "per_field": {
+          "type": "object",
+          "description": "Confidence score for each major field group",
+          "additionalProperties": { "type": "number", "minimum": 0, "maximum": 1 }
+        }
+      }
+    },
+
+    "missing_fields": {
+      "type": "array",
+      "description": "Fields expected but not found in the source document",
+      "items": { "type": "string" }
+    },
+
+    "warnings": {
+      "type": "array",
+      "description": "Extraction warnings — ambiguities, assumptions made, potential issues",
+      "items": { "type": "string" }
+    },
+
+    "source": {
+      "type": "object",
+      "description": "Source document metadata",
+      "required": ["type"],
+      "properties": {
+        "type": { "type": "string", "enum": ["url", "pdf", "email", "text", "html"] },
+        "url": { "type": ["string", "null"], "format": "uri" },
+        "document_date": { "type": ["string", "null"], "format": "date" }
+      }
+    },
+
+    "extracted_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of extraction"
+    }
+  }
+}
