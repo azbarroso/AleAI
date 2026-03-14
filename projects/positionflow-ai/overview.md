@@ -52,3 +52,4 @@ Ship an agent-native REST API + MCP server that turns CFTC TFF weekly futures po
 | 2026-03-14 | Publish methodology openly | Transparency is a trust feature — traders won't pay for a black box. Competitive moat is speed + voice, not secrecy |
 | 2026-03-14 | Historical data from 2011 onward | Clean and reliable for 5-year percentile windows. Pre-2011 TFF data has packaging inconsistencies |
 | 2026-03-14 | **Phase 0 GO** — data validated | All columns 100% populated 2011-2025, exact match vs CFTC viewer, COVID crash shows expected positioning shifts |
+| 2026-03-14 | Use payai.network x402 facilitator | Default x402.org facilitator doesn't support exact scheme on Base mainnet (eip155:8453) |

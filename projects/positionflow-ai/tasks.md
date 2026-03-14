@@ -16,7 +16,7 @@
 - ~~**Phase 0 — Data validation spike**~~ — Done, 2026-03-14. **GO decision.** All columns clean, data matches CFTC viewer exactly. Full results in `scratch/phase0_spike_results.md`.
 - ~~**Sprint 1 — Data Foundation**~~ — Done, 2026-03-14. Code repo at `~/dev/claude_dev/positionflow-ai/`. Railway project live (PostgreSQL + Redis). 793 rows backfilled (2011-2026). Signal engine built and run over full history. COVID crash sanity check passed (LF at 99th percentile).
 - ~~**Sprint 2 — Signal Engine**~~ — Done, 2026-03-14. Built alongside Sprint 1. Percentile computation, signal rules, constants all in `src/signal/`. 431 extreme signals, 205 high-strength across history.
-- **Sprint 3 — API + x402** (Weekend 3): Endpoints, x402 middleware, cron job, Redis cache, deploy to Railway
+- ~~**Sprint 3 — API + x402**~~ — Done, 2026-03-14. `/es/latest` and `/es/history` endpoints live. x402 on Base mainnet via payai.network facilitator. Cron job scheduled (Fri 3:35 PM ET). Deployed to Railway at `positionflow-api-production.up.railway.app`.
 - **Sprint 4 — MCP + Launch Prep** (Weekend 4): MCP server, OpenAPI docs, landing page, methodology page
 - Domain `positionflow.ai` — status? (business plan says "done")
 - Decide on shared x402 middleware package vs copy from QuoteNorm

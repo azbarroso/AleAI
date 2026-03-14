@@ -32,3 +32,18 @@
   - Recent high signal: 2026-02-24 LF at 3rd percentile 5yr, bullish_lean, high strength (AM opposing)
   - Express app scaffolded with /health endpoint + placeholder /es/latest and /es/history
   - Next step: Sprint 3 — full API endpoints, x402 middleware, Redis cache, cron job, deploy
+- **Sprint 3 — COMPLETE. API live on Railway with x402.**
+  - `/es/latest` endpoint: joins cot_tff_es + signal_snapshot, returns full JSON with positioning data, percentiles, signal, and metadata
+  - `/es/history` endpoint: returns up to 260 weeks of historical data with signal per row
+  - `/health` endpoint: returns data freshness (latest report date, age in days)
+  - x402 payment middleware protecting both paid endpoints ($0.25 latest, $1.00 history)
+  - Using `https://facilitator.payai.network` (not x402.org — doesn't support exact scheme on Base mainnet)
+  - Base mainnet (eip155:8453), USDC, same wallet as QuoteNorm
+  - Weekly cron job (`node-cron`): Fri 3:35 PM ET — fetches current week TFF, parses, inserts, recomputes signal, invalidates Redis
+  - Manual refresh script: `npm run manual-refresh`
+  - `railway.toml` configured for Nixpacks build + healthcheck
+  - Deployed and verified: `https://positionflow-api-production.up.railway.app`
+    - /health → 200, reports 2026-03-10 data
+    - /es/latest → 402 (payment required) ✓
+    - /es/history → 402 (payment required) ✓
+  - Next step: Sprint 4 — MCP server, OpenAPI docs, landing page, methodology page

@@ -10,7 +10,7 @@ Last updated: 2026-03-14
 
 **policynorm-ai** — x402-native ToS/Privacy Policy normalizer API. Structured JSON with risk flags, notable clauses, confidence scores. $0.25/call USDC on Base L2. Phase 0: collect sample docs, design schema, test extraction. Under AleLabs LLC alongside QuoteNorm.
 
-**positionflow-ai** — API that turns CFTC weekly futures positioning data into clean JSON signals (extremes, percentiles, labels) for traders and AI agents. Focus on ES futures by participant type. **Sprint 1+2 complete.** 793 rows backfilled, signal engine live on Railway. Next: Sprint 3 (API endpoints, x402, cron, deploy).
+**positionflow-ai** — API that turns CFTC weekly futures positioning data into clean JSON signals (extremes, percentiles, labels) for traders and AI agents. Focus on ES futures by participant type. **Sprint 3 complete.** API live at `positionflow-api-production.up.railway.app` with x402 on Base mainnet. Next: Sprint 4 (MCP server, docs, landing page).
 
 ## Parked
 
