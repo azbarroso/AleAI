@@ -1,5 +1,31 @@
 # Log
 
+### 2026-03-14 — Landing Page Live at quotenorm.ai
+
+- **`quotenorm.ai` is live.** Static landing page deployed on Cloudflare Pages, auto-deploys from `site/` folder in `quotenorm-ai` code repo.
+- **x402 paid flow working end-to-end from browser.** User connects MetaMask → sends request → gets 402 → signs EIP-3009 TransferWithAuthorization → pays $0.10 USDC on Base L2 → gets full normalized JSON result.
+- **Key fix:** Replaced `@x402/evm` client library approach with manual EIP-3009 signing via MetaMask's `eth_signTypedData_v4`. The @x402 client libs loaded via esm.sh caused viem version mismatches that produced `invalid_exact_evm_payload_signature` errors. Direct signing eliminates all CDN dependency issues.
+- **Payload structure:** Server expects `{ x402Version: 2, accepted: <payment requirements>, payload: { authorization, signature } }` — not the simpler structure documented in examples.
+- **Site design:** Dark theme (#0a0a0a), monospace font, cyan/orange/yellow accents. Sections: hero, what it does, sample output, live demo (sandbox + paid), API reference, footer. Design brief preserved at `scratch/site/brief.md`.
+- **Sandbox demo** also works from the site — no wallet needed.
+- **Hosting:** Cloudflare Pages (free, global CDN, auto-deploy from GitHub). Domain DNS configured in Squarespace pointing to Cloudflare.
+- Debug console.log statements cleaned up from production site.
+
+### 2026-03-13 — Deployed to Production on Railway
+
+- **`api.quotenorm.ai` is live.** Health check returns `{"status":"ok","version":"0.1.0"}`.
+- Deployed on Railway, auto-deploys on push to `main`.
+- **Production fixes applied before deploy:**
+  - Fixed x402 `accepts` field — must be an array, not a single object (was causing `missing_facilitator` error)
+  - Added `requireEnv()` validation — app now fails fast on missing `ANTHROPIC_API_KEY` or `X402_PAY_TO_ADDRESS`
+  - Added network validation for `X402_NETWORK`
+  - Added global Express error handler middleware
+  - Added graceful SIGTERM shutdown
+  - Added `.npmrc` with `legacy-peer-deps=true` to fix Railway `ERESOLVE` errors
+- **Facilitator:** Coinbase CDP facilitator (`api.cdp.coinbase.com`) requires JWT auth (complex setup). Switched to third-party facilitator from x402 ecosystem — no auth required, supports Base mainnet. 20+ facilitators available at `x402.org/ecosystem?filter=facilitators`.
+- **Decision:** No need for CDP facilitator — open facilitators are simpler and sufficient for v1.
+- **Next:** MCP tool, real-world testing with full-length documents
+
 ### 2026-03-13 — Phase 1 Scaffolding Complete
 
 - Code repo scaffolded at `~/dev/claude_dev/quotenorm-ai/` and pushed to GitHub (`azbarroso/quotenorm-ai`)

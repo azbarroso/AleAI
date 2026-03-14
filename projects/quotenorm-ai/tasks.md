@@ -12,7 +12,7 @@
 
 - ~~**Phase 0: Validate the core** — Collect 15+ real SaaS quotes, finalize schema, build extraction pipeline, test accuracy. Answer: is this meaningfully better than prompting Claude directly?~~ — Done 2026-03-12. GO decision. 14 test samples, schema v1 validated, extraction avg confidence 0.83, x402 production-ready, Haiku cost ~$0.003/call.
 - ~~**Phase 1: Ship /normalize as MCP tool + REST API** — Build shared extractor (`src/lib/extractor.ts`), publish local MCP server (`@quotenorm/mcp-server` on npm), REST API on Vercel/Railway, minimal dashboard (signup + key mgmt + billing), Stripe billing, Python/TS SDKs. No /compare, no USDC yet.~~ — Superseded 2026-03-11, replaced by x402-only Phase 1.
-- ~~**Phase 1: Ship /normalize as x402-native API** — Build extraction pipeline, `POST /v1/normalize` with x402 payment middleware (USDC on Base L2), `POST /v1/sandbox/normalize` (free, truncated output), MCP tool wrapping the x402 API. No Stripe, no accounts, no API keys, no dashboard, no SDKs.~~ — Scaffolding done 2026-03-13. Code repo live on GitHub (`azbarroso/quotenorm-ai`). Extraction pipeline, x402 middleware, sandbox endpoint all working. Still needed: deploy, MCP tool, real-world testing with full-length docs.
+- ~~**Phase 1: Ship /normalize as x402-native API** — Build extraction pipeline, `POST /v1/normalize` with x402 payment middleware (USDC on Base L2), `POST /v1/sandbox/normalize` (free, truncated output), MCP tool wrapping the x402 API. No Stripe, no accounts, no API keys, no dashboard, no SDKs.~~ — Done 2026-03-14. API deployed on Railway (`api.quotenorm.ai`), landing page on Cloudflare Pages (`quotenorm.ai`). x402 paid flow + sandbox both working end-to-end. Still needed: MCP tool, real-world testing with full-length docs.
 
 ## Open Items
 
@@ -49,4 +49,4 @@
 - `/v1/validate` endpoint
 - LangChain/CrewAI integrations
 - Vendor fingerprinting
-- Landing page beyond docs
+- ~~Landing page beyond docs~~ — Done 2026-03-14. `quotenorm.ai` live with live demo, wallet connect, x402 payment flow.

@@ -87,3 +87,7 @@ Usage-based pricing via x402: agents pay per API call with USDC on Base L2.
 | 2026-03-12 | Express + TypeScript tech stack | x402 `@x402/express` has native Express middleware. QuoteNorm is a pure API — no SSR, no React, no pages. Express is simpler and cleaner. Deploy on Railway or Vercel (Express adapter). |
 | 2026-03-12 | Haiku-first, Sonnet fallback extraction | Claude Haiku at ~$0.003/call gives 97% margin. Sonnet fallback only if confidence drops below 0.70. |
 | 2026-03-12 | Schema v1 locked (plans[] array structure) | Validated against 5 diverse samples. `plans[]` handles tiered SaaS, multi-product, rate cards, and enterprise components. |
+| 2026-03-13 | Third-party x402 facilitator over CDP | CDP requires JWT auth (key ID + secret, 2-min expiry). Open facilitators from x402 ecosystem support Base mainnet with no auth. Simpler, sufficient for v1. |
+| 2026-03-13 | Deploy on Railway | Auto-deploy on push to `main`. Custom domain `api.quotenorm.ai`. |
+| 2026-03-14 | Landing page on Cloudflare Pages | Single static page at `quotenorm.ai`. Dark theme, live demo (sandbox + paid x402), MetaMask wallet connection. Deployed from `site/` folder in code repo. |
+| 2026-03-14 | Manual EIP-3009 signing over @x402 client libs | Browser-side x402 payment uses direct `eth_signTypedData_v4` via MetaMask instead of `@x402/evm` client. Eliminates esm.sh/viem version mismatch issues that caused `invalid_exact_evm_payload_signature`. |

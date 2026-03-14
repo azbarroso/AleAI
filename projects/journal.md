@@ -2,6 +2,14 @@
 
 Daily notes, observations, and miscellaneous items worth keeping for context and history.
 
+### 2026-03-14
+
+- **QuoteNorm is fully live.** API at `api.quotenorm.ai` (Railway) + landing page at `quotenorm.ai` (Cloudflare Pages). Both sandbox and x402 paid flows working end-to-end from the browser.
+- The hardest part was getting x402 payment signing to work in the browser. The `@x402/evm` client library loaded via esm.sh caused viem version mismatches — different instances of viem for our code vs the library's internals, leading to `invalid_exact_evm_payload_signature` from the facilitator. Solution: bypass the @x402 client libs entirely and sign EIP-3009 `TransferWithAuthorization` directly via MetaMask's `eth_signTypedData_v4`. Simpler, zero dependencies, works perfectly.
+- Key learning: the x402 payment payload structure expected by the server is `{ x402Version: 2, accepted: <full payment requirements object>, payload: { authorization, signature } }`. This wasn't obvious from examples or docs — had to read the server-side verification code.
+- Site is a single `index.html` — no build step, no framework. Lives in `site/` folder of the `quotenorm-ai` code repo. Cloudflare Pages auto-deploys from GitHub.
+- First real USDC payment processed on Base L2 via the site demo. The whole x402 flow (402 → sign → pay → result) takes a few seconds from the user's perspective.
+
 ### 2026-03-13
 
 - **QuoteNorm Phase 1 scaffolding complete.** Code repo live on GitHub (`azbarroso/quotenorm-ai`). Express + x402 middleware, Claude extraction pipeline (Haiku-first/Sonnet fallback), sandbox endpoint tested with real extraction. All 7 source files, typechecks clean.
