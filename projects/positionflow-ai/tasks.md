@@ -2,8 +2,8 @@
 
 ## Questions
 
-- Data validation spike: Do all required TFF columns exist and populate consistently across 2011-2026 files?
-- What does the 13874+ row look like during known events (COVID crash 2020-03-24, 2022 bear market)?
+- ~~Data validation spike: Do all required TFF columns exist and populate consistently across 2011-2026 files?~~ — Yes, all columns 100% populated across 2011-2025. GO. See `scratch/phase0_spike_results.md`.
+- ~~What does the 13874+ row look like during known events (COVID crash 2020-03-24, 2022 bear market)?~~ — COVID crash shows clear LF positioning shift (net short → briefly net long → back to short). Data captures extremes well.
 - How many "high" strength signals would the engine have produced historically? Is the hit rate publishable?
 - Should x402 middleware be extracted into a shared npm package now (for QuoteNorm + PositionFlow) or copy-paste for speed?
 
@@ -13,12 +13,7 @@
 
 ## Open Items
 
-- **Phase 0 — Data validation spike** (first priority, 2-3 hours):
-  - Download TFF Futures Only annual files for 2011, 2015, 2020, 2025
-  - Filter for 13874+, confirm all required columns present
-  - Manually compute lev_funds_net for recent rows, cross-check against CFTC viewer
-  - Document gaps or column name variations
-  - GO/NO-GO decision based on spike results
+- ~~**Phase 0 — Data validation spike**~~ — Done, 2026-03-14. **GO decision.** All columns clean, data matches CFTC viewer exactly. Full results in `scratch/phase0_spike_results.md`.
 - **Sprint 1 — Data Foundation** (Weekend 1): Init repo, Railway setup, schema migrations, parser, backfill 2011-2026
 - **Sprint 2 — Signal Engine** (Weekend 2): Percentile computation, signal rules, tests, historical signal review
 - **Sprint 3 — API + x402** (Weekend 3): Endpoints, x402 middleware, cron job, Redis cache, deploy to Railway
