@@ -1,8 +1,10 @@
-# QuoteNorm.ai — Landing Page Brief
+# QuoteNorm.ai — Landing Page
 
 ## Concept
 
 Single static page. No framework, no build step — just HTML + CSS + JS. Dark, minimal, developer-focused.
+
+Live at `quotenorm.ai`. Source at `site/index.html` in the `quotenorm-ai` code repo.
 
 ## Design
 
@@ -19,65 +21,61 @@ Single static page. No framework, no build step — just HTML + CSS + JS. Dark, 
 ## Sections (top to bottom)
 
 ### 1. Hero
-- **QuoteNorm.ai** (large)
-- One-liner: "Structured pricing data from any vendor page. One API call. Pay with USDC."
-- Subtle tagline: "x402-native · Base L2 · no accounts · no API keys"
+- **QuoteNorm.ai** (large, with cyan dot)
+- Two-line tagline:
+  - "Pricing pages are messy. Your agent needs structured data."
+  - "One API call. Pay per request. No setup."
+- Subtle sub-tagline: "x402-native · USDC on Base · no accounts · no API keys"
 
 ### 2. What It Does
-- 3-4 short bullet points:
-  - Send a URL, get structured JSON
-  - Plans, pricing, features, terms — normalized and comparable
-  - Confidence scores per field
-  - Missing-field alerts for what the source doesn't include
+- 4 bullet points:
+  - Send a pricing page URL, get back structured JSON — ready for comparison
+  - Plans, pricing, features, terms — normalized across vendors
+  - Confidence scores per field — know what's reliable vs inferred
+  - Missing-field alerts — know what the vendor didn't disclose
 
 ### 3. Sample Output
-- Syntax-highlighted JSON block showing a realistic truncated response
-- Use the Linear pricing result as the example (vendor, 2 plans, confidence, source)
+- Syntax-highlighted JSON block showing a truncated Linear pricing result
+- Shows: vendor, 2 plans (Free + Pro with pricing models), confidence score, missing fields, source
 
 ### 4. Try It (Live Demo)
 - **Connect Wallet** button (MetaMask / injected provider)
-- Once connected: show wallet address + USDC balance
+- On connect: switches to Base mainnet (chain ID 8453), shows truncated address + "on Base"
 - Input field: "Paste a pricing page URL"
-- **Normalize** button ($0.10 USDC)
-- Flow:
-  1. POST to `api.quotenorm.ai/v1/normalize`
-  2. Get 402 → sign x402 payment with connected wallet
-  3. Resend with payment header
-  4. Display full JSON result in a code block
-- Also show a "Try free (sandbox)" link that hits `/v1/sandbox/normalize` — no wallet needed
+- **Normalize** button ($0.10 USDC) — disabled until wallet connected
+- **Try free (sandbox)** button — no wallet needed
+- Status messages shown below buttons
+- Results displayed as syntax-highlighted JSON in a code block
 
-### 5. API Reference (minimal)
-```
-POST /v1/normalize          $0.10 USDC (x402)
-POST /v1/sandbox/normalize  Free (truncated, rate-limited)
-GET  /health
-```
-- Request body: `{ "content": "https://...", "source_type": "url" }`
-- Note: "No API keys. No accounts. Pay per request with USDC on Base L2."
+### 5. API Reference
+- Endpoint table: `/v1/normalize` ($0.10 USDC), `/v1/sandbox/normalize` (free), `/health`
+- Request body example
+- Note: "Built for autonomous agents. Works with any x402-compatible client. No API keys. No accounts."
 
 ### 6. Footer
-- "Built by AleLabs" · GitHub link · x402.org link
-- One line: "QuoteNorm processes your input and returns structured JSON. Raw input is deleted within 24 hours. Powered by Claude."
+- Links: AleLabs · x402.org (both open in new tab)
+- Privacy line (white text): "QuoteNorm processes your input and returns structured JSON. Raw input is deleted within 24 hours."
 
 ## Tech
 
-- Single `index.html` file
-- Inline CSS (or single `<style>` block)
+- Single `index.html` file — inline CSS + JS, no build step
 - Vanilla JS for wallet connect + API calls
-- Dependencies (CDN):
-  - ethers.js or viem (for MetaMask interaction + EIP-3009 signing)
-  - Need to handle x402 payment flow client-side
-- Host on: Vercel static, Cloudflare Pages, or even GitHub Pages
-- Domain: `quotenorm.ai` (root, not api subdomain)
+- No external dependencies — no viem, no ethers.js, no @x402 client libs
+- x402 payment signing uses MetaMask's `eth_signTypedData_v4` directly (EIP-3009 TransferWithAuthorization)
+- Hosted on Cloudflare Pages, auto-deploys from `site/` folder in `quotenorm-ai` GitHub repo
+- Domain: `quotenorm.ai` (DNS via Squarespace, pointing to Cloudflare Pages)
 
 ## x402 Client-Side Flow
 
-The tricky part is the x402 payment in the browser. Options:
-1. **@x402/paywall** — pre-built UI component, handles wallet connect + payment
-2. **Manual with ethers.js** — call API, parse 402 response, sign EIP-3009 TransferWithAuthorization, resend
-3. **@x402/fetch wrapper** — `wrapFetchWithPayment()` with browser wallet as signer
+Manual EIP-3009 signing — no @x402 client libraries needed. We tried `@x402/evm` via esm.sh CDN but it caused viem version mismatches (`invalid_exact_evm_payload_signature`). Direct signing is simpler and dependency-free.
 
-Option 1 (@x402/paywall) may be simplest if it works as a drop-in. Otherwise option 2 keeps it dependency-light.
+1. POST to `api.quotenorm.ai/v1/normalize` → get 402
+2. Decode `payment-required` header (base64 JSON) → extract `accepts[0]`
+3. Build EIP-712 typed data for `TransferWithAuthorization` using payment requirements (domain: token name/version/chainId/contract, message: from/to/value/validAfter/validBefore/nonce)
+4. Sign via `eth_signTypedData_v4` through MetaMask
+5. Build payload: `{ x402Version: 2, accepted: <requirements>, payload: { authorization, signature } }`
+6. Base64 encode → send as `payment-signature` header
+7. Server verifies via facilitator → returns full JSON result
 
 ## Out of Scope
 - No signup, no dashboard, no account management
