@@ -4,6 +4,7 @@ Daily notes, observations, and miscellaneous items worth keeping for context and
 
 ### 2026-03-14
 
+- **New project: PositionFlow.ai** — API for CFTC weekly futures positioning data. Turns raw COT reports into structured JSON signals (positioning extremes, percentiles, labels) for ES futures. Target: traders, AI agents, dashboards. Project scaffolded in knowledge base, full business plan incoming.
 - **QuoteNorm is fully live.** API at `api.quotenorm.ai` (Railway) + landing page at `quotenorm.ai` (Cloudflare Pages). Both sandbox and x402 paid flows working end-to-end from the browser.
 - The hardest part was getting x402 payment signing to work in the browser. The `@x402/evm` client library loaded via esm.sh caused viem version mismatches — different instances of viem for our code vs the library's internals, leading to `invalid_exact_evm_payload_signature` from the facilitator. Solution: bypass the @x402 client libs entirely and sign EIP-3009 `TransferWithAuthorization` directly via MetaMask's `eth_signTypedData_v4`. Simpler, zero dependencies, works perfectly.
 - Key learning: the x402 payment payload structure expected by the server is `{ x402Version: 2, accepted: <full payment requirements object>, payload: { authorization, signature } }`. This wasn't obvious from examples or docs — had to read the server-side verification code.
